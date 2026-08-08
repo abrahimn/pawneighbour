@@ -17,25 +17,25 @@ class User < ApplicationRecord
   has_many :rsvps,
            class_name: "Rsvp",
            foreign_key: "responder_id",
-           dependence: :destroy
+           dependent: :destroy
 
   has_many :connections,
            class_name: "Connection",
            foreign_key: "sender_id",
-           dependence: :destroy
+           dependent: :destroy
 
   has_many :connections,
            class_name: "Connection",
            foreign_key: "receiver_id",
-           dependence: :destroy
+           dependent: :destroy
 
   has_many :amber_alerts,
            class_name: "AmberAlert",
            foreign_key: "creator_id",
-           dependence: :destroy
+           dependent: :destroy
 
   has_many :amber_responses,
            class_name: "AlertResponse",
            foreign_key: "spotter_id",
-           dependence: :destroy
+           dependent: :destroy
 end
