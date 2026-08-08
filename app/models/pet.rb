@@ -7,7 +7,7 @@ class Pet < ApplicationRecord
   validates :species, presence: true
   validates :age,
             numericality: {
-              only_integar: true,
+              only_integer: true,
               greater_than_or_equal_to: 0
             }
 end
