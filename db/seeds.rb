@@ -32,7 +32,7 @@ tom = User.create!(
   mobile: "0412 334 981",
   profile_pic: "https://placehold.co/400x400?text=Tom"
 )
-say "added user #{tom.name} into database"
+puts "added user #{tom.name} into database"
 
 sam = User.create!(
   name: "Sam",
@@ -41,7 +41,7 @@ sam = User.create!(
   mobile: "0433 210 776",
   profile_pic: "https://placehold.co/400x400?text=Sam"
 )
-say "added user #{sam.name} into database"
+puts "added user #{sam.name} into database"
 
 priya = User.create!(
   name: "Priya",
@@ -50,7 +50,7 @@ priya = User.create!(
   mobile: "0455 909 112",
   profile_pic: "https://placehold.co/400x400?text=Priya"
 )
-say "added user #{priya.name} into database"
+puts "added user #{priya.name} into database"
 
 jerry = User.create!(
   name: "Jerry",
@@ -59,7 +59,7 @@ jerry = User.create!(
   mobile: "0401 887 334",
   profile_pic: "https://placehold.co/400x400?text=Jerry"
 )
-say "added user #{jerry.name} into database"
+puts "added user #{jerry.name} into database"
 
 emma = User.create!(
   name: "Emma",
@@ -68,7 +68,7 @@ emma = User.create!(
   mobile: "0466 445 220",
   profile_pic: nil
 )
-say "added user #{emma.name} into database (no profile picture)"
+puts "added user #{emma.name} into database (no profile picture)"
 
 puts "#{User.count} users created."
 
@@ -85,7 +85,7 @@ neo= Pet.create!(
                      "Wet food in the blue bowl only, he refuses the green one.",
   profile_pic: "https://placehold.co/600x600?text=Neo"
 )
-say "added pet #{neo.name} (#{neo.species}) for #{tom.name} into database"
+puts "added pet #{neo.name} (#{neo.species}) for #{tom.name} into database"
 
 # EDGE CASE: a pet with no photo. Your pet card design assumes a photo background —
 # find out now what it looks like without one.
@@ -98,7 +98,7 @@ dumpling = Pet.create!(
                      "Allergic to chicken — check the label.",
   profile_pic: nil
 )
-say "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database (no photo)"
+puts "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database (no photo)"
 
 biscuit = Pet.create!(
   user: sam,
@@ -110,7 +110,7 @@ biscuit = Pet.create!(
                      "Medication in the fridge door, half a tablet with breakfast.",
   profile_pic: "https://placehold.co/600x600?text=Biscuit"
 )
-say "added pet #{biscuit.name} (#{biscuit.species}) for #{sam.name} into database"
+puts "added pet #{biscuit.name} (#{biscuit.species}) for #{sam.name} into database"
 
 kiwi = Pet.create!(
   user: priya,
@@ -121,7 +121,7 @@ kiwi = Pet.create!(
                      "Fresh water daily, seed top-up every second day.",
   profile_pic: "https://placehold.co/600x600?text=Kiwi"
 )
-say "added pet #{kiwi.name} (#{kiwi.species}) for #{priya.name} into database"
+puts "added pet #{kiwi.name} (#{kiwi.species}) for #{priya.name} into database"
 
 puts "#{Pet.count} pets created.\n\n"
 
@@ -137,7 +137,7 @@ neo_sit = Listing.create!(
   listing_note: "Away for a long weekend. Looking for someone to stay over or drop in " \
                 "twice a day. neo is easy once he trusts you."
 )
-say "added listing #{neo_sit.listing_type} for #{neo.name} into database"
+puts "added listing #{neo_sit.listing_type} for #{neo.name} into database"
 
 # Scenario 2: a brand new post with no offers yet.
 
@@ -148,7 +148,7 @@ dumpling_dropin = Listing.create!(
   end_date: Date.current + 3,
   listing_note: "Just need someone to check food and water on Tuesday and Wednesday."
 )
-say "added listing #{dumpling_dropin.listing_type} for #{dumpling.name} into database (no offers)"
+puts "added listing #{dumpling_dropin.listing_type} for #{dumpling.name} into database (no offers)"
 
 # Scenario 3: a listing whose dates have already passed.
 biscuit_walk_past = Listing.create!(
@@ -158,7 +158,7 @@ biscuit_walk_past = Listing.create!(
   end_date: Date.current - 9,
   listing_note: "Needed a hand while I was at a conference."
 )
-say "added listing #{biscuit_walk_past.listing_type} for #{biscuit.name} into database (expired)"
+puts "added listing #{biscuit_walk_past.listing_type} for #{biscuit.name} into database (expired)"
 
 biscuit_walk = Listing.create!(
   pet: biscuit,
@@ -167,7 +167,7 @@ biscuit_walk = Listing.create!(
   end_date: Date.current + 14,
   listing_note: "Weekday morning walks, 20 minutes, gentle pace. Ongoing if it works out."
 )
-say "added listing #{biscuit_walk.listing_type} for #{biscuit.name} into database"
+puts "added listing #{biscuit_walk.listing_type} for #{biscuit.name} into database"
 
 puts "#{Listing.count} listings created.\n\n"
 
@@ -179,48 +179,36 @@ accepted_offer = Offer.create!(
   user: sam,
   status: "accepted"
 )
-say "added offer from #{sam.name} on #{neo_sit.pet.name}'s listing (#{accepted_offer.status}) into database"
+puts "added offer from #{sam.name} on #{neo_sit.pet.name}'s listing (#{accepted_offer.status}) into database"
 
 [priya, tom].each do |sitter|
   offer = Offer.create!(listing: neo_sit, user: sitter, status: "offered")
-  say "added offer from #{sitter.name} on #{neo_sit.pet.name}'s listing (#{offer.status}) into database"
+  puts "added offer from #{sitter.name} on #{neo_sit.pet.name}'s listing (#{offer.status}) into database"
 end
 
 losing_offer = Offer.create!(listing: biscuit_walk, user: priya, status: "offered")
-say "added offer from #{priya.name} on #{biscuit_walk.pet.name}'s listing (#{losing_offer.status}) into database"
+puts "added offer from #{priya.name} on #{biscuit_walk.pet.name}'s listing (#{losing_offer.status}) into database"
 
 puts "#{Offer.count} offers created."
 
-# ---------------------------------------------------------------------------
-# CONNECTIONS
-#
-# CONVENTION (this becomes the spec for Offer#accept in Sprint 2):
-#   sender   = the pet OWNER, who created the connection by accepting an offer
-#   receiver = the SITTER whose offer was accepted
-#
-# Connection validates uniqueness of receiver_id scoped to sender_id, which is
-# DIRECTIONAL — tom->sam and sam->tom would both save. The convention above is
-# the only thing preventing duplicates. Obey it everywhere.
-# ---------------------------------------------------------------------------
 puts "Creating connections..."
 
 tom_sam = Connection.create!(sender: tom, receiver: sam)
-say "added connection #{tom_sam.sender.name} -> #{tom_sam.receiver.name} into database (from accepted offer)"
+puts "added connection #{tom_sam.sender.name} -> #{tom_sam.receiver.name} into database (from accepted offer)"
 
 # A second connection so the connections index has more than one row to render.
 sam_priya = Connection.create!(sender: sam, receiver: priya)
-say "added connection #{sam_priya.sender.name} -> #{sam_priya.receiver.name} into database"
+puts "added connection #{sam_priya.sender.name} -> #{sam_priya.receiver.name} into database"
 
-puts "#{Connection.count} connections created.\n\n"
+puts "#{Connection.count} connections created."
 
 
-puts "=" * 50
+
 puts "Seeding complete."
-puts "  Users:       #{User.count}"
-puts "  Pets:        #{Pet.count}"
-puts "  Listings:    #{Listing.count}"
-puts "  Offers:      #{Offer.count}"
+puts "  Users: #{User.count}"
+puts "  Pets: #{Pet.count}"
+puts "  Listings: #{Listing.count}"
+puts "  Offers: #{Offer.count}"
 puts "  Connections: #{Connection.count}"
-puts "=" * 50
 puts "Log in with any seeded email and the password: #{PASSWORD}"
 puts "e.g. tom@example.com (owner)  /  sam@example.com (sitter)"
