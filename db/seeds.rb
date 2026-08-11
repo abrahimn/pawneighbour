@@ -81,21 +81,19 @@ neo= Pet.create!(
   species: "Cat",
   age: 4,
   care_instructions: "Ginger tabby, very shy. Hides under the bed for the first hour — " \
-                     "do not chase him, he comes out for tuna. Two meals a day, 7am and 6pm. " \
-                     "Wet food in the blue bowl only, he refuses the green one.",
+                    "do not chase him, he comes out for tuna. Two meals a day, 7am and 6pm. " \
+                    "Wet food in the blue bowl only, he refuses the green one.",
   profile_pic: "https://placehold.co/600x600?text=Neo"
 )
 puts "added pet #{neo.name} (#{neo.species}) for #{tom.name} into database"
 
-# EDGE CASE: a pet with no photo. Your pet card design assumes a photo background —
-# find out now what it looks like without one.
 dumpling = Pet.create!(
   user: tom,
   name: "Dumpling",
   species: "Cat",
   age: 2,
   care_instructions: "Neo's sister. Confident, will demand attention immediately. " \
-                     "Allergic to chicken — check the label.",
+                    "Allergic to chicken — check the label.",
   profile_pic: nil
 )
 puts "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database (no photo)"
@@ -106,8 +104,8 @@ biscuit = Pet.create!(
   species: "Dog",
   age: 7,
   care_instructions: "Golden retriever, older girl with a sore hip. Short walks only, " \
-                     "20 minutes max. Pulls hard when she sees other dogs. " \
-                     "Medication in the fridge door, half a tablet with breakfast.",
+                    "20 minutes max. Pulls hard when she sees other dogs. " \
+                    "Medication in the fridge door, half a tablet with breakfast.",
   profile_pic: "https://placehold.co/600x600?text=Biscuit"
 )
 puts "added pet #{biscuit.name} (#{biscuit.species}) for #{sam.name} into database"
@@ -118,7 +116,7 @@ kiwi = Pet.create!(
   species: "Bird",
   age: 1,
   care_instructions: "Budgie. Cover the cage at 8pm or he will not shut up. " \
-                     "Fresh water daily, seed top-up every second day.",
+                    "Fresh water daily, seed top-up every second day.",
   profile_pic: "https://placehold.co/600x600?text=Kiwi"
 )
 puts "added pet #{kiwi.name} (#{kiwi.species}) for #{priya.name} into database"
@@ -201,7 +199,6 @@ sam_priya = Connection.create!(sender: sam, receiver: priya)
 puts "added connection #{sam_priya.sender.name} -> #{sam_priya.receiver.name} into database"
 
 puts "#{Connection.count} connections created."
-
 
 
 puts "Seeding complete."
