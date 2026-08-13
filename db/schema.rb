@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_08_064333) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_13_111111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,6 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_08_064333) do
     t.bigint "amber_alert_id", null: false
     t.datetime "created_at", null: false
     t.date "date"
+    t.string "location"
     t.text "notes"
     t.bigint "spotter_id", null: false
     t.time "time"
@@ -266,6 +267,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_08_064333) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "location"
     t.string "mobile"
     t.string "name"
     t.string "profile_pic"
