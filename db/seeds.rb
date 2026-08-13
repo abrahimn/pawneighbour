@@ -30,6 +30,7 @@ tom = User.create!(
   email: "tom@example.com",
   password: PASSWORD,
   mobile: "0412 334 981",
+  location: "Sydney, NSW",
   profile_pic: "https://placehold.co/400x400?text=Tom"
 )
 puts "added user #{tom.name} into database"
@@ -39,6 +40,7 @@ sam = User.create!(
   email: "sam@example.com",
   password: PASSWORD,
   mobile: "0433 210 776",
+  location: "Newtown, NSW",
   profile_pic: "https://placehold.co/400x400?text=Sam"
 )
 puts "added user #{sam.name} into database"
@@ -48,6 +50,7 @@ priya = User.create!(
   email: "priya@example.com",
   password: PASSWORD,
   mobile: "0455 909 112",
+  location: "Surry Hills, NSW",
   profile_pic: "https://placehold.co/400x400?text=Priya"
 )
 puts "added user #{priya.name} into database"
@@ -57,6 +60,7 @@ jerry = User.create!(
   email: "jerry@example.com",
   password: PASSWORD,
   mobile: "0401 887 334",
+  location: "Alexandria, NSW",
   profile_pic: "https://placehold.co/400x400?text=Jerry"
 )
 puts "added user #{jerry.name} into database"
@@ -66,6 +70,7 @@ emma = User.create!(
   email: "emma@example.com",
   password: PASSWORD,
   mobile: "0466 445 220",
+  location: "Coogee, NSW",
   profile_pic: nil
 )
 puts "added user #{emma.name} into database (no profile picture)"
