@@ -179,7 +179,7 @@ accepted_offer = Offer.create!(
 )
 puts "added offer from #{sam.name} on #{neo_sit.pet.name}'s listing (#{accepted_offer.status}) into database"
 
-[priya, tom].each do |sitter|
+[priya, jerry].each do |sitter|
   offer = Offer.create!(listing: neo_sit, user: sitter, status: "offered")
   puts "added offer from #{sitter.name} on #{neo_sit.pet.name}'s listing (#{offer.status}) into database"
 end
