@@ -46,6 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_13_105953) do
     t.bigint "amber_alert_id", null: false
     t.datetime "created_at", null: false
     t.date "date"
+    t.string "location"
     t.text "notes"
     t.bigint "spotter_id", null: false
     t.time "time"
