@@ -19,12 +19,12 @@ class User < ApplicationRecord
            foreign_key: "responder_id",
            dependent: :destroy
 
-  has_many :connections,
+  has_many :sent_connections,
            class_name: "Connection",
            foreign_key: "sender_id",
            dependent: :destroy
 
-  has_many :connections,
+  has_many :received_connections,
            class_name: "Connection",
            foreign_key: "receiver_id",
            dependent: :destroy
