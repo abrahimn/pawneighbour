@@ -1,6 +1,6 @@
 class Pet < ApplicationRecord
   belongs_to :user
-  has_many_attached :photos
+  has_one_attached :avatar
   has_many :listings, dependent: :destroy
   has_many :amber_alerts, dependent: :destroy
   validates :name, :age, presence: true
