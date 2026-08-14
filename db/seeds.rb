@@ -110,7 +110,7 @@ neo= Pet.create!(
   profile_pic: "https://placehold.co/600x600?text=Neo"
 )
 neo.avatar.attach(
-  io: File.open(Rails.root.join("db/seeds/imgaesd/neo,jpg")),
+  io: File.open(Rails.root.join("db/seeds/images/neo.jpg")),
   filename: "neo.jpg",
   content_type: "image/jpg"
 )
@@ -126,11 +126,11 @@ dumpling = Pet.create!(
   profile_pic: "https://placehold.co/600x600?text=Dumpling"
 )
 dumpling.avatar.attach(
-  io: File.open(Rails.root.join("db/seeds/imgaesd/dumpling,jpg")),
+  io: File.open(Rails.root.join("db/seeds/images/dumpling.jpg")),
   filename: "dumpling.jpg",
   content_type: "image/jpg"
 )
-puts "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database (no photo)"
+puts "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database."
 
 biscuit = Pet.create!(
   user: sam,
@@ -143,7 +143,7 @@ biscuit = Pet.create!(
   profile_pic: "https://placehold.co/600x600?text=Biscuit"
 )
 biscuit.avatar.attach(
-  io: File.open(Rails.root.join("db/seeds/imgaesd/biscuit,jpg")),
+  io: File.open(Rails.root.join("db/seeds/images/biscuit.jpg")),
   filename: "biscuit.jpg",
   content_type: "image/jpg"
 )
@@ -159,7 +159,7 @@ kiwi = Pet.create!(
   profile_pic: "https://placehold.co/600x600?text=Kiwi"
 )
 kiwi.avatar.attach(
-  io: File.open(Rails.root.join("db/seeds/imgaesd/kiwi,jpg")),
+  io: File.open(Rails.root.join("db/seeds/images/kiwi.jpg")),
   filename: "kiwi.jpg",
   content_type: "image/jpg"
 )
