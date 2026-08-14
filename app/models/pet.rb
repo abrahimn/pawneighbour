@@ -3,7 +3,7 @@ class Pet < ApplicationRecord
   has_many_attached :photos
   has_many :listings, dependent: :destroy
   has_many :amber_alerts, dependent: :destroy
-  validates :name, presence: true
+  validates :name, :age, presence: true
   validates :species, presence: true
   validates :age,
             numericality: {
