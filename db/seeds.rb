@@ -34,7 +34,11 @@ tom = User.create!(
   profile_pic: "https://placehold.co/400x400?text=Tom"
 )
 puts "added user #{tom.name} into database"
-
+tom.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/images/tom.jpg")),
+  filename: "tom.jpg",
+  content_type: "image/jpg"
+)
 sam = User.create!(
   name: "Sam",
   email: "sam@example.com",
@@ -42,6 +46,11 @@ sam = User.create!(
   mobile: "0433 210 776",
   location: "Newtown, NSW",
   profile_pic: "https://placehold.co/400x400?text=Sam"
+)
+sam.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/images/sam.jpg")),
+  filename: "sam.jpg",
+  content_type: "image/jpg"
 )
 puts "added user #{sam.name} into database"
 
@@ -53,6 +62,11 @@ priya = User.create!(
   location: "Surry Hills, NSW",
   profile_pic: "https://placehold.co/400x400?text=Priya"
 )
+priya.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/images/priya.jpg")),
+  filename: "priya.jpg",
+  content_type: "image/jpg"
+)
 puts "added user #{priya.name} into database"
 
 jerry = User.create!(
@@ -62,6 +76,11 @@ jerry = User.create!(
   mobile: "0401 887 334",
   location: "Alexandria, NSW",
   profile_pic: "https://placehold.co/400x400?text=Jerry"
+)
+jerry.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/images/jerry.jpg")),
+  filename: "jerry.jpg",
+  content_type: "image/jpg"
 )
 puts "added user #{jerry.name} into database"
 
@@ -90,6 +109,11 @@ neo= Pet.create!(
                     "Wet food in the blue bowl only, he refuses the green one.",
   profile_pic: "https://placehold.co/600x600?text=Neo"
 )
+neo.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/imgaesd/neo,jpg")),
+  filename: "neo.jpg",
+  content_type: "image/jpg"
+)
 puts "added pet #{neo.name} (#{neo.species}) for #{tom.name} into database"
 
 dumpling = Pet.create!(
@@ -99,7 +123,12 @@ dumpling = Pet.create!(
   age: 2,
   care_instructions: "Neo's sister. Confident, will demand attention immediately. " \
                     "Allergic to chicken — check the label.",
-  profile_pic: nil
+  profile_pic: "https://placehold.co/600x600?text=Dumpling"
+)
+dumpling.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/imgaesd/dumpling,jpg")),
+  filename: "dumpling.jpg",
+  content_type: "image/jpg"
 )
 puts "added pet #{dumpling.name} (#{dumpling.species}) for #{tom.name} into database (no photo)"
 
@@ -113,6 +142,11 @@ biscuit = Pet.create!(
                     "Medication in the fridge door, half a tablet with breakfast.",
   profile_pic: "https://placehold.co/600x600?text=Biscuit"
 )
+biscuit.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/imgaesd/biscuit,jpg")),
+  filename: "biscuit.jpg",
+  content_type: "image/jpg"
+)
 puts "added pet #{biscuit.name} (#{biscuit.species}) for #{sam.name} into database"
 
 kiwi = Pet.create!(
@@ -123,6 +157,11 @@ kiwi = Pet.create!(
   care_instructions: "Budgie. Cover the cage at 8pm or he will not shut up. " \
                     "Fresh water daily, seed top-up every second day.",
   profile_pic: "https://placehold.co/600x600?text=Kiwi"
+)
+kiwi.avatar.attach(
+  io: File.open(Rails.root.join("db/seeds/imgaesd/kiwi,jpg")),
+  filename: "kiwi.jpg",
+  content_type: "image/jpg"
 )
 puts "added pet #{kiwi.name} (#{kiwi.species}) for #{priya.name} into database"
 
