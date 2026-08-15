@@ -1,0 +1,30 @@
+<div class="container py-4">
+  <h1>Post a job</h1>
+  <p>Ask the PawNeighbour community to help with your pet.</p>
+
+  <%= simple_form_for @listing do |f| %>
+    <%= f.association :pet,
+          collection: @pets,
+          label_method: :name,
+          value_method: :id,
+          include_blank: "Choose your pet" %>
+
+    <%= f.input :listing_type,
+          collection: Listing::TYPES,
+          include_blank: "Choose the help you need" %>
+
+    <%= f.input :start_date,
+          as: :string,
+          input_html: { type: "date" } %>
+
+    <%= f.input :end_date,
+          as: :string,
+          input_html: { type: "date" } %>
+
+    <%= f.input :listing_note,
+          label: "Job details",
+          placeholder: "Explain what help your pet needs..." %>
+
+    <%= f.button :submit, "Post job", class: "btn btn-primary" %>
+  <% end %>
+</div>

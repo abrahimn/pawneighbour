@@ -1,0 +1,53 @@
+<% content_for :title, "#{@listing.pet.name} | Pawneighbour" %>
+
+<main class="container py-4">
+  <%= link_to "← Back to listings", listings_path, class: "d-inline-block mb-4" %>
+
+  <article class="card shadow-sm overflow-hidden">
+    <div class="row g-0">
+      <% if @listing.pet.avatar.attached? %>
+        <div class="col-md-5">
+          <%= cl_image_tag @listing.pet.avatar.key,
+                           class: "img-fluid w-100 h-100 object-fit-cover",
+                           alt: @listing.pet.name %>
+        </div>
+      <% end %>
+
+      <div class="<%= @listing.pet.avatar.attached? ? 'col-md-7' : 'col-12' %>">
+        <div class="card-body p-4">
+          <span class="badge text-bg-primary mb-2"><%= @listing.listing_type %></span>
+          <h1 class="card-title"><%= @listing.pet.name %></h1>
+          <p class="text-muted mb-4">
+            <%= @listing.pet.species %> · <%= pluralize(@listing.pet.age, "year") %> old
+          </p>
+
+          <dl class="row mb-4">
+            <dt class="col-sm-4">Dates</dt>
+            <dd class="col-sm-8">
+              <%= l(@listing.start_date, format: :long) %> –
+              <%= l(@listing.end_date, format: :long) %>
+            </dd>
+
+            <dt class="col-sm-4">Pet owner</dt>
+            <dd class="col-sm-8"><%= @listing.pet.user.name %></dd>
+
+            <% if @listing.pet.user.location.present? %>
+              <dt class="col-sm-4">Location</dt>
+              <dd class="col-sm-8"><%= @listing.pet.user.location %></dd>
+            <% end %>
+          </dl>
+
+          <section class="mb-4">
+            <h2 class="h5">What I need</h2>
+            <p class="mb-0"><%= @listing.listing_note.presence || "No additional notes provided." %></p>
+          </section>
+
+          <section>
+            <h2 class="h5">Care instructions</h2>
+            <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
+          </section>
+        </div>
+      </div>
+    </div>
+  </article>
+</main>
