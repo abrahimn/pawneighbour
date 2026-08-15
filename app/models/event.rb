@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :organiser, class_name: 'User'
   has_many :rsvps, dependent: :destroy
-
+  has_many_attached :photos
   validates :name, presence: true
   validates :location, presence: true
   validates :time, presence: true
