@@ -1,31 +1,54 @@
-<div class="page">
-  <div class="container m-4 mx-auto">
+<div class="container py-4 ">
+  <div class="d-flex flex-column justify-content-between gap-3 mb-4">
     <div class="greeting">
-      Good day, <%= current_user.name %>
+      <p class="text-body-secondary mb-1">Good day, <%= current_user.name %></p>
     </div>
     <div class="post-listing">
-      <h6>
-        Find Nearby Help
-      </h6>
-      <button>
-        Need Help?
-      </button>
+      <h3 class="mb-3">Find nearby help</h3>
+      <%= link_to "Need help?", new_listing_path,
+                class: "btn btn-info btn-lg rounded-pill w-100 px-4" %>
     </div>
   </div>
 
-  <div class="container m-4 mx-auto">
-    <div class="row">
+  <div class="container py-4">
+    <h3 class="mb-3">Listings you could help with</h3>
+    <div class="row row-cols-1 g-4">
       <% @active_listings.each do |listing| %>
+        <% pet = listing.pet %>
+        <% user = pet.user %>
         <div class="col-12">
-          <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill %>
-          <%= listing.pet.name %>
-          <%= listing.start_date %> - <%= listing.end_date %>
-          <%= listing.listing_type %>
-          <%= listing.listing_note %>
+          <div class="card h-100 border-2 shadow-sm rounded-4 overflow-hidden">
+            <div class="position-relative">
+              <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 500, crop: :fill, class: "card-img-top object-fit-cover",style: "height: 300px;" %>
+            </div>
+            <div class="card-body m-2 d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h3 class="h5 card-title mb-0">
+                  <%= pet.name %>
+                </h3>
+                <span class="badge text-bg-info rounded-pill flex-shrink-0 ms-2">
+                    <%= listing.listing_type %>
+                </span>
+              </div>
+              <div>
+                <p class="text-body-secondary small mb-2">
+                  <%= listing.start_date.strftime("%-d %b") %> –
+                  <%= listing.end_date.strftime("%-d %b") %>
+                </p>
+                <p class="card-text small mb-0">
+                  <%= listing.listing_note %>
+                </p>
+                <p class="text-body-secondary large mb-2">
+                  <small class="text-body-secondary"><%= user.location %></small>
+                </p>
+              </div>
+              <div class="d-flex justify-content-end mt-auto">
+                <%= link_to "View", listing_path(listing), class: "btn btn-sm btn-primary rounded-pill px-3 position-relative z-1" %>
+              </div>
+            </div>
+          </div>
         </div>
-
       <% end %>
     </div>
   </div>
-
 </div>
