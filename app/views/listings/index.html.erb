@@ -1,19 +1,54 @@
-<h1>Recent Listings</h1>
-<ul>
-  <% @listings.each do |listing| %>
-    <% if listing.pet.avatar.attached? %>
-      <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill, alt: listing.pet.name %>
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Recent Listings</h1>
+
+    <%= link_to "Post a job",
+          new_listing_path,
+          class: "btn btn-primary" %>
+  </div>
+
+  <div class="row g-4">
+    <% @listings.each do |listing| %>
+      <div class="col-12 col-md-6 col-lg-4">
+        <article class="card h-100 shadow-sm">
+          <% if listing.pet.avatar.attached? %>
+            <%= cl_image_tag listing.pet.avatar.key,
+                  height: 300,
+                  width: 400,
+                  crop: :fill,
+                  class: "card-img-top",
+                  alt: listing.pet.name %>
+          <% else %>
+            <%= image_tag(
+                  "https://placehold.co/400x300?text=No+pet+photo",
+                  class: "card-img-top",
+                  alt: "#{listing.pet.name} has no photo"
+                ) %>
+          <% end %>
+
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h2 class="h4 card-title mb-0">
+                <%= listing.pet.name %>
+              </h2>
+
+              <span class="badge text-bg-primary">
+                <%= listing.listing_type %>
+              </span>
+            </div>
+
+            <p class="text-muted">
+              <%= listing.start_date.strftime("%d %b %Y") %>
+              –
+              <%= listing.end_date.strftime("%d %b %Y") %>
+            </p>
+
+            <p class="card-text">
+              <%= listing.listing_note %>
+            </p>
+          </div>
+        </article>
+      </div>
     <% end %>
-    <%= link_to listing.pet.name, listing_path(listing) %>
-    <li>
-      <%= listing.start_date %> - <%= listing.end_date %>
-    </li>
-    <li>
-      <%= listing.listing_type %>
-    </li>
-    <li>
-      <%= listing.listing_note %>
-    </li>
-    <li><%= link_to "View details", listing_path(listing) %></li>
-  <% end %>
-</ul>
+  </div>
+</div>
