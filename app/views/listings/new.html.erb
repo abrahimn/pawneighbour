@@ -1,6 +1,6 @@
 <div class="container py-4">
-  <h1>Post a listing</h1>
-  <p>Ask the PawNeighbour community to help with your pet.</p>
+  <h1>Pawst a job</h1>
+  <p>Ask your paw-neighbour for help.</p>
 
   <%= simple_form_for @listing do |f| %>
     <%= f.association :pet,
@@ -23,8 +23,8 @@
 
     <%= f.input :listing_note,
           label: "Listing details",
-          placeholder: "Explain what help your pet needs..." %>
+          placeholder: "What help your pet needs..." %>
 
-    <%= f.button :submit, "Get help now!", class: "btn btn-primary" %>
+    <%= f.button :submit, "Paw-lease help!", class: "btn btn-info w-100" %>
   <% end %>
 </div>

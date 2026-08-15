@@ -1,17 +1,17 @@
 <div class="container py-4 ">
   <div class="d-flex flex-column justify-content-between gap-3 mb-4">
     <div class="greeting">
-      <p class="text-body-secondary mb-1">Good day, <%= current_user.name %></p>
+      <p class="text-body-secondary mb-1">Hi <%= current_user.name %>!</p>
     </div>
     <div class="post-listing">
-      <h3 class="mb-3">Find nearby help</h3>
-      <%= link_to "Need help?", new_listing_path,
+      <h3 class="mb-3">Going on holiday?</h3>
+      <%= link_to "Ask a fur-riend for help?", new_listing_path,
                 class: "btn btn-info btn-lg rounded-pill w-100 px-4" %>
     </div>
   </div>
 
   <div class="container py-4">
-    <h3 class="mb-3">Listings you could help with</h3>
+    <h3 class="mb-3">Offer a paw</h3>
     <div class="row row-cols-1 g-4">
       <% @active_listings.each do |listing| %>
         <% pet = listing.pet %>
@@ -26,7 +26,7 @@
                 <h3 class="h5 card-title mb-0">
                   <%= pet.name %>
                 </h3>
-                <span class="badge text-bg-info rounded-pill flex-shrink-0 ms-2">
+                <span class="btn btn-sm btn-info text-bg-info rounded-pill flex-shrink-0 ms-2">
                     <%= listing.listing_type %>
                 </span>
               </div>
