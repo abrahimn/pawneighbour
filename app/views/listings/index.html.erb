@@ -1,11 +1,11 @@
 <div class="container py-4 ">
   <div class="d-flex flex-column justify-content-between gap-3 mb-4">
     <div class="greeting">
-      <p class="text-body-secondary mb-1">Good day, <%= current_user.name %></p>
+      <p class="text-body-secondary mb-1">Hi <%= current_user.name %>!</p>
     </div>
     <div class="post-listing">
       <h3 class="mb-3">Going on holiday?</h3>
-      <%= link_to "Ask a paw-neighour", new_listing_path,
+      <%= link_to "Ask a fur-riend for help?", new_listing_path,
                 class: "btn btn-info btn-lg rounded-pill w-100 px-4" %>
     </div>
   </div>
