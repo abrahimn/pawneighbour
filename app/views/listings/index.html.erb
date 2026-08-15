@@ -1,8 +1,10 @@
 <h1>Recent Listings</h1>
 <ul>
   <% @listings.each do |listing| %>
-    <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill %>
-    <%= listing.pet.name %>
+    <% if listing.pet.avatar.attached? %>
+      <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill, alt: listing.pet.name %>
+    <% end %>
+    <%= link_to listing.pet.name, listing_path(listing) %>
     <li>
       <%= listing.start_date %> - <%= listing.end_date %>
     </li>
@@ -12,5 +14,6 @@
     <li>
       <%= listing.listing_note %>
     </li>
+    <li><%= link_to "View details", listing_path(listing) %></li>
   <% end %>
 </ul>
