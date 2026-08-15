@@ -1,0 +1,16 @@
+<h1>Recent Listings</h1>
+<ul>
+  <% @listings.each do |listing| %>
+    <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill %>
+    <%= listing.pet.name %>
+    <li>
+      <%= listing.start_date %> - <%= listing.end_date %>
+    </li>
+    <li>
+      <%= listing.listing_type %>
+    </li>
+    <li>
+      <%= listing.listing_note %>
+    </li>
+  <% end %>
+</ul>
