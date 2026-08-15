@@ -1,16 +1,31 @@
-<h1>Recent Listings</h1>
-<ul>
-  <% @listings.each do |listing| %>
-    <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill %>
-    <%= listing.pet.name %>
-    <li>
-      <%= listing.start_date %> - <%= listing.end_date %>
-    </li>
-    <li>
-      <%= listing.listing_type %>
-    </li>
-    <li>
-      <%= listing.listing_note %>
-    </li>
-  <% end %>
-</ul>
+<div class="page">
+  <div class="container m-4 mx-auto">
+    <div class="greeting">
+      Good day, <%= current_user.name %>
+    </div>
+    <div class="post-listing">
+      <h6>
+        Find Nearby Help
+      </h6>
+      <button>
+        Need Help?
+      </button>
+    </div>
+  </div>
+
+  <div class="container m-4 mx-auto">
+    <div class="row">
+      <% @active_listings.each do |listing| %>
+        <div class="col-12">
+          <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 400, crop: :fill %>
+          <%= listing.pet.name %>
+          <%= listing.start_date %> - <%= listing.end_date %>
+          <%= listing.listing_type %>
+          <%= listing.listing_note %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+
+</div>
