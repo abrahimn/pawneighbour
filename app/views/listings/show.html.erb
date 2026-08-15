@@ -15,7 +15,7 @@
 
       <div class="<%= @listing.pet.avatar.attached? ? 'col-md-7' : 'col-12' %>">
         <div class="card-body p-4">
-          <span class="badge text-bg-primary mb-2"><%= @listing.listing_type %></span>
+          <div class="btn btn-info btn-sm mb-2 rounded-pill"><%= @listing.listing_type %></div>
           <h1 class="card-title"><%= @listing.pet.name %></h1>
           <p class="text-muted mb-4">
             <%= @listing.pet.species %> · <%= pluralize(@listing.pet.age, "year") %> old
