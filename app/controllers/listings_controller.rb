@@ -20,7 +20,7 @@ class ListingsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-  
+
   def show
     @listing = Listing.find(params[:id])
   end
@@ -34,4 +34,5 @@ class ListingsController < ApplicationController
       :end_date,
       :listing_note
     )
+  end
 end
