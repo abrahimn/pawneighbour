@@ -50,4 +50,9 @@
       </div>
     </div>
   </article>
+  <% if @listing.offers.exists?(user: current_user) %>
+    <span class="btn btn-outline-success rounded-pill">Offer sent</span>
+  <% else %>
+    <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-info rounded-pill px-4" %>
+  <% end %>
 </main>
