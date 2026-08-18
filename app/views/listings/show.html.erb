@@ -46,6 +46,12 @@
             <h2 class="h5">Care instructions</h2>
             <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
           </section>
+
+          <% if @listing.pet.user == current_user %>
+            <%= link_to "You have #{@listing.offers.count} paw-proposals 🐾 ",
+              listing_offers_path(@listing),
+              class: "btn btn-primary mt-4 rounded-pill px-3" %>
+          <% end %>
         </div>
       </div>
     </div>
