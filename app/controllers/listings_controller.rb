@@ -14,7 +14,7 @@ class ListingsController < ApplicationController
     @listing = @pet.listings.build(listing_params)
 
     if @listing.save
-      redirect_to listings_path, notice: "Your job was posted."
+      redirect_to listing_path(@listing), notice: "Your job was posted."
     else
       @pets = current_user.pets.order(:name)
       render :new, status: :unprocessable_entity
