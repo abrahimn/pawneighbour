@@ -10,7 +10,7 @@ class OffersController < ApplicationController
     @offer = @listing.offers.new(user: current_user, status: "offered")
 
     if @offer.save
-      redirect_to @listing, notice: "Offer sent to #{@listing.pet.user.name}"
+      redirect_to @listing, notice: "Offer sent to #{@listing.owner.name}"
     else
       redirect_to @listing, alert: @offer.errors.full_messages.to_sentence
     end
