@@ -46,13 +46,19 @@
             <h2 class="h5">Care instructions</h2>
             <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
           </section>
+
+          <section>
+            <% if @listing.offers.exists?(user: current_user) %>
+              <span class="btn btn-success rounded-pill my-4 w-100">Offer sent</span>
+          <% else %>
+              <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-info rounded-pill my-4 w-100" %>
+          <% end %>
+          </section>
         </div>
       </div>
     </div>
+
+
   </article>
-  <% if @listing.offers.exists?(user: current_user) %>
-    <span class="btn btn-outline-success rounded-pill">Offer sent</span>
-  <% else %>
-    <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-info rounded-pill px-4" %>
-  <% end %>
+
 </main>

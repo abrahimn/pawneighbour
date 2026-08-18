@@ -12,7 +12,7 @@ class OffersController < ApplicationController
     if @offer.save
       redirect_to @listing, notice: "Offer sent to #{@listing.pet.user.name}"
     else
-      redirect_to @listing, status: :unprocessable_entity
+      redirect_to @listing, alert: @offer.errors.full_messages.to_sentence
     end
   end
 end
