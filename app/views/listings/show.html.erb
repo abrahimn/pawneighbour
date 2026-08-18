@@ -29,11 +29,11 @@
             </dd>
 
             <dt class="col-sm-4">Pet owner</dt>
-            <dd class="col-sm-8"><%= @listing.pet.user.name %></dd>
+            <dd class="col-sm-8"><%= @listing.owner.name %></dd>
 
-            <% if @listing.pet.user.location.present? %>
+            <% if @listing.owner.location.present? %>
               <dt class="col-sm-4">Location</dt>
-              <dd class="col-sm-8"><%= @listing.pet.user.location %></dd>
+              <dd class="col-sm-8"><%= @listing.owner.location %></dd>
             <% end %>
           </dl>
 
@@ -46,8 +46,19 @@
             <h2 class="h5">Care instructions</h2>
             <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
           </section>
+
+          <section>
+            <% if @listing.offers.exists?(user: current_user) %>
+              <span class="btn btn-success rounded-pill my-4 w-100">Offer sent</span>
+          <% else %>
+              <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-info rounded-pill my-4 w-100" %>
+          <% end %>
+          </section>
         </div>
       </div>
     </div>
+
+
   </article>
+
 </main>

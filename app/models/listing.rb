@@ -2,6 +2,7 @@ class Listing < ApplicationRecord
   TYPES = ["Sitting", "Drop-in", "Walking"].freeze
 
   belongs_to :pet
+  has_one :owner, through: :pet, source: :user
   has_many :offers, dependent: :destroy
 
   validates :listing_type, presence: true, inclusion: { in: TYPES }
