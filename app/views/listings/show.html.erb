@@ -47,6 +47,12 @@
             <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
           </section>
 
+          <% if @listing.pet.user == current_user %>
+            <%= link_to "You have #{@listing.offers.count} paw-proposals 🐾 ",
+              listing_offers_path(@listing),
+              class: "btn btn-primary mt-4 rounded-pill px-3" %>
+          <% end %>
+          
           <section>
             <% if @listing.offers.exists?(user: current_user) %>
               <span class="btn btn-success rounded-pill my-4 w-100">Offer sent</span>

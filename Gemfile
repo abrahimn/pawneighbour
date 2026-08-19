@@ -18,6 +18,8 @@ gem "jbuilder"
 
 gem "cloudinary"
 
+gem "numbers_and_words"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
