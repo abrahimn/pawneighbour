@@ -1,14 +1,6 @@
 class ListingsController < ApplicationController
   def index
     @active_listings = Listing.active
-    @markers = @active_listings.map do |listing|
-      {
-        id: listing.id,
-        lat: listing.owner.latitude,
-        lng: listing.owner.longitude,
-        infoWindow: { content: render_to_string(partial: "/listings/map_info_window", locals: { listing: listing }) }
-      }
-    end
   end
 
   def new
