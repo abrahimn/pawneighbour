@@ -6,34 +6,34 @@
   <article class="card shadow-sm overflow-hidden">
     <div class="row g-0">
       <% if @listing.pet.avatar.attached? %>
-        <div class="col-md-5">
+        <div class="col-sm-5">
           <%= cl_image_tag @listing.pet.avatar.key,
                            class: "img-fluid w-100 h-100 object-fit-cover",
                            alt: @listing.pet.name %>
         </div>
       <% end %>
 
-      <div class="<%= @listing.pet.avatar.attached? ? 'col-md-7' : 'col-12' %>">
-        <div class="card-body p-4">
-          <div class="btn btn-info btn-sm mb-2 rounded-pill"><%= @listing.listing_type %></div>
+      <div class="<%= @listing.pet.avatar.attached? ? 'col-sm-7' : 'col-12' %>">
+        <div class="card-body col-xs-5 p-4">
+          <div class="btn btn-info btn-sm mb-2"><%= @listing.listing_type %></div>
           <h1 class="card-title"><%= @listing.pet.name %></h1>
           <p class="text-muted mb-4">
             <%= @listing.pet.species %> · <%= pluralize(@listing.pet.age, "year") %> old
           </p>
 
           <dl class="row mb-4">
-            <dt class="col-sm-4">Dates</dt>
-            <dd class="col-sm-8">
+            <dt class="col-xs-4">Dates</dt>
+            <dd class="col-xs-8">
               <%= l(@listing.start_date, format: :long) %> –
               <%= l(@listing.end_date, format: :long) %>
             </dd>
 
-            <dt class="col-sm-4">Pet owner</dt>
-            <dd class="col-sm-8"><%= @listing.owner.name %></dd>
+            <dt class="col-xs-4">Pet owner</dt>
+            <dd class="col-xs-8"><%= @listing.owner.name %></dd>
 
             <% if @listing.owner.location.present? %>
-              <dt class="col-sm-4">Location</dt>
-              <dd class="col-sm-8"><%= @listing.owner.location %></dd>
+              <dt class="col-xs-4">Location</dt>
+              <dd class="col-xs-8"><%= @listing.owner.location %></dd>
             <% end %>
           </dl>
 
@@ -47,19 +47,20 @@
             <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
           </section>
 
-          <% if @listing.pet.user == current_user %>
+          <% if @listing.owner == current_user %>
             <%= link_to "You have #{@listing.offers.count} paw-proposals 🐾 ",
               listing_offers_path(@listing),
-              class: "btn btn-primary mt-4 rounded-pill px-3" %>
-          <% end %>
-          
-          <section>
-            <% if @listing.offers.exists?(user: current_user) %>
-              <span class="btn btn-success rounded-pill my-4 w-100">Offer sent</span>
+              class: "btn btn-outline-info w-100 mt-4 px-3" %>
           <% else %>
-              <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-info rounded-pill my-4 w-100" %>
+            <section>
+              <% if @listing.offers.exists?(user: current_user) %>
+                <span class="btn btn-success my-4 w-100 px-3">Offer sent</span>
+              <% else %>
+                <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-primary my-4 w-100 px-3" %>
+              <% end %>
+            </section>
           <% end %>
-          </section>
+
         </div>
       </div>
     </div>

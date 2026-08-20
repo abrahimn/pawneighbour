@@ -1,14 +1,24 @@
-.navbar-lewagon {
+.navbar-brand {
   justify-content: space-between;
-  background: #F4F4F4;
+  background: $cream;
   border-bottom: 2px solid rgb(192, 188, 188);
 }
 
-.navbar-lewagon .navbar-collapse {
+.navbar-brand .navbar-collapse {
   flex-grow: 0;
 }
 
-.navbar-lewagon .navbar-brand img {
-  width: 80px;
+.navbar-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.1);
   border-radius: 50%;
 }

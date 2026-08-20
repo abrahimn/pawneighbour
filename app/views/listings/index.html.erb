@@ -17,7 +17,7 @@
         <% pet = listing.pet %>
         <% user = pet.user %>
         <div class="col-12">
-          <div class="card h-100 border-2 shadow-sm rounded-4 overflow-hidden">
+          <div class="card h-100 border-2 shadow-sm overflow-hidden">
             <div class="position-relative">
               <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 500, crop: :fill, class: "card-img-top object-fit-cover",style: "height: 300px;" %>
             </div>
