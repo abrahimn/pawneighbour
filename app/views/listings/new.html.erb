@@ -1,30 +1,35 @@
-<div class="container py-4">
-  <h1>Pawst a job</h1>
-  <p>Ask your paw-neighbour for help.</p>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    <div class="paw-form">
+    <h2>Pawst a job</h2>
+    <p>Ask your paw-neighbour for help.</p>
+      <%= simple_form_for @listing do |f| %>
+        <%= f.association :pet,
+              collection: @pets,
+              label_method: :name,
+              value_method: :id,
+              include_blank: "Choose your pet" %>
 
-  <%= simple_form_for @listing do |f| %>
-    <%= f.association :pet,
-          collection: @pets,
-          label_method: :name,
-          value_method: :id,
-          include_blank: "Choose your pet" %>
+        <%= f.input :listing_type,
+              collection: Listing::TYPES,
+              include_blank: "Choose the help you need" %>
 
-    <%= f.input :listing_type,
-          collection: Listing::TYPES,
-          include_blank: "Choose the help you need" %>
+        <%= f.input :start_date,
+              as: :string,
+              input_html: { type: "date" } %>
 
-    <%= f.input :start_date,
-          as: :string,
-          input_html: { type: "date" } %>
+        <%= f.input :end_date,
+              as: :string,
+              input_html: { type: "date" } %>
 
-    <%= f.input :end_date,
-          as: :string,
-          input_html: { type: "date" } %>
+        <%= f.input :listing_note,
+              label: "Listing details",
+              placeholder: "What help your pet needs..." %>
 
-    <%= f.input :listing_note,
-          label: "Listing details",
-          placeholder: "What help your pet needs..." %>
-
-    <%= f.button :submit, "Paw-lease help!", class: "btn btn-info w-100" %>
-  <% end %>
+        <%= f.button :submit, "Paw-lease help!", class: "btn btn-info" %>
+      <% end %>
+    </div>
+    </div>
+  </div>
 </div>
