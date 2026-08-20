@@ -5,5 +5,11 @@
     <p class="card-text">
       Status: <%= offer.status.humanize %>
     </p>
+    <% if offer.status == "offered" %>
+      <%= button_to "Accept offer",
+                    accept_offer_path(offer),
+                    method: :patch,
+                    class: "btn btn-primary" %>
+    <% end %>
   </div>
 </div>

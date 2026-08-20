@@ -1,8 +1,6 @@
 <% content_for :title, "#{@listing.pet.name} | Pawneighbour" %>
 
 <main class="container py-4">
-  <%# <%= link_to "← Back to listings", listings_path, class: "btn btn-info mb-4" %>
-
   <article class="card bg-white shadow-sm overflow-hidden">
     <div class="row g-0">
       <% if @listing.pet.avatar.attached? %>
@@ -13,60 +11,127 @@
         </div>
       <% end %>
 
-      <div class="<%= @listing.pet.avatar.attached? ? 'col-sm-7' : 'col-12' %>">
-        <div class="card-body col-xs-5 p-4">
-          <div class="btn btn-info btn-sm mb-2"><%= @listing.listing_type %></div>
+      <div class="col-12">
+        <div class="card-body p-4">
+          <span class="badge rounded-pill text-bg-info mb-2">
+            <%= @listing.listing_type %>
+          </span>
+
           <h1 class="card-title"><%= @listing.pet.name %></h1>
+
           <p class="text-muted mb-4">
-            <%= @listing.pet.species %> · <%= pluralize(@listing.pet.age, "year") %> old
+            <%= @listing.pet.species %> ·
+            <%= pluralize(@listing.pet.age, "year") %> old
           </p>
 
           <dl class="row mb-4">
-            <dt class="col-xs-4">Dates</dt>
-            <dd class="col-xs-8">
+            <dt class="col-4">Dates</dt>
+            <dd class="col-8">
               <%= l(@listing.start_date, format: :long) %> –
               <%= l(@listing.end_date, format: :long) %>
             </dd>
 
-            <dt class="col-xs-4">Pet owner</dt>
-            <dd class="col-xs-8"><%= @listing.owner.name %></dd>
+            <dt class="col-4">Pet owner</dt>
+            <dd class="col-8"><%= @listing.owner.name %></dd>
 
             <% if @listing.owner.location.present? %>
-              <dt class="col-xs-4">Location</dt>
-              <dd class="col-xs-8"><%= @listing.owner.location %></dd>
+              <dt class="col-4">Location</dt>
+              <dd class="col-8"><%= @listing.owner.location %></dd>
             <% end %>
           </dl>
 
           <section class="mb-4">
             <h2 class="h5">What I need</h2>
-            <p class="mb-0"><%= @listing.listing_note.presence || "No additional notes provided." %></p>
+
+            <p class="mb-0">
+              <%= @listing.listing_note.presence || "No additional notes provided." %>
+            </p>
           </section>
 
           <section>
             <h2 class="h5">Care instructions</h2>
-            <p class="mb-0"><%= @listing.pet.care_instructions.presence || "No care instructions provided." %></p>
+
+            <p class="mb-0">
+              <%= @listing.pet.care_instructions.presence || "No care instructions provided." %>
+            </p>
           </section>
 
-          <% if @listing.pet.user == current_user %>
-            <%= link_to "You have #{@listing.offers.count} paw-proposals 🐾 ",
-              listing_offers_path(@listing),
-              class: "btn btn-outline-info w-100 mt-4 px-3" %>
+          <% if @matched_user.present? %>
+            <section class="card border-0 bg-light shadow-sm mt-4">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3">
+                  <% if @matched_user.avatar.attached? %>
+                    <%= cl_image_tag @matched_user.avatar.key,
+                                     width: 64,
+                                     height: 64,
+                                     crop: :fill,
+                                     gravity: :face,
+                                     class: "rounded-circle flex-shrink-0",
+                                     alt: @matched_user.name %>
+                  <% else %>
+                    <div class="avatar avatar-large bg-primary text-white d-flex align-items-center justify-content-center">
+                      <%= @matched_user.name.first.upcase %>
+                    </div>
+                  <% end %>
+
+                  <div>
+                    <span class="badge rounded-pill text-bg-success mb-2">
+                      It’s a match!
+                    </span>
+
+                    <h2 class="h4 mb-1">
+                      <% if @listing.owner == current_user %>
+                        You accepted <%= @matched_user.name %>’s offer
+                      <% else %>
+                        <%= @matched_user.name %> accepted your offer
+                      <% end %>
+                    </h2>
+
+                    <% if @matched_user.location.present? %>
+                      <p class="text-muted mb-0">
+                        📍 <%= @matched_user.location %>
+                      </p>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="row g-2 mt-3">
+                  <div class="col-12 col-sm-6">
+                    <%= mail_to @matched_user.email,
+                                "Email #{@matched_user.name} - #{@matched_user.email}",
+                                class: "btn btn-primary w-100" %>
+                  </div>
+
+                  <% if @matched_user.mobile.present? %>
+                    <div class="col-12 col-sm-6">
+                      <%= phone_to @matched_user.mobile,
+                                   "Call #{@matched_user.name} - #{@matched_user.mobile}",
+                                   class: "btn btn-primary w-100" %>
+                    </div>
+                  <% end %>
+                </div>
+
+
+            </section>
+          <% elsif @listing.owner == current_user %>
+            <%= link_to "You have #{@listing.offers.count} paw-proposals 🐾",
+                        listing_offers_path(@listing),
+                        class: "btn btn-outline-info w-100 mt-4 px-3" %>
           <% else %>
-
-          <section>
-            <% if @listing.offers.exists?(user: current_user) %>
-              <span class="btn btn-success my-4 w-100">Offer sent</span>
-            <% else %>
-              <%= button_to "Make an offer", listing_offers_path(@listing), class: "btn btn-primary my-4 w-100" %>
-            <% end %>
-          </section>
+            <section>
+              <% if @listing.offers.exists?(user: current_user) %>
+                <span class="btn btn-success my-4 w-100">
+                  Offer sent
+                </span>
+              <% else %>
+                <%= button_to "Make an offer",
+                              listing_offers_path(@listing),
+                              class: "btn btn-primary my-4 w-100" %>
+              <% end %>
+            </section>
           <% end %>
-
         </div>
       </div>
     </div>
-
-
   </article>
-
 </main>
