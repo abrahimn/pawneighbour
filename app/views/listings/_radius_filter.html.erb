@@ -1,0 +1,17 @@
+<%= form_with url: listings_path, method: :get, class: "listing-filter mb-4" do |f| %>
+  <div class="input-group">
+    <span class="input-group-text">Within</span>
+
+    <%= f.select :radius,
+                 options_for_select([["3 km", 3], ["5 km", 5], ["10 km", 10], ["25 km", 25]], @radius.to_i),
+                 {},
+                 class: "form-select",
+                 "aria-label": "Search radius",
+                 onchange: "this.form.requestSubmit()" %>
+
+    <%= f.submit "Search", class: "btn btn-primary" %>
+  </div>
+
+  <%= f.hidden_field :latitude,  value: @latitude %>
+  <%= f.hidden_field :longitude, value: @longitude %>
+<% end %>

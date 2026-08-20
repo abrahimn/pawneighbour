@@ -1,6 +1,14 @@
 class ListingsController < ApplicationController
   def index
+    @latitude = current_user.latitude || -33.8688
+    @longitude = current_user.longitude || 151.2093
+    @radius = params[:radius].presence || 3
+    nearby_users    = User.near([@latitude, @longitude], @radius, units: :km).to_a
+    nearby_user_ids = nearby_users.map(&:id)
+
     @active_listings = Listing.active
+                              .joins(pet: :user)
+                              .where(users: { id: nearby_user_ids })
   end
 
   def new

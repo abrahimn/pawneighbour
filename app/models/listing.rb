@@ -9,5 +9,5 @@ class Listing < ApplicationRecord
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :end_date, comparison: { greater_than_or_equal_to: :start_date }
-  scope :active, -> { where("start_date > ?", Time.zone.today).order(:start_date, :id) }
+  scope :active, -> { where("start_date >= ?", Time.zone.today).order(:start_date, :id) }
 end
