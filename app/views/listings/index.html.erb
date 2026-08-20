@@ -12,6 +12,7 @@
 
   <div class="container py-4">
     <h3 class="mb-3">Offer a paw</h3>
+    <div style="width: 100%; height: 600px;" data-controller="map" data-map-markers-value="<%= @markers.to_json %>" data-map-api-key-value="<%= ENV['MAPBOX_API_KEY'] %>"></div>
     <div class="row row-cols-1 g-4">
       <% @active_listings.each do |listing| %>
         <% pet = listing.pet %>

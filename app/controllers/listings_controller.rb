@@ -2,6 +2,12 @@ class ListingsController < ApplicationController
   def index
     @listings = Listing.all
     @active_listings = Listing.active
+    @markers = @active_listings.map do |listing|
+      {
+        lat: listing.owner.latitude,
+        lng: listing.owner.longitude
+      }
+    end
   end
 
   def new
