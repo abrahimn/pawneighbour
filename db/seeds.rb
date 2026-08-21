@@ -31,6 +31,8 @@ tom = User.create!(
   password: PASSWORD,
   mobile: "0412 334 981",
   location: "Sydney, NSW",
+  latitude: -33.8688,
+  longitude: 151.2093,
   profile_pic: "https://placehold.co/400x400?text=Tom"
 )
 puts "added user #{tom.name} into database"
@@ -45,6 +47,8 @@ sam = User.create!(
   password: PASSWORD,
   mobile: "0433 210 776",
   location: "Newtown, NSW",
+  latitude: -33.8978,
+  longitude: 151.1797,
   profile_pic: "https://placehold.co/400x400?text=Sam"
 )
 sam.avatar.attach(
@@ -60,6 +64,8 @@ priya = User.create!(
   password: PASSWORD,
   mobile: "0455 909 112",
   location: "Surry Hills, NSW",
+  latitude: -33.8848,
+  longitude: 151.2131,
   profile_pic: "https://placehold.co/400x400?text=Priya"
 )
 priya.avatar.attach(
@@ -75,6 +81,8 @@ jerry = User.create!(
   password: PASSWORD,
   mobile: "0401 887 334",
   location: "Alexandria, NSW",
+  latitude: -33.9092,
+  longitude: 151.1941,
   profile_pic: "https://placehold.co/400x400?text=Jerry"
 )
 jerry.avatar.attach(
@@ -90,6 +98,8 @@ emma = User.create!(
   password: PASSWORD,
   mobile: "0466 445 220",
   location: "Coogee, NSW",
+  latitude: -33.9205,
+  longitude: 151.2552,
   profile_pic: nil
 )
 puts "added user #{emma.name} into database (no profile picture)"
