@@ -6,16 +6,17 @@
     <div class="post-listing">
       <h3 class="mb-3">Going on holiday?</h3>
       <%= link_to "Ask a fur-riend for help?", new_listing_path,
-                class: "btn btn-info btn-lg rounded-pill w-100 px-4" %>
+                class: "btn btn-primary btn-lg rounded-pill w-100 px-4" %>
     </div>
   </div>
 
   <div class="container py-4">
-    <h3 class="mb-3">Offer a paw</h3>
+    <h3 class="mb-3">Offer a paw near📍<%= current_user.location %></h3>
+    <%= render "listings/radius_filter" %>
     <div class="row row-cols-1 g-4">
       <% @active_listings.each do |listing| %>
         <% pet = listing.pet %>
-        <% user = pet.user %>
+        <% user = listing.owner %>
         <div class="col-12">
           <div class="card bg-white h-100 border-2 shadow-sm overflow-hidden">
             <div class="position-relative">
