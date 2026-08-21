@@ -23,6 +23,14 @@ class ListingsController < ApplicationController
 
   def show
     @listing = Listing.find(params[:id])
+    @accepted_offer = @listing.offers.find_by(status: "accepted")
+
+    @matched_user =
+      if @listing.owner == current_user
+        @accepted_offer&.user
+      elsif @accepted_offer&.user == current_user
+        @listing.owner
+      end
   end
 
   private
