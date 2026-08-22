@@ -33,20 +33,8 @@
               </div>
             </div>
             <div class="mb-4 d-flex justify-content-start align-item-center">
-              <div>
-                <% if current_user.avatar.attached? %>
-                      <%= cl_image_tag current_user.avatar.key,
-                                      width: 48,
-                                      height: 48,
-                                      crop: :fill,
-                                      gravity: :face,
-                                      class: "rounded-circle flex-shrink-0",
-                                      alt: current_user.name %>
-                <% else %>
-                  <div class="avatar avatar-large bg-primary text-white d-flex align-items-center justify-content-center">
-                    <%= current_user.name.first.upcase %>
-                  </div>
-                <% end %>
+              <div class="avatar">
+                <%= avatar_for(@listing.owner) %>
               </div>
               <div class="d-flex align-item-center">
                 <div class="mx-2"><%= @listing.owner.name %></div>
@@ -71,20 +59,7 @@
               <%# matched contact info %>
               <div class="card-body mb-3 p-2">
                 <div class="d-flex align-items-center gap-3">
-                  <% if @matched_user.avatar.attached? %>
-                    <%= cl_image_tag @matched_user.avatar.key,
-                                     width: 64,
-                                     height: 64,
-                                     crop: :fill,
-                                     gravity: :face,
-                                     class: "rounded-circle flex-shrink-0",
-                                     alt: @matched_user.name %>
-                  <% else %>
-                    <div class="avatar avatar-large bg-primary text-white d-flex align-items-center justify-content-center">
-                      <%= @matched_user.name.first.upcase %>
-                    </div>
-                  <% end %>
-
+                  <%= avatar_for(@matched_user) %>
                   <div>
                     <span class="badge rounded-pill text-bg-success mb-2">
                       It’s a match!
