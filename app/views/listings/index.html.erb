@@ -50,9 +50,16 @@
                   <small class="text-body-secondary"><%= user.location %></small>
                 </p>
                 <% if accepted_offer.present? %>
-                  <span class="btn btn-sm rounded-pill text-bg-success mb-2">
-                    Matched!
-                  </span>
+                  <% if current_user == listing.owner ||
+                        accepted_offer&.user == current_user %>
+                    <span class="btn btn-sm rounded-pill text-bg-success mb-2">
+                      Matched!
+                    </span>
+                  <% else %>
+                    <span class="btn btn-sm rounded-pill text-bg-primary mb-2">
+                      Sitter found!
+                    </span>
+                  <% end %>
                 <% end %>
               </div>
               <div class="d-flex justify-content-end mt-auto">
