@@ -3,12 +3,39 @@ class ListingsController < ApplicationController
     @latitude = current_user.latitude || -33.8688
     @longitude = current_user.longitude || 151.2093
     @radius = params[:radius].presence || 3
+
     nearby_users    = User.near([@latitude, @longitude], @radius, units: :km).to_a
+
     nearby_user_ids = nearby_users.map(&:id)
 
-    @active_listings = Listing.active
-                              .joins(pet: :user)
-                              .where(users: { id: nearby_user_ids })
+    @my_listings = current_user.listings.active.includes(:pet, :pending_offers, accepted_offer: :user)
+
+    @attention_listings = @my_listings.select do |listing|
+      listing.accepted_offer.blank? &&
+        listing.pending_offers.any?
+    end
+
+    offers = current_user
+             .offers
+             .joins(:listing)
+             .merge(Listing.active)
+             .includes(listing: { pet: :user })
+
+    @current_offers = offers
+                      .where(status: %w[offered accepted])
+                      .order("offers.updated_at DESC")
+
+    @past_offers = offers
+                   .rejected
+                   .order("offers.updated_at DESC")
+
+    @nearby_listings = Listing
+                       .available
+                       .joins(pet: :user)
+                       .where(users: { id: nearby_user_ids })
+                       .where.not(pets: { user_id: current_user.id })
+                       .where.not(id: current_user.offers.select(:listing_id))
+                       .includes(pet: :user)
   end
 
   def new

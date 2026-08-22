@@ -1,0 +1,159 @@
+.neighbourhood-hero {
+  position: relative;
+  min-height: 18rem;
+  padding: 2.25rem 10rem;
+  overflow: hidden;
+  background-color: mix($cream, $yellow, 65%);
+  border: 2px solid rgba($choco, 0.2);
+  border-radius: 2rem;
+  box-shadow: 0 6px 18px rgba($choco, 0.1);
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    max-width: 34rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    padding: 0.4rem 0.8rem;
+    background-color: white;
+    border: 2px solid rgba($choco, 0.18);
+    border-radius: 999px;
+    color: $choco;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transform: rotate(-2deg);
+  }
+
+  &__title {
+    margin-bottom: 1rem;
+    font-size: clamp(2.1rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+
+    span {
+      display: inline-block;
+      margin-top: 0.35rem;
+      padding: 0.15rem 0.55rem 0.3rem;
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 4px 4px 0 rgba($choco, 0.18);
+      transform: rotate(1deg);
+    }
+  }
+
+  &__description {
+    max-width: 28rem;
+    margin: 0 auto 1.4rem;
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
+  &__button {
+    padding: 0.8rem 1.35rem;
+    color: white;
+    background-color: $choco;
+    border: 2px solid $choco;
+    font-weight: 600;
+    box-shadow: 4px 4px 0 rgba($gray, 0.18);
+    transition:
+      transform 150ms ease,
+      box-shadow 150ms ease;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: darken($choco, 6%);
+      transform: translate(-2px, -2px) rotate(-1deg);
+      box-shadow: 6px 6px 0 rgba($gray, 0.2);
+    }
+  }
+
+  &__pet {
+    position: absolute;
+    z-index: 1;
+    bottom: -0.75rem;
+    width: 10rem;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__pet--pug {
+    left: -0.25rem;
+    transform: rotate(-4deg);
+  }
+
+  &__pet--cat {
+    right: -0.25rem;
+    width: 11rem;
+    transform: rotate(4deg);
+  }
+
+  &__doodle {
+    position: absolute;
+    z-index: 1;
+    color: rgba($choco, 0.45);
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  &__doodle--one {
+    top: 1.5rem;
+    left: 18%;
+    transform: rotate(-12deg);
+  }
+
+  &__doodle--two {
+    top: 2rem;
+    right: 18%;
+    transform: rotate(10deg);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .neighbourhood-hero {
+    min-height: 28rem;
+    padding: 1.5rem 1.25rem 9rem;
+
+    &__content {
+      max-width: none;
+    }
+
+    &__title {
+      font-size: 2.4rem;
+    }
+
+    &__button {
+      width: 100%;
+    }
+
+    &__pet {
+      width: 8rem;
+    }
+
+    &__pet--pug {
+      left: 0.25rem;
+    }
+
+    &__pet--cat {
+      right: 0;
+      width: 8.5rem;
+    }
+
+    &__doodle {
+      display: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neighbourhood-hero__button {
+    transition: none;
+  }
+}

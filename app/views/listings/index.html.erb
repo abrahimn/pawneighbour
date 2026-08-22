@@ -1,74 +1,221 @@
-<div class="container py-4 ">
-  <div class="d-flex flex-column justify-content-between gap-3 mb-4">
-    <div class="greeting">
-      <p class="text-body-secondary mb-1">Hi <%= current_user.name %>!</p>
-    </div>
-    <div class="post-listing">
-      <h3 class="mb-3">Going on holiday?</h3>
-      <%= link_to "Ask a fur-riend for help?", new_listing_path,
-                class: "btn btn-primary btn-lg rounded-pill w-100 px-4" %>
-    </div>
-  </div>
+<% content_for :title, "Listings | PawNeighbour" %>
 
-  <div class="container py-4">
-    <h3 class="mb-3">Offer a paw near📍<%= current_user.location %></h3>
-    <%= render "listings/radius_filter" %>
-    <div class="row row-cols-1 g-4">
-      <% @active_listings.each do |listing| %>
-        <% pet = listing.pet %>
-        <% user = listing.owner %>
-        <% accepted_offer = listing.offers.find_by(status: "accepted") %>
-        <% matched_user = if listing.owner == current_user
-                          accepted_offer&.user
-                          elsif accepted_offer&.user == current_user
-                            listing.owner
-                          end %>
+<main class="container py-4">
 
-        <div class="col-12">
-          <div class="card bg-white h-100 border-2 shadow-sm overflow-hidden">
-            <div class="position-relative">
-              <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 500, crop: :fill, class: "card-img-top object-fit-cover",style: "height: 300px;" %>
-            </div>
-            <div class="card-body m-2 d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h3 class="h5 card-title mb-0">
-                  <%= pet.name %>
-                </h3>
-                <span class="btn btn-sm btn-info text-bg-info rounded-pill flex-shrink-0 ms-2">
-                    <%= listing.listing_type %>
-                </span>
-              </div>
+    <header class="neighbourhood-hero mb-5">
+      <span class="neighbourhood-hero__doodle neighbourhood-hero__doodle--one"
+            aria-hidden="true">
+        ✦
+      </span>
+
+      <span class="neighbourhood-hero__doodle neighbourhood-hero__doodle--two"
+            aria-hidden="true">
+        ♥
+      </span>
+
+      <%= image_tag "pug-transparent.png",
+                    class: "neighbourhood-hero__pet neighbourhood-hero__pet--pug",
+                    alt: "",
+                    aria: { hidden: true } %>
+
+      <div class="neighbourhood-hero__content">
+        <span class="neighbourhood-hero__eyebrow">
+          🐾 Hi <%= current_user.name %>!
+        </span>
+
+        <h1 class="neighbourhood-hero__title">
+          Need a hand?
+          <span>Find a paw!</span>
+        </h1>
+
+        <p class="neighbourhood-hero__description">
+          Ask for pet help or lend a paw to a PawNeighbour
+        </p>
+
+        <%= link_to new_listing_path,
+                    class: "btn neighbourhood-hero__button rounded-pill" do %>
+          Ask a fur-riend
+          <i class="fa-solid fa-paw ms-2"></i>
+        <% end %>
+      </div>
+
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "neighbourhood-hero__pet neighbourhood-hero__pet--cat",
+                    alt: "",
+                    aria: { hidden: true } %>
+    </header>
+
+
+  <%# =========================================================
+     #Pending Offers Section - appears when someone has made an offer on your listing
+  ========================================================== %>
+
+  <% if @attention_listings.any? %>
+    <section class="mb-5">
+      <h2 class="h4 mb-3">Needs your attention</h2>
+
+      <div class="d-grid gap-3">
+        <% @attention_listings.each do |listing| %>
+          <article class="card border-warning shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center gap-3">
               <div>
-                <p class="text-body-secondary small mb-2">
-                  <%= listing.start_date.strftime("%-d %b") %> –
-                  <%= listing.end_date.strftime("%-d %b") %>
+                <h3 class="h5 mb-1">
+                  <%= listing.pet.name %>
+                </h3>
+
+                <p class="text-body-secondary mb-0">
+                  <%= pluralize(listing.pending_offers.size, "offer") %>
+                  waiting for you
                 </p>
-                <p class="card-text small mb-0">
-                  <%= listing.listing_note %>
-                </p>
-                <p class="text-body-secondary large mb-2">
-                  <small class="text-body-secondary"><%= user.location %></small>
-                </p>
-                <% if accepted_offer.present? %>
-                  <% if current_user == listing.owner ||
-                        accepted_offer&.user == current_user %>
-                    <span class="btn btn-sm rounded-pill text-bg-success mb-2">
-                      Matched!
-                    </span>
-                  <% else %>
-                    <span class="btn btn-sm rounded-pill text-bg-primary mb-2">
-                      Sitter found!
-                    </span>
-                  <% end %>
-                <% end %>
               </div>
-              <div class="d-flex justify-content-end mt-auto">
-                <%= link_to "View", listing_path(listing), class: "btn btn-sm btn-primary rounded-pill px-3 position-relative z-1" %>
-              </div>
+
+              <%= link_to "Review",
+                          listing_offers_path(listing),
+                          class: "btn btn-warning rounded-pill flex-shrink-0" %>
             </div>
-          </div>
-        </div>
-      <% end %>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+
+  <%# =========================================================
+      MY LISTINGS
+      Displays the current user's upcoming listings.
+  ========================================================== %>
+
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">My listings</h2>
+
+      <span class="badge rounded-pill text-bg-light">
+        <%= @my_listings.size %>
+      </span>
     </div>
-  </div>
-</div>
+
+    <% if @my_listings.any? %>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <%= render partial: "my_listing_card",
+                   collection: @my_listings,
+                   as: :listing %>
+      </div>
+    <% else %>
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-4">
+          <h3 class="h5">No upcoming listings</h3>
+
+          <p class="text-body-secondary">
+            Need someone to care for your pet?
+          </p>
+
+          <%= link_to "Ask a neighbour for help",
+                      new_listing_path,
+                      class: "btn btn-primary rounded-pill" %>
+        </div>
+      </div>
+    <% end %>
+  </section>
+
+
+  <%# =========================================================
+      MY OFFERS
+      Displays listings on which the current user has offered.
+  ========================================================== %>
+
+  <section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">My offers</h2>
+
+      <span class="badge rounded-pill text-bg-light">
+        <%= @current_offers.size %>
+      </span>
+    </div>
+
+    <% if @current_offers.any? %>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <%= render partial: "my_offer_card",
+                   collection: @current_offers,
+                   as: :offer %>
+      </div>
+    <% else %>
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-4">
+          <h3 class="h5">You haven’t offered yet</h3>
+
+          <p class="text-body-secondary mb-0">
+            Take a look at the neighbours who need a helping paw.
+          </p>
+        </div>
+      </div>
+    <% end %>
+    <% if @past_offers.any? %>
+      <details class="past-activity mt-4" open>
+        <summary class="past-activity__summary">
+          <span class="past-activity__heading">
+            <span class="h4 mb-0">Past activity</span>
+
+            <span class="badge rounded-pill text-bg-light">
+              <%= @past_offers.size %>
+            </span>
+          </span>
+
+          <span class="past-activity__toggle" aria-hidden="true">
+            <i class="fa-solid fa-chevron-down"></i>
+          </span>
+        </summary>
+
+        <div class="d-grid gap-2 mt-3">
+          <%= render partial: "past_offer",
+                    collection: @past_offers,
+                    as: :offer %>
+        </div>
+      </details>
+    <% end %>
+  </section>
+
+
+  <%# =========================================================
+      HELP NEARBY
+      Replaces the old @active_listings feed.
+
+      This section only receives listings that:
+      - belong to another user
+      - are inside the selected radius
+      - do not have an accepted offer
+      - have not already received an offer from this user
+  ========================================================== %>
+
+  <section>
+    <div class="mb-3">
+      <h2 class="h4 mb-1">Help nearby</h2>
+
+      <p class="text-body-secondary mb-0">
+        Available requests near
+        <%= current_user.location %>
+      </p>
+    </div>
+
+    <%= render "radius_filter" %>
+
+    <% if @nearby_listings.any? %>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <%= render partial: "nearby_listing_card",
+                   collection: @nearby_listings,
+                   as: :listing %>
+      </div>
+    <% else %>
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-5">
+          <div class="fs-1 mb-3">🐾</div>
+
+          <h3 class="h5">No open requests nearby</h3>
+
+          <p class="text-body-secondary mb-0">
+            Try increasing your search radius or check back later.
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</main>
