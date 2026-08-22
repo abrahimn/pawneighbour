@@ -114,27 +114,29 @@
               </div>
             </div>
           <%# display to owner default %>
-          <% elsif @listing.owner == current_user %>
-            <% count = @listing.offers.count %>
-            <% text = count.zero? ? "No paw-proposals yet 🐾"
-                      : "You have #{pluralize(count, 'paw-proposal')} 🐾" %>
-            <% display = count.zero? ? "disabled" : "" %>
-            <%= link_to "#{text}",
-              listing_offers_path(@listing),
-              class: "btn btn-outline-info w-100 mt-4 px-3 #{display}" %>
-          <%# display to others default %>
           <% else %>
-            <div>
-              <% if @listing.offers.exists?(user: current_user) %>
-                <span class="btn btn-info my-4 w-100">
-                  Owner is reviewing your offer
-                </span>
-              <% else %>
-                <%= button_to "Make an offer",
-                              listing_offers_path(@listing),
-                              class: "btn btn-primary my-4 w-100" %>
-              <% end %>
-            </div>
+            <% if @listing.owner == current_user %>
+              <% count = @listing.offers.count %>
+              <% text = count.zero? ? "No paw-proposals yet 🐾"
+                        : "You have #{pluralize(count, 'paw-proposal')} 🐾" %>
+              <% display = count.zero? ? "disabled" : "" %>
+              <%= link_to "#{text}",
+                listing_offers_path(@listing),
+                class: "btn btn-outline-info w-100 mt-4 px-3 #{display}" %>
+            <%# display to others default %>
+            <% else %>
+              <div>
+                <% if @listing.offers.exists?(user: current_user) %>
+                  <span class="btn btn-info my-4 w-100">
+                    Owner is reviewing your offer
+                  </span>
+                <% else %>
+                  <%= button_to "Make an offer",
+                                listing_offers_path(@listing),
+                                class: "btn btn-primary my-4 w-100" %>
+                <% end %>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>
