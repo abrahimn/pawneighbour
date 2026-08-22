@@ -1,8 +1,9 @@
 <% content_for :title, "#{@listing.pet.name} | Pawneighbour" %>
 
-<main class="container py-4">
-  <article class="card bg-white shadow-sm overflow-hidden">
+<div class="container py-4">
+  <div class="card bg-white shadow-sm overflow-hidden">
     <div class="row g-0">
+      <%# pet photo %>
       <% if @listing.pet.avatar.attached? %>
         <div class="ratio ratio-4x3">
           <%= cl_image_tag @listing.pet.avatar.key,
@@ -10,48 +11,65 @@
                            alt: @listing.pet.name %>
         </div>
       <% end %>
-
+      <%# main body %>
       <div class="col-12">
         <div class="card-body p-4">
-          <h1 class="card-title"><%= @listing.pet.name %></h1>
-          <span class="btn btn-sm rounded-pill text-bg-info mb-2">
-            <%= @listing.listing_type %>
-          </span>
-          <h3 class="text-info">
-            <%= l(@listing.start_date, format: :long) %> –
-            <%= l(@listing.end_date, format: :long) %>
-          </h3>
-          <p class="text-muted mb-4">
-            <%= @listing.pet.species %> ·
-            <%= pluralize(@listing.pet.age, "year") %> old
-          </p>
-
-          <div class="row mb-4 justify-content-between">
-            <div class="col-6"><%= @listing.owner.name %></div>
-            <% if @listing.owner.location.present? %>
-              <div class="col-6"><%= @listing.owner.location %></div>
-            <% end %>
+          <%# pet info %>
+          <div class="card-primary d-flex flex-column justify-content-between">
+            <div class="d-flex justify-content-between align-item-center mb-2">
+              <h1 class="card-title"><%= @listing.pet.name %></h1>
+              <p class="text-muted mb-4">
+                <%= @listing.pet.species %> ·
+                <%= pluralize(@listing.pet.age, "year") %> old
+              </p>
+            </div>
+            <div class="d-flex justify-content-between align-item-center mb-2">
+              <h5 class="text-info">
+                <%= l(@listing.start_date, format: :short) %> –
+                <%= l(@listing.end_date, format: :short) %>
+              </h5>
+              <div class="btn btn-sm rounded-pill text-bg-info mb-2">
+                <%= @listing.listing_type %>
+              </div>
+            </div>
+            <div class="mb-4 d-flex justify-content-start align-item-center">
+              <div>
+                <% if current_user.avatar.attached? %>
+                      <%= cl_image_tag current_user.avatar.key,
+                                      width: 48,
+                                      height: 48,
+                                      crop: :fill,
+                                      gravity: :face,
+                                      class: "rounded-circle flex-shrink-0",
+                                      alt: current_user.name %>
+                <% else %>
+                  <div class="avatar avatar-large bg-primary text-white d-flex align-items-center justify-content-center">
+                    <%= current_user.name.first.upcase %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="d-flex align-item-center">
+                <div class="mx-2"><%= @listing.owner.name %></div>
+                <% if @listing.owner.location.present? %>
+                  <div>
+                    <i class="fa-solid fa-map-pin"></i>
+                    <%= @listing.owner.location %>
+                    </div>
+                <% end %>
+              </div>
+            </div>
           </div>
-
-          <section class="mb-4">
-            <h2 class="h5">What I need</h2>
-
-            <p class="mb-0">
+          <div class="card-secondary mb-4">
+            <%# <h2 class="h5">What I need</h2> %>
+            <p class="mb-0 text-muted">
               <%= @listing.listing_note.presence || "No additional notes provided." %>
             </p>
-          </section>
-
-          <section>
-            <h2 class="h5">Care instructions</h2>
-
-            <p class="mb-0">
-              <%= @listing.pet.care_instructions.presence || "No care instructions provided." %>
-            </p>
-          </section>
-
+          </div>
+          <%# display when matched %>
           <% if @matched_user.present? %>
-            <section class="card border-0 bg-light shadow-sm mt-4">
-              <div class="card-body p-4">
+            <div class="care-notes shadow-sm">
+              <%# matched contact info %>
+              <div class="card-body mb-3 p-2">
                 <div class="d-flex align-items-center gap-3">
                   <% if @matched_user.avatar.attached? %>
                     <%= cl_image_tag @matched_user.avatar.key,
@@ -82,58 +100,64 @@
 
                     <% if @matched_user.location.present? %>
                       <p class="text-muted mb-0">
-                        📍 <%= @matched_user.location %>
+                        <i class="fa-solid fa-map-pin"></i>
+                        <%= @matched_user.location%>
                       </p>
                     <% end %>
                   </div>
                 </div>
-
                 <div class="row g-2 mt-3">
                   <div class="col-12 col-sm-6">
                     <%= mail_to @matched_user.email,
                                 class: "btn btn-primary w-100" do%>
-                                <i class="fa-solid fa-envelope"></i>
+                                <i class="fa-regular fa-envelope"></i>
                                 Email <%= @matched_user.name %>
                                 <% end %>
-
                   </div>
-
                   <% if @matched_user.mobile.present? %>
                     <div class="col-12 col-sm-6">
                       <%= sms_to @matched_user.mobile,
                                    class: "btn btn-primary w-100" do%>
-                                   <i class="fa-solid fa-message"></i>
+                                   <i class="fa-regular fa-message"></i>
                                    Message <%= @matched_user.name%>
                                    <% end %>
                     </div>
                   <% end %>
                 </div>
-
-
-            </section>
+              </div>
+              <%# care instruction %>
+              <div class="mb-3 p-2">
+                <h2 class="h5">Care instructions</h2>
+                <p class="mb-0 text-muted">
+                  <%= @listing.pet.care_instructions.presence || "No care instructions provided." %>
+                </p>
+              </div>
+            </div>
+          <%# display to owner default %>
           <% elsif @listing.owner == current_user %>
             <% count = @listing.offers.count %>
-            <% message = count.zero? ? "No paw-proposals yet 🐾"
+            <% text = count.zero? ? "No paw-proposals yet 🐾"
                       : "You have #{pluralize(count, 'paw-proposal')} 🐾" %>
             <% display = count.zero? ? "disabled" : "" %>
-            <%= link_to "#{message}",
+            <%= link_to "#{text}",
               listing_offers_path(@listing),
               class: "btn btn-outline-info w-100 mt-4 px-3 #{display}" %>
+          <%# display to others default %>
           <% else %>
-            <section>
+            <div>
               <% if @listing.offers.exists?(user: current_user) %>
-                <span class="btn btn-success my-4 w-100">
-                  Offer sent
+                <span class="btn btn-info my-4 w-100">
+                  Owner is reviewing your offer
                 </span>
               <% else %>
                 <%= button_to "Make an offer",
                               listing_offers_path(@listing),
                               class: "btn btn-primary my-4 w-100" %>
               <% end %>
-            </section>
+            </div>
           <% end %>
         </div>
       </div>
     </div>
-  </article>
-</main>
+  </div>
+</div>
