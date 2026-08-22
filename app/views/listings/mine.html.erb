@@ -1,0 +1,173 @@
+<% content_for :title, "My activity | PawNeighbour" %>
+
+<main class="container py-4">
+  <header class="neighbourhood-hero mb-5">
+    <%= image_tag "pug-transparent.png",
+                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--pug",
+                  alt: "",
+                  aria: { hidden: true } %>
+
+    <%= image_tag "playful-cat-transparent.png",
+                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--cat",
+                  alt: "",
+                  aria: { hidden: true } %>
+
+    <div class="neighbourhood-hero__content">
+      <span class="neighbourhood-hero__eyebrow">
+        🐾 Hi <%= current_user.name %>
+      </span>
+
+      <h1 class="neighbourhood-hero__title">
+        My activity
+        <span>at a glance!</span>
+      </h1>
+
+      <p class="neighbourhood-hero__description">
+        Keep track of your pet-care requests, offers and matches.
+      </p>
+
+      <%= link_to new_listing_path,
+                  class: "btn neighbourhood-hero__button rounded-pill" do %>
+        Ask a fur-riend
+        <i class="fa-solid fa-paw ms-2"></i>
+      <% end %>
+    </div>
+  </header>
+
+  <% if @attention_listings.any? %>
+    <details class="dashboard-disclosure mb-5" open>
+      <summary class="dashboard-disclosure__summary">
+        <span class="dashboard-disclosure__heading">
+          <span class="h4 mb-0">Needs your attention</span>
+          <span class="badge rounded-pill text-bg-light"><%= @attention_listings.size %></span>
+        </span>
+
+        <span class="dashboard-disclosure__toggle" aria-hidden="true">
+          <i class="fa-solid fa-chevron-down"></i>
+        </span>
+      </summary>
+
+      <div class="d-grid gap-2 mt-3">
+        <% @attention_listings.each do |listing| %>
+          <% pet = listing.pet %>
+
+          <article class="card bg-white shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center gap-3">
+              <div class="d-flex align-items-center gap-3">
+                <% if pet.avatar.attached? %>
+                  <%= cl_image_tag pet.avatar.key,
+                                   width: 56,
+                                   height: 56,
+                                   crop: :fill,
+                                   class: "rounded-circle object-fit-cover flex-shrink-0",
+                                   alt: pet.name %>
+                <% else %>
+                  <div class="avatar bg-light d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-paw"></i>
+                  </div>
+                <% end %>
+
+                <div>
+                  <h3 class="h6 mb-1"><%= pet.name %></h3>
+                  <p class="text-body-secondary small mb-0">
+                    <%= pluralize(listing.pending_offers.size, "offer") %> waiting for you
+                  </p>
+                </div>
+              </div>
+
+              <%= link_to "Review",
+                          listing_offers_path(listing),
+                          class: "btn btn-primary rounded-pill flex-shrink-0" %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </details>
+  <% end %>
+
+  <details class="dashboard-disclosure mb-5" open>
+    <summary class="dashboard-disclosure__summary">
+      <span class="dashboard-disclosure__heading">
+        <span class="h4 mb-0">My listings</span>
+        <span class="badge rounded-pill text-bg-light"><%= @my_listings.size %></span>
+      </span>
+
+      <span class="dashboard-disclosure__toggle" aria-hidden="true">
+        <i class="fa-solid fa-chevron-down"></i>
+      </span>
+    </summary>
+
+    <div class="mt-3">
+      <% if @my_listings.any? %>
+        <div class="d-grid gap-2">
+          <%= render partial: "my_listing_card",
+                     collection: @my_listings,
+                     as: :listing %>
+        </div>
+      <% else %>
+        <div class="card border-0 bg-light">
+          <div class="card-body text-center py-4">
+            <h3 class="h5">No upcoming listings</h3>
+            <p class="text-body-secondary">Need someone to care for your pet?</p>
+            <%= link_to "Ask a neighbour for help",
+                        new_listing_path,
+                        class: "btn btn-primary rounded-pill" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </details>
+
+  <details class="dashboard-disclosure mb-5" open>
+    <summary class="dashboard-disclosure__summary">
+      <span class="dashboard-disclosure__heading">
+        <span class="h4 mb-0">My offers</span>
+        <span class="badge rounded-pill text-bg-light"><%= @current_offers.size %></span>
+      </span>
+
+      <span class="dashboard-disclosure__toggle" aria-hidden="true">
+        <i class="fa-solid fa-chevron-down"></i>
+      </span>
+    </summary>
+
+    <div class="mt-3">
+      <% if @current_offers.any? %>
+        <div class="d-grid gap-2">
+          <%= render partial: "my_offer_card",
+                     collection: @current_offers,
+                     as: :offer %>
+        </div>
+      <% else %>
+        <div class="card border-0 bg-light">
+          <div class="card-body text-center py-4">
+            <h3 class="h5">You haven’t offered yet</h3>
+            <p class="text-body-secondary mb-0">
+              Take a look at the neighbours who need a helping paw.
+            </p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </details>
+
+  <% if @past_offers.any? %>
+    <details class="dashboard-disclosure mb-5" open>
+      <summary class="dashboard-disclosure__summary">
+        <span class="dashboard-disclosure__heading">
+          <span class="h4 mb-0">Past activity</span>
+          <span class="badge rounded-pill text-bg-light"><%= @past_offers.size %></span>
+        </span>
+
+        <span class="dashboard-disclosure__toggle" aria-hidden="true">
+          <i class="fa-solid fa-chevron-down"></i>
+        </span>
+      </summary>
+
+      <div class="d-grid gap-2 mt-3">
+        <%= render partial: "past_offer",
+                   collection: @past_offers,
+                   as: :offer %>
+      </div>
+    </details>
+  <% end %>
+</main>
