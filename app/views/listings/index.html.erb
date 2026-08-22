@@ -17,13 +17,20 @@
       <% @active_listings.each do |listing| %>
         <% pet = listing.pet %>
         <% user = listing.owner %>
+        <% accepted_offer = listing.offers.find_by(status: "accepted") %>
+        <% matched_user = if listing.owner == current_user
+                          accepted_offer&.user
+                          elsif accepted_offer&.user == current_user
+                            listing.owner
+                          end %>
+
         <div class="col-12">
           <div class="card bg-white h-100 border-2 shadow-sm overflow-hidden">
             <div class="position-relative">
               <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 500, crop: :fill, class: "card-img-top object-fit-cover",style: "height: 300px;" %>
             </div>
             <div class="card-body m-2 d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex justify-content-between align-items-center mb-2">
                 <h3 class="h5 card-title mb-0">
                   <%= pet.name %>
                 </h3>
@@ -42,6 +49,11 @@
                 <p class="text-body-secondary large mb-2">
                   <small class="text-body-secondary"><%= user.location %></small>
                 </p>
+                <% if matched_user.present? %>
+                  <span class="btn btn-sm rounded-pill text-bg-success mb-2">
+                    Matched!
+                  </span>
+                <% end %>
               </div>
               <div class="d-flex justify-content-end mt-auto">
                 <%= link_to "View", listing_path(listing), class: "btn btn-sm btn-primary rounded-pill px-3 position-relative z-1" %>

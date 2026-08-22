@@ -98,15 +98,20 @@
                 <div class="row g-2 mt-3">
                   <div class="col-12 col-sm-6">
                     <%= mail_to @matched_user.email,
-                                "Email #{@matched_user.name} - #{@matched_user.email}",
-                                class: "btn btn-primary w-100" %>
+                                class: "btn btn-primary w-100" do%>
+                                <i class="fa-solid fa-envelope"></i>
+                                Email <%= @matched_user.name %>
+                                <% end %>
+
                   </div>
 
                   <% if @matched_user.mobile.present? %>
                     <div class="col-12 col-sm-6">
-                      <%= phone_to @matched_user.mobile,
-                                   "Call #{@matched_user.name} - #{@matched_user.mobile}",
-                                   class: "btn btn-primary w-100" %>
+                      <%= sms_to @matched_user.mobile,
+                                   class: "btn btn-primary w-100" do%>
+                                   <i class="fa-solid fa-message"></i>
+                                   Message <%= @matched_user.name%>
+                                   <% end %>
                     </div>
                   <% end %>
                 </div>
