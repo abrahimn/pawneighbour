@@ -4,6 +4,11 @@ class Connection < ApplicationRecord
   validate :sender_and_receiver_are_different
 
   validates :receiver_id, uniqueness: { scope: :sender_id }
+  scope :involving, ->(user) { where(sender: user).or(where(receiver: user)) }
+
+  def other_user(user)
+    user == sender ? receiver : sender
+  end
 
   private
 

@@ -7,6 +7,9 @@
       <p> No offers for <%= @listing.pet.name %> yet - waiting can be ruff 🐶 </p>
     <% end %>
 
-    <%= link_to "Back to listing",
-        listing_path(@listing), class: "btn btn-outline-secondary mb-4" %>
+    <%= link_to listing_path(@listing),
+            class: "btn btn-info mb-4",
+            "aria-label": "Back to listing" do %>
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    <% end %>
 </div>
