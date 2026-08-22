@@ -52,6 +52,12 @@ class User < ApplicationRecord
     connections.pluck(:sender_id, :receiver_id).flatten.uniq - [id]
   end
 
+  def connected_with?(other)
+    return false if other.nil? || other == self
+
+    neighbour_ids.include?(other.id)
+  end
+
   def neighbours
     User.where(id: neighbour_ids)
   end

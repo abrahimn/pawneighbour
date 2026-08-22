@@ -16,4 +16,19 @@ module ApplicationHelper
 
     pet.profile_pic.presence || "https://placehold.co/#{size}x#{size}?text=#{CGI.escape(pet.name)}"
   end
+
+  def trust_signal(viewer, other) # rubocop:disable Metrics/MethodLength
+    return nil if viewer.nil? || other.nil? || viewer == other
+
+    if viewer.connected_with?(other)
+      { key: "connected", label: "You're connected" }
+    else
+      mutuals = viewer.mutual_connections_with(other)
+      if mutuals.positive?
+        { key: "mutual", label: pluralize(mutuals, "mutual connection") }
+      else
+        { key: "new", label: "New neighbour" }
+      end
+    end
+  end
 end

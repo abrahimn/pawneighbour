@@ -1,8 +1,17 @@
 <div class="card mb-3">
   <div class="card-body">
-    <h5 class="card-title"><%= offer.user.name %></h5>
-    <p><%= current_user.mutual_connections_with(offer.user) %> mutual connections</p>
-    <p class="card-text">
+    <div class="d-flex align-item-center">
+      <div>
+        <%= avatar_for(offer.user) %>
+      </div>
+      <div class="card-title m-3">
+        <%= offer.user.name %>
+      </div>
+    </div>
+    <% if (trust = trust_signal(current_user, offer.user)) %>
+      <p class="trust trust--<%= trust[:key] %> mb-0"><%= trust[:label] %></p>
+    <% end %>
+    <p class="card-text mt-2">
       Status: <%= offer.status.humanize %>
     </p>
     <% if offer.status == "offered" %>
