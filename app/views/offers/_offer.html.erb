@@ -1,7 +1,7 @@
 <div class="card mb-3">
   <div class="card-body">
     <h5 class="card-title"><%= offer.user.name %></h5>
-
+    <p><%= current_user.mutual_connections_with(offer.user) %> mutual connections</p>
     <p class="card-text">
       Status: <%= offer.status.humanize %>
     </p>
