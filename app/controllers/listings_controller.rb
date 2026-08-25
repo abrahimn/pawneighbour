@@ -1,14 +1,16 @@
 class ListingsController < ApplicationController
   def index
-    @latitude = current_user.latitude || -33.8688
-    @longitude = current_user.longitude || 151.2093
-    @radius = params[:radius].presence || 3
-    nearby_users    = User.near([@latitude, @longitude], @radius, units: :km).to_a
-    nearby_user_ids = nearby_users.map(&:id)
+    set_search_area
+    @nearby_listings = nearby_listings
+  end
 
-    @active_listings = Listing.active
-                              .joins(pet: :user)
-                              .where(users: { id: nearby_user_ids })
+  def mine
+    @my_listings = my_active_listings
+    @attention_listings = @my_listings.select do |listing|
+      listing.accepted_offer.blank? && listing.pending_offers.any?
+    end
+    @current_offers = activity_offers.where(status: %w[offered accepted])
+    @past_offers = activity_offers.rejected
   end
 
   def new
@@ -41,6 +43,35 @@ class ListingsController < ApplicationController
   end
 
   private
+
+  def set_search_area
+    @latitude = current_user.latitude || -33.8688
+    @longitude = current_user.longitude || 151.2093
+    @radius = (params[:radius].presence || 3).to_i
+  end
+
+  def nearby_listings
+    nearby_user_ids = User.near([@latitude, @longitude], @radius, units: :km).map(&:id)
+
+    Listing.available
+           .joins(pet: :user)
+           .where(users: { id: nearby_user_ids })
+           .where.not(pets: { user_id: current_user.id })
+           .where.not(id: current_user.offers.select(:listing_id))
+           .includes(pet: :user)
+  end
+
+  def my_active_listings
+    current_user.listings.active.includes(:pet, :pending_offers, accepted_offer: :user)
+  end
+
+  def activity_offers
+    current_user.offers
+                .joins(:listing)
+                .merge(Listing.active)
+                .includes(listing: { pet: :user })
+                .order("offers.updated_at DESC")
+  end
 
   def listing_params
     params.require(:listing).permit(

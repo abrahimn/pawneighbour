@@ -1,0 +1,44 @@
+<% listing = offer.listing %>
+<% pet = listing.pet %>
+
+<article class="card bg-white shadow-sm">
+  <div class="card-body d-flex justify-content-between align-items-center gap-3">
+    <div class="d-flex align-items-center gap-3">
+      <% if pet.avatar.attached? %>
+        <%= cl_image_tag pet.avatar.key,
+                         width: 56,
+                         height: 56,
+                         crop: :fill,
+                         class: "rounded-circle object-fit-cover flex-shrink-0",
+                         alt: pet.name %>
+      <% else %>
+        <div class="avatar bg-light d-flex align-items-center justify-content-center">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+      <% end %>
+
+      <div>
+        <h3 class="h6 mb-1"><%= pet.name %></h3>
+
+        <p class="text-body-secondary small mb-1">
+          <%= listing.listing_type %> ·
+          <%= listing.start_date.strftime("%-d %b") %> –
+          <%= listing.end_date.strftime("%-d %b") %>
+        </p>
+
+        <% case offer.status %>
+        <% when "accepted" %>
+          <span class="badge rounded-pill text-bg-success">Matched</span>
+        <% when "rejected" %>
+          <span class="badge rounded-pill text-bg-secondary">Not selected</span>
+        <% else %>
+          <span class="badge rounded-pill text-bg-info">Pending</span>
+        <% end %>
+      </div>
+    </div>
+
+    <%= link_to offer.status == "accepted" ? "View match" : "View",
+                listing_path(listing),
+                class: "btn btn-primary rounded-pill flex-shrink-0" %>
+  </div>
+</article>
