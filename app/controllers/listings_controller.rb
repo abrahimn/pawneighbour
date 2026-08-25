@@ -54,11 +54,9 @@ class ListingsController < ApplicationController
     nearby_user_ids = User.near([@latitude, @longitude], @radius, units: :km).map(&:id)
 
     Listing.available
-           .joins(pet: :user)
-           .where(users: { id: nearby_user_ids })
-           .where.not(pets: { user_id: current_user.id })
+           .where(user_id: nearby_user_ids - [current_user.id])
            .where.not(id: current_user.offers.select(:listing_id))
-           .includes(pet: :user)
+           .includes(:owner, pets: { avatar_attachment: :blob })
   end
 
   def my_active_listings
