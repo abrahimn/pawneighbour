@@ -17,7 +17,7 @@ class Listing < ApplicationRecord
   validates :listing_type, presence: true, inclusion: { in: TYPES }
   validates :start_date, presence: true
   validates :pets, presence: true
-  validates :pets_belong_to_owner
+  validate :pets_belong_to_owner
   validates :end_date, presence: true
   validates :end_date, comparison: { greater_than_or_equal_to: :start_date }
 

@@ -218,7 +218,8 @@ past_sit = Listing.create!(
 puts "added #{past_sit.listing_type} for #{past_sit.pets.map(&:name).to_sentence} (completed)"
 
 biscuit_walk_past = Listing.create!(
-  pet: biscuit,
+  owner: sam,
+  pets: [biscuit],
   listing_type: "Walking",
   start_date: Date.current - 10,
   end_date: Date.current - 9,
@@ -227,7 +228,8 @@ biscuit_walk_past = Listing.create!(
 puts "added listing #{biscuit_walk_past.listing_type} for #{biscuit.name} into database (expired)"
 
 biscuit_walk = Listing.create!(
-  pet: biscuit,
+  owner: sam,
+  pets: [biscuit],
   listing_type: "Walking",
   start_date: Date.current + 1,
   end_date: Date.current + 14,
