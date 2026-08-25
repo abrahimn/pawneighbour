@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   has_many :pets, dependent: :destroy
-  has_many :listings, through: :pets
+  has_many :listings, dependent: :destroy
   has_many :offers, dependent: :destroy
 
   has_many :events,
