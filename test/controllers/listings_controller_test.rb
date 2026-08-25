@@ -21,6 +21,24 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "details.dashboard-disclosure", count: 0
   end
 
+  test "new presents the accessible listing form" do
+    get new_listing_url
+
+    assert_response :success
+    assert_select "main.listing-form-page"
+    assert_select "section.paw-form[aria-labelledby='new-listing-title']"
+    assert_select "h1#new-listing-title", "Pawst a job"
+    assert_select "form.paw-form__fields[action='#{listings_path}']"
+    assert_select "select#listing_pet_id[required]"
+    assert_select "select#listing_listing_type[required]"
+    assert_select "input#listing_start_date[type='date'][required]"
+    assert_select "input#listing_end_date[type='date'][required]"
+    assert_select "label[for='listing_start_date']", text: /From/
+    assert_select "label[for='listing_end_date']", text: /To/
+    assert_select "textarea#listing_listing_note[rows='5']"
+    assert_select "button.paw-form__submit", text: /Paw-lease help!/
+  end
+
   test "index excludes listings the current user has already offered on" do
     Offer.create!(listing: @nearby_listing, user: @owner, status: "offered")
 
@@ -42,6 +60,8 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "summary", text: /My listings/
     assert_select "summary", text: /My offers/
     assert_select "details[open]", text: /Needs your attention/
+    assert_select "button.site-navbar__account[aria-label*='attention needed']"
+    assert_select "span.site-navbar__attention", text: "1"
     assert_select "body", text: /Milo/
     assert_select "body", text: /Luna/
   end

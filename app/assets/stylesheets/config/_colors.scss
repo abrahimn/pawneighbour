@@ -1,15 +1,35 @@
 // Define variables for your color scheme
 
 // For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
+$red: #a83f32;
+$blue: #356c81;
+$yellow: #f4bd5b;
+$orange: #d97838;
+$green: #3f7462;
+$gray: #2c211c;
+$light-gray: #f4ecdf;
 
 // Brand color:
-$coral: #FF6B35;
-$cream: #FFF6E6;
-$choco: #9A5B2E;
+$coral: #e5683e;
+$cream: #fbf4e7;
+$choco: #8f4827;
+$sage: #3f7462;
+$espresso: #2c211c;
+
+// Runtime design tokens keep the palette consistent in plain CSS as well as SCSS.
+// Component-specific variables should alias these instead of repeating hex values.
+:root {
+  --pn-cream: #{$cream};
+  --pn-paper: #fffdf8;
+  --pn-espresso: #{$espresso};
+  --pn-brown: #{$choco};
+  --pn-brown-dark: #6f321b;
+  --pn-marigold: #{$yellow};
+  --pn-coral: #{$coral};
+  --pn-sage: #{$sage};
+  --pn-muted: #705f55;
+  --pn-line: #dfd0c0;
+  --pn-shadow-sm: 0 2px 8px rgba(67, 43, 30, 0.08);
+  --pn-shadow-md: 0 14px 38px rgba(67, 43, 30, 0.12);
+  --pn-radius: 1.35rem;
+}

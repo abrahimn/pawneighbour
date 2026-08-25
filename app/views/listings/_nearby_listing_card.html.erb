@@ -2,50 +2,52 @@
 <% owner = listing.owner %>
 
 <div class="col">
-  <article class="card bg-white h-100 shadow-sm overflow-hidden">
-    <% if pet.avatar.attached? %>
-      <%= cl_image_tag pet.avatar.key,
-                       width: 1000,
-                       crop: :scale,
-                       class: "card-img-top listing-card__image",
-                       style: "object-position: #{pet_focal_position(pet)}",
-                       alt: pet.name %>
-    <% else %>
-      <div class="listing-card__image-placeholder">
-        <i class="fa-solid fa-paw"></i>
-      </div>
-    <% end %>
+  <article class="listing-card h-100">
+    <div class="listing-card__media">
+      <% if pet.avatar.attached? %>
+        <%= cl_image_tag pet.avatar.key,
+                         width: 1000,
+                         crop: :scale,
+                         class: "listing-card__image",
+                         style: "object-position: #{pet_focal_position(pet)}",
+                         alt: pet.name %>
+      <% else %>
+        <div class="listing-card__image-placeholder">
+          <i class="fa-solid fa-paw"></i>
+        </div>
+      <% end %>
 
-    <div class="card-body d-flex flex-column">
+      <span class="listing-card__type"><%= listing.listing_type %></span>
+    </div>
+
+    <div class="listing-card__body">
       <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-        <h3 class="h5 mb-0">
+        <h3>
           <%= pet.name %>
         </h3>
-
-        <span class="badge rounded-pill text-bg-info">
-          <%= listing.listing_type %>
-        </span>
       </div>
 
-      <p class="text-body-secondary small mb-3">
-        <%= listing.start_date.strftime("%-d %b") %> –
-        <%= listing.end_date.strftime("%-d %b") %>
+      <p class="listing-card__date">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        <time datetime="<%= listing.start_date.iso8601 %>"><%= listing.start_date.strftime("%-d %b") %></time>
+        <span aria-hidden="true">→</span>
+        <time datetime="<%= listing.end_date.iso8601 %>"><%= listing.end_date.strftime("%-d %b") %></time>
       </p>
 
-      <p class="card-text mb-3">
+      <p class="listing-card__note">
         <%= listing.listing_note.presence ||
             "No additional information provided." %>
       </p>
 
-      <p class="text-body-secondary small mb-3">
-        <i class="fa-solid fa-location-dot text-danger me-1"></i>
+      <p class="listing-card__location">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
         <%= owner.location %>
       </p>
 
-      <div class="mt-auto">
+      <div class="listing-card__action">
         <%= link_to "View & offer",
                     listing_path(listing),
-                    class: "btn btn-primary rounded-pill w-100" %>
+                    class: "listing-card__link" %>
       </div>
     </div>
   </article>

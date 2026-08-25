@@ -7,7 +7,8 @@ module ApplicationHelper
     "Disco" => "50% 42%",
     "Prawn" => "50% 35%",
     "Professor Fluff" => "50% 42%",
-    "Schnitzel" => "50% 45%"
+    "Schnitzel" => "50% 45%",
+    "Waffles" => "50% 72%"
   }.freeze
 
   def avatar_for(user, size: 36)

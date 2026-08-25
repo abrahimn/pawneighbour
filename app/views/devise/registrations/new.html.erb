@@ -1,8 +1,29 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-      <div class="form-login">
-        <h2>Sign up</h2>
+<main class="auth-page auth-page--signup">
+  <aside class="auth-story" aria-hidden="true">
+    <span class="auth-story__eyebrow">Made for neighbours</span>
+    <p>It takes a village.<br>And a few treats.</p>
+    <span class="auth-story__pug">
+      <%= image_tag "pug-transparent.png",
+                    class: "auth-story__pug-layer auth-story__pug-body",
+                    alt: "" %>
+      <%= image_tag "pug-transparent.png",
+                    class: "auth-story__pug-layer auth-story__pug-tongue",
+                    alt: "" %>
+    </span>
+    <span class="auth-story__cat auth-story__cat--with-pug">
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "auth-story__cat-layer auth-story__cat-body",
+                    alt: "" %>
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "auth-story__cat-layer auth-story__cat-tail",
+                    alt: "" %>
+    </span>
+  </aside>
+
+  <section class="form-login" aria-labelledby="signup-title">
+        <span class="form-login__eyebrow">Join the pack</span>
+        <h1 id="signup-title">Sign up</h1>
+        <p class="form-login__intro">Meet trusted pet people right around the corner.</p>
 
         <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
           <%= f.error_notification %>
@@ -40,7 +61,5 @@
 
         <%= render "devise/shared/links" %>
 
-      </div>
-    </div>
-  </div>
-</div>
+  </section>
+</main>
