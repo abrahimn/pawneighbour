@@ -43,4 +43,30 @@ class User < ApplicationRecord
            class_name: "AlertResponse",
            foreign_key: "spotter_id",
            dependent: :destroy
+
+  def connections
+    Connection.involving(self)
+  end
+
+  def neighbour_ids
+    connections.pluck(:sender_id, :receiver_id).flatten.uniq - [id]
+  end
+
+  def connected_with?(other)
+    return false if other.nil? || other == self
+
+    neighbour_ids.include?(other.id)
+  end
+
+  def neighbours
+    User.where(id: neighbour_ids)
+  end
+
+  def mutual_neighbour_ids_with(other)
+    neighbour_ids & other.neighbour_ids
+  end
+
+  def mutual_connections_with(other)
+    mutual_neighbour_ids_with(other).size
+  end
 end

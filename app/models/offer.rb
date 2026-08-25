@@ -15,6 +15,6 @@ class Offer < ApplicationRecord
   def not_own_listing
     return unless user == listing.owner
 
-    @errors.add(:base, "You can't offer on your own listing")
+    errors.add(:base, "You can't offer on your own listing")
   end
 end
