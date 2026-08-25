@@ -6,7 +6,10 @@
       <% if @listing.pet.avatar.attached? %>
         <div class="ratio ratio-4x3">
           <%= cl_image_tag @listing.pet.avatar.key,
-                           class: "object-fit-cover",
+                           width: 1600,
+                           crop: :scale,
+                           class: "listing-detail__image",
+                           style: "object-position: #{pet_focal_position(@listing.pet)}",
                            alt: @listing.pet.name %>
         </div>
       <% end %>
