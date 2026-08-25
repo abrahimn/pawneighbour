@@ -1,0 +1,174 @@
+.neighbourhood-hero {
+  position: relative;
+  padding: 1.5rem 8rem;
+  overflow: hidden;
+  background-color: mix($cream, $yellow, 65%);
+  border: 2px solid rgba($choco, 0.2);
+  border-radius: 2rem;
+  box-shadow: 0 6px 18px rgba($choco, 0.1);
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    max-width: 32rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 0.6rem;
+    padding: 0.35rem 0.75rem;
+    color: $choco;
+    background-color: white;
+    border: 2px solid rgba($choco, 0.18);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transform: rotate(-2deg);
+  }
+
+  &__title {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+
+    span {
+      display: inline-block;
+      margin-top: 0.25rem;
+      padding: 0.1rem 0.45rem 0.25rem;
+      background-color: white;
+      border-radius: 0.75rem;
+      box-shadow: 3px 3px 0 rgba($choco, 0.16);
+      transform: rotate(1deg);
+    }
+  }
+
+  &__description {
+    max-width: 27rem;
+    margin: 0 auto 1rem;
+    color: rgba($gray, 0.75);
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  &__button {
+    padding: 0.65rem 1.2rem;
+    color: white;
+    background-color: $choco;
+    border: 2px solid $choco;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 rgba($gray, 0.16);
+    transition:
+      transform 150ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
+
+    &:hover,
+    &:focus {
+      color: white;
+      background-color: darken($choco, 6%);
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 rgba($gray, 0.18);
+    }
+  }
+
+  &__pet {
+    position: absolute;
+    z-index: 1;
+    top: -0.35rem;
+    bottom: auto;
+    width: 6.5rem;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__pet--pug {
+    left: 0.5rem;
+    transform: rotate(-5deg);
+  }
+
+  &__pet--cat {
+    right: 0.25rem;
+    width: 7.5rem;
+    transform: rotate(5deg);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .neighbourhood-hero {
+    display: flex;
+    height: calc((100svh - 4rem) / 4);
+    max-height: 10rem;
+    padding: 0.5rem 0.75rem;
+    align-items: center;
+    border-width: 1px;
+    border-radius: 1.25rem;
+
+    &.mb-5 {
+      margin-bottom: 1.5rem !important;
+    }
+
+    &__content {
+      width: 100%;
+      max-width: 23rem;
+    }
+
+    &__eyebrow {
+      max-width: 8rem;
+      margin-bottom: 0.2rem;
+      padding: 0.15rem 0.45rem;
+      border-width: 1px;
+      font-size: 0.7rem;
+    }
+
+    &__title {
+      max-width: 21rem;
+      margin-inline: auto;
+      margin-bottom: 0.35rem;
+      font-size: 1.4rem;
+      line-height: 1;
+
+      span {
+        margin-top: 0.1rem;
+        padding: 0.05rem 0.3rem 0.12rem;
+        border-radius: 0.45rem;
+        box-shadow: 2px 2px 0 rgba($choco, 0.14);
+      }
+    }
+
+    &__description {
+      display: none;
+    }
+
+    &__button {
+      padding: 0.35rem 0.85rem;
+      border-width: 1px;
+      font-size: 0.8rem;
+      box-shadow: 2px 2px 0 rgba($gray, 0.14);
+    }
+
+    &__pet {
+      top: 0.2rem;
+      width: 3.5rem;
+    }
+
+    &__pet--pug {
+      left: 0;
+    }
+
+    &__pet--cat {
+      right: -0.15rem;
+      width: 4.25rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neighbourhood-hero__button {
+    transition: none;
+  }
+}

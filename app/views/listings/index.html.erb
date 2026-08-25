@@ -1,74 +1,68 @@
-<div class="container py-4 ">
-  <div class="d-flex flex-column justify-content-between gap-3 mb-4">
-    <div class="greeting">
-      <p class="text-body-secondary mb-1">Hi <%= current_user.name %>!</p>
-    </div>
-    <div class="post-listing">
-      <h3 class="mb-3">Going on holiday?</h3>
-      <%= link_to "Ask a fur-riend for help?", new_listing_path,
-                class: "btn btn-primary btn-lg rounded-pill w-100 px-4" %>
-    </div>
-  </div>
+<% content_for :title, "Help nearby | PawNeighbour" %>
 
-  <div class="container py-4">
-    <h3 class="mb-3">Offer a paw near📍<%= current_user.location %></h3>
-    <%= render "listings/radius_filter" %>
-    <div class="row row-cols-1 g-4">
-      <% @active_listings.each do |listing| %>
-        <% pet = listing.pet %>
-        <% user = listing.owner %>
-        <% accepted_offer = listing.offers.find_by(status: "accepted") %>
-        <% matched_user = if listing.owner == current_user
-                          accepted_offer&.user
-                          elsif accepted_offer&.user == current_user
-                            listing.owner
-                          end %>
+<main class="container py-4">
+  <header class="neighbourhood-hero mb-5">
+    <%= image_tag "pug-transparent.png",
+                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--pug",
+                  alt: "",
+                  aria: { hidden: true } %>
 
-        <div class="col-12">
-          <div class="card bg-white h-100 border-2 shadow-sm overflow-hidden">
-            <div class="position-relative">
-              <%= cl_image_tag listing.pet.avatar.key, height: 300, width: 500, crop: :fill, class: "card-img-top object-fit-cover",style: "height: 300px;" %>
-            </div>
-            <div class="card-body m-2 d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h3 class="h5 card-title mb-0">
-                  <%= pet.name %>
-                </h3>
-                <span class="btn btn-sm btn-info text-bg-info rounded-pill flex-shrink-0 ms-2">
-                    <%= listing.listing_type %>
-                </span>
-              </div>
-              <div>
-                <p class="text-body-secondary small mb-2">
-                  <%= listing.start_date.strftime("%-d %b") %> –
-                  <%= listing.end_date.strftime("%-d %b") %>
-                </p>
-                <p class="card-text small mb-0">
-                  <%= listing.listing_note %>
-                </p>
-                <p class="text-body-secondary large mb-2">
-                  <small class="text-body-secondary"><%= user.location %></small>
-                </p>
-                <% if accepted_offer.present? %>
-                  <% if current_user == listing.owner ||
-                        accepted_offer&.user == current_user %>
-                    <span class="btn btn-sm rounded-pill text-bg-success mb-2">
-                      Matched!
-                    </span>
-                  <% else %>
-                    <span class="btn btn-sm rounded-pill text-bg-primary mb-2">
-                      Sitter found!
-                    </span>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="d-flex justify-content-end mt-auto">
-                <%= link_to "View", listing_path(listing), class: "btn btn-sm btn-primary rounded-pill px-3 position-relative z-1" %>
-              </div>
-            </div>
-          </div>
-        </div>
+    <%= image_tag "playful-cat-transparent.png",
+                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--cat",
+                  alt: "",
+                  aria: { hidden: true } %>
+
+    <div class="neighbourhood-hero__content">
+      <span class="neighbourhood-hero__eyebrow">
+        🐾 Hi <%= current_user.name %>!
+      </span>
+
+      <h1 class="neighbourhood-hero__title">
+        Need a hand?
+        <span>Find a paw!</span>
+      </h1>
+
+      <p class="neighbourhood-hero__description">
+        Ask for pet help or lend a paw to a PawNeighbour nearby.
+      </p>
+
+      <%= link_to new_listing_path,
+                  class: "btn neighbourhood-hero__button rounded-pill" do %>
+        Ask a fur-riend
+        <i class="fa-solid fa-paw ms-2"></i>
       <% end %>
     </div>
-  </div>
-</div>
+  </header>
+
+  <section>
+    <div class="mb-3">
+      <h2 class="h4 mb-1">Help nearby</h2>
+
+      <p class="text-body-secondary mb-0">
+        Available requests near <%= current_user.location %>
+      </p>
+    </div>
+
+    <%= render "radius_filter" %>
+
+    <% if @nearby_listings.any? %>
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        <%= render partial: "nearby_listing_card",
+                   collection: @nearby_listings,
+                   as: :listing %>
+      </div>
+    <% else %>
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-5">
+          <div class="fs-1 mb-3">🐾</div>
+
+          <h3 class="h5">No open requests nearby</h3>
+
+          <p class="text-body-secondary mb-0">
+            Try increasing your search radius or check back later.
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </section>
+</main>
