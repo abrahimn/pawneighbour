@@ -14,6 +14,7 @@ AmberAlert.destroy_all
 Rsvp.destroy_all
 Event.destroy_all
 Offer.destroy_all
+ListingPet.destroy_all
 Listing.destroy_all
 Connection.destroy_all
 Pet.destroy_all
@@ -181,34 +182,47 @@ puts "#{Pet.count} pets created.\n\n"
 puts "Creating listings..."
 
 # Scenario 1: the main demo listing. Attracts several offers, one gets accepted.
-neo_sit = Listing.create!(
-  pet: neo,
+both_cats = Listing.create!(
+  owner: tom,
+  pets: [neo, dumpling],
   listing_type: "Sitting",
   start_date: Date.current + 5,
   end_date: Date.current + 8,
-  listing_note: "Away for a long weekend. Looking for someone to stay over or drop in " \
-                "twice a day. neo is easy once he trusts you."
+  listing_note: "House sitting for Neo and Dumpling for a few days. "
 )
-puts "added listing #{neo_sit.listing_type} for #{neo.name} into database"
+puts "added #{both_cats.listing_type} for #{both_cats.pets.map(&:name).to_sentence} (LIVE — demo click)"
+
 
 # Scenario 2: a brand new post with no offers yet.
 
-dumpling_dropin = Listing.create!(
-  pet: dumpling,
+kiwi_dropin = Listing.create!(
+  owner: priya,
+  pets: [kiwi],
   listing_type: "Drop-in",
-  start_date: Date.current + 2,
-  end_date: Date.current + 3,
-  listing_note: "Just need someone to check food and water on Tuesday and Wednesday."
+  start_date: Date.current + 12,
+  end_date: Date.current + 13,
+  listing_note: "Seed and water top-up once a day."
 )
-puts "added listing #{dumpling_dropin.listing_type} for #{dumpling.name} into database (no offers)"
+puts "added #{kiwi_dropin.listing_type} for #{kiwi.name} (no offers)"
+
 
 # Scenario 3: a listing whose dates have already passed.
+past_sit = Listing.create!(
+  owner: tom,
+  pets: [neo, dumpling],
+  listing_type: "Drop-in",
+  start_date: Date.current - 21,
+  end_date: Date.current - 20,
+  listing_note: "Overnight trip, just needed food and water checked."
+)
+puts "added #{past_sit.listing_type} for #{past_sit.pets.map(&:name).to_sentence} (completed)"
+
 biscuit_walk_past = Listing.create!(
   pet: biscuit,
   listing_type: "Walking",
   start_date: Date.current - 10,
   end_date: Date.current - 9,
-  listing_note: "Needed a hand while I was at a conference."
+  listing_note: "Needed a hand in the morning for gentle walk 20 minutes."
 )
 puts "added listing #{biscuit_walk_past.listing_type} for #{biscuit.name} into database (expired)"
 
@@ -226,31 +240,29 @@ puts "#{Listing.count} listings created.\n\n"
 
 puts "Creating offers..."
 
-accepted_offer = Offer.create!(
-  listing: neo_sit,
-  user: sam,
-  status: "accepted"
-)
-puts "added offer from #{sam.name} on #{neo_sit.pet.name}'s listing (#{accepted_offer.status}) into database"
+# Past journey — resolved
+Offer.create!(listing: past_sit, user: sam, status: "accepted")
+puts "#{sam.name} was accepted on the past drop-in"
 
-[priya, jerry].each do |sitter|
-  offer = Offer.create!(listing: neo_sit, user: sitter, status: "rejected")
-  puts "added offer from #{sitter.name} on #{neo_sit.pet.name}'s listing (#{offer.status}) into database"
+# LIVE listing — three pending offers, three different trust positions.
+{ sam   => "already connected to Tom",
+  priya => "one mutual connection",
+  jerry => "no connections — new neighbour" }.each do |sitter, why|
+  Offer.create!(listing: both_cats, user: sitter, status: "offered")
+  puts "#{sitter.name} offered on #{both_cats.pets.map(&:name).to_sentence}  [#{why}]"
 end
 
-losing_offer = Offer.create!(listing: biscuit_walk, user: priya, status: "offered")
-puts "added offer from #{priya.name} on #{biscuit_walk.pet.name}'s listing (#{losing_offer.status}) into database"
+Offer.create!(listing: biscuit_walk, user: priya, status: "offered")
+puts "#{priya.name} offered on #{biscuit.name}'s walk"
 
 puts "#{Offer.count} offers created."
 
 puts "Creating connections..."
 
-tom_sam = Connection.create!(sender: tom, receiver: sam)
-puts "added connection #{tom_sam.sender.name} -> #{tom_sam.receiver.name} into database (from accepted offer)"
-
-# A second connection so the connections index has more than one row to render.
-sam_priya = Connection.create!(sender: sam, receiver: priya)
-puts "added connection #{sam_priya.sender.name} -> #{sam_priya.receiver.name} into database"
+Connection.create!(sender: tom,   receiver: sam)
+Connection.create!(sender: sam,   receiver: priya)
+Connection.create!(sender: tom,   receiver: priya)
+Connection.create!(sender: priya, receiver: emma)
 
 puts "#{Connection.count} connections created."
 
