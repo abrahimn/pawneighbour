@@ -69,7 +69,7 @@
 
     <div class="card-body p-4">
       <%# ---------- pets ---------- %>
-      <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-0">
         <div>
           <h1 class="h3 mb-1"><%= pets.map(&:name).to_sentence %></h1>
         </div>
@@ -77,6 +77,7 @@
         <span class="badge rounded-pill text-bg-info flex-shrink-0">
           <%= @listing.listing_type %>
         </span>
+
       </div>
 
       <div class="listing-card__dates mb-3">
@@ -90,89 +91,87 @@
           <%= avatar_for(owner) %>
           <div class="lh-sm">
             <div><%= owner.name %></div>
+            <% if owner.location.present? %>
+              <div class="text-body-secondary small flex-shrink-0 my-1 lh-sm">
+                <div>
+                  <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i>
+                  <%= owner.location %>
+                </div>
+              </div>
+            <% end %>
             <% if (trust = trust_signal(current_user, owner)) %>
               <span class="trust trust--<%= trust[:key] %> small"><%= trust[:label] %></span>
             <% end %>
           </div>
         </div>
 
-        <% if owner.location.present? %>
-          <div class="text-body-secondary small text-end flex-shrink-0 lh-sm">
-            <div>
-              <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i><%= owner.location %>
-            </div>
 
-            <% if (away = distance_away(current_user, owner)) %>
-              <div class="text-body-secondary text-end flex-shrink-0 lh-sm">
-                <%= away %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
       </div>
 
       <%# ---------- what I need ---------- %>
       <div class="mb-4">
-        <p class="mb-0">
+        <p class="text-muted mb-0">
           <%= @listing.listing_note.presence || "No additional notes provided." %>
         </p>
       </div>
 
       <%# ---------- matched: contact + care notes ---------- %>
       <% if @matched_user.present? %>
-        <div class="care-notes shadow-sm">
-          <div class="p-2 mb-3">
-            <div class="d-flex align-items-center gap-3">
-              <div>
-                <h2 class="h4 m-4">
-                  <% if owner == current_user %>
-                    You accepted <%= @matched_user.name %>'s offer
-                  <% else %>
-                    <%= @matched_user.name %> accepted your offer
-                  <% end %>
-                </h2>
+        <div class="care-notes shadow-sm p-4">
 
-                <% if @matched_user.location.present? %>
-                  <p class="text-body-secondary mb-0">
-                    <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i>
-                    <%= @matched_user.location %>
-                  </p>
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <%= avatar_for(@matched_user, size: 56) %>
+
+            <div class="lh-sm">
+
+              <h2 class="h5 mb-1">
+                <% if owner == current_user %>
+                  You accepted <%= @matched_user.name %>'s offer
+                <% else %>
+                  <%= @matched_user.name %> accepted your offer
                 <% end %>
-              </div>
-            </div>
+              </h2>
 
-            <div class="row g-2 mt-3">
-              <div class="col-6">
-                <%= mail_to @matched_user.email,
-                            class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
-                  <i class="fa-regular fa-envelope" aria-hidden="true"></i>
-                  <span>Email <%= @matched_user.name %></span>
-                <% end %>
-              </div>
-
-              <% if @matched_user.mobile.present? %>
-                <div class="col-6">
-                  <%= sms_to @matched_user.mobile,
-                             class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
-                    <i class="fa-regular fa-message" aria-hidden="true"></i>
-                    <span>Message <%= @matched_user.name %></span>
-                  <% end %>
-                </div>
+              <% if @matched_user.location.present? %>
+                <p class="text-body-secondary small mb-0">
+                  <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i>
+                  <%= @matched_user.location %>
+                </p>
               <% end %>
             </div>
           </div>
 
-          <div class="p-2">
-            <h2 class="h5 mb-3">Care instructions</h2>
-            <% pets.each do |pet| %>
-              <div class="mb-3">
-                <h3 class="h6 mb-1"><%= pet.name %></h3>
-                <p class="mb-0 text-body-secondary">
-                  <%= pet.care_instructions.presence || "No care instructions provided." %>
-                </p>
+          <div class="row g-2 mb-4">
+            <div class="col-12 col-sm-6">
+              <%= mail_to @matched_user.email,
+                          class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                <span>Email <%= @matched_user.name %></span>
+              <% end %>
+            </div>
+
+            <% if @matched_user.mobile.present? %>
+              <div class="col-12 col-sm-6">
+                <%= sms_to @matched_user.mobile,
+                          class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                  <i class="fa-regular fa-message" aria-hidden="true"></i>
+                  <span>Message <%= @matched_user.name %></span>
+                <% end %>
               </div>
             <% end %>
           </div>
+
+          <h2 class="h5 mb-3">Care instructions</h2>
+
+          <% pets.each do |pet| %>
+            <div class="mb-3">
+              <h3 class="h6 mb-1"><%= pet.name %></h3>
+              <p class="mb-0 text-body-secondary">
+                <%= pet.care_instructions.presence || "No care instructions provided." %>
+              </p>
+            </div>
+          <% end %>
+
         </div>
 
       <%# ---------- owner, no match yet ---------- %>

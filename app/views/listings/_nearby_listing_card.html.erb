@@ -25,17 +25,14 @@
             <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
             <%= owner.location %>
           </div>
-          <p class="listing-card__dates mb-2">
+          <p class="listing-card__dates mt-2">
             <%= listing.start_date.strftime("%-d %b") %> –
             <%= listing.end_date.strftime("%-d %b") %>
           </p>
         </div>
 
-        <div class="listing-card__owner-meta text-end">
+        <div class="listing-card__owner-meta text-end mx-2">
           <div class="listing-card__owner-name"><%= owner.name %></div>
-          <% if (trust = trust_signal(current_user, owner)) %>
-            <div class="trust trust--<%= trust[:key] %>"><%= trust[:label] %></div>
-          <% end %>
         </div>
       </div>
 
@@ -44,7 +41,7 @@
       <div class="d-flex justify-content-between align-items-center gap-3 mt-auto">
         <p class="listing-card__note mb-0">
           <%= truncate(listing.listing_note.presence || "No additional information provided.",
-                       length: 90) %>
+                       length: 50) %>
         </p>
 
         <%= link_to "View", listing_path(listing),

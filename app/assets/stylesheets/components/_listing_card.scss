@@ -71,6 +71,15 @@
     font-size: .85rem;
     color: rgba($gray, .7);
   }
+
+  &__owner--lg .avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  &__owner-meta--lg {
+    padding-top: 1.9rem;    // 56px avatar overhangs further than 44px
+  }
 }
 
 @media (hover: hover) {
