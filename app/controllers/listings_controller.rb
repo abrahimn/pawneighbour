@@ -5,22 +5,23 @@ class ListingsController < ApplicationController
   end
 
   def mine
-    @my_listings = my_active_listings
+    @my_listings = my_active_listings.to_a
     @attention_listings = @my_listings.select do |listing|
       listing.accepted_offer.blank? && listing.pending_offers.any?
     end
-    @current_offers = activity_offers.where(status: %w[offered accepted])
-    @past_offers = activity_offers.rejected
+    @current_offers = activity_offers.where(status: %w[offered accepted]).to_a
+    @past_offers = activity_offers.rejected.to_a
   end
 
   def new
+    redirect_to new_pet_path, alert: "Add a pet before posting a job." and return if current_user.pets.none?
+
     @listing = Listing.new
     @pets = current_user.pets.order(:name)
   end
 
   def create
-    @pet = current_user.pets.find(params[:listing][:pet_id])
-    @listing = @pet.listings.build(listing_params)
+    @listing = current_user.listings.build(listing_params)
 
     if @listing.save
       redirect_to listing_path(@listing), notice: "Your job was posted."
@@ -32,7 +33,7 @@ class ListingsController < ApplicationController
 
   def show
     @listing = Listing.find(params[:id])
-    @accepted_offer = @listing.offers.find_by(status: "accepted")
+    @accepted_offer = @listing.accepted_offer
 
     @matched_user =
       if @listing.owner == current_user
@@ -60,14 +61,14 @@ class ListingsController < ApplicationController
   end
 
   def my_active_listings
-    current_user.listings.active.includes(:pet, :pending_offers, accepted_offer: :user)
+    current_user.listings.active.includes(:pets, :pending_offers, accepted_offer: :user)
   end
 
   def activity_offers
     current_user.offers
                 .joins(:listing)
                 .merge(Listing.active)
-                .includes(listing: { pet: :user })
+                .includes(listing: %i[owner pets])
                 .order("offers.updated_at DESC")
   end
 
@@ -76,7 +77,8 @@ class ListingsController < ApplicationController
       :listing_type,
       :start_date,
       :end_date,
-      :listing_note
+      :listing_note,
+      pet_ids: []
     )
   end
 end

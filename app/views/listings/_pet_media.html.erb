@@ -1,0 +1,16 @@
+<% hero = pets.first %>
+<div class="position-relative">
+  <% if hero&.avatar&.attached? %>
+    <%= cl_image_tag hero.avatar.key, width: 1000, crop: :scale,
+                    class: "card-img-top listing-card__image",
+                    style: "object-position: #{pet_focal_position(hero)}",
+                    alt: hero.name %>
+  <% else %>
+    <div class="listing-card__image-placeholder"><i class="fa-solid fa-paw"></i></div>
+  <% end %>
+  <% if pets.size > 1 %>
+    <span class="badge rounded-pill text-bg-dark position-absolute bottom-0 end-0 m-2">
+      <%= pets.size %> pets
+    </span>
+  <% end %>
+</div>

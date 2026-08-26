@@ -4,7 +4,7 @@
       <%= render "offer", offer: offer %>
       <% end %>
     <% else %>
-      <p> No offers for <%= @listing.pet.name %> yet - waiting can be ruff 🐶 </p>
+      No offers for <%= @listing.pets.map(&:name).to_sentence %> yet — a neighbour will turn up 🐾
     <% end %>
 
     <%= link_to listing_path(@listing),

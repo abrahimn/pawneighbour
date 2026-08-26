@@ -46,4 +46,12 @@ module ApplicationHelper
   def pet_focal_position(pet)
     PET_FOCAL_POSITIONS.fetch(pet.name, "50% 35%")
   end
+
+  def offer_status_badge(status)
+    case status
+    when "accepted" then ["Matched",      "matched"]
+    when "rejected" then ["Not selected", "past"]
+    else                 ["Pending",      "pending"]
+    end
+  end
 end

@@ -11,11 +11,8 @@
     <% if (trust = trust_signal(current_user, offer.user)) %>
       <p class="trust trust--<%= trust[:key] %> mb-0"><%= trust[:label] %></p>
     <% end %>
-    <p class="card-text mt-2">
-      Status: <%= offer.status.humanize %>
-    </p>
     <% if offer.status == "offered" %>
-      <%= button_to "Accept offer",
+      <%= button_to "Accept",
                     accept_offer_path(offer),
                     method: :patch,
                     class: "btn btn-primary" %>
