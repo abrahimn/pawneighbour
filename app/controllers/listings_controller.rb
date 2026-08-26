@@ -10,7 +10,7 @@ class ListingsController < ApplicationController
       listing.accepted_offer.blank? && listing.pending_offers.any?
     end
     @current_offers = activity_offers.where(status: %w[offered accepted]).to_a
-    @past_offers = activity_offers.rejected.to_a
+    @past_offers = past_offers.to_a
   end
 
   def new
@@ -70,6 +70,12 @@ class ListingsController < ApplicationController
                 .merge(Listing.active)
                 .includes(listing: %i[owner pets])
                 .order("offers.updated_at DESC")
+  end
+
+  def past_offers
+    current_user.offers.rejected
+                .includes(listing: %i[owner pets])
+                .order(updated_at: :desc)
   end
 
   def listing_params

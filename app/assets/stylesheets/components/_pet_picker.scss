@@ -52,7 +52,7 @@
   }
 
   &__input:focus-visible + &__label .pet-picker__photo {
-    outline: 3px solid rgba($coral, .45);
+    outline: 3px solid rgba($coral-dark, .45);
     outline-offset: 3px;
   }
 }

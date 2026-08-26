@@ -7,9 +7,4 @@
       No offers for <%= @listing.pets.map(&:name).to_sentence %> yet — a neighbour will turn up 🐾
     <% end %>
 
-    <%= link_to listing_path(@listing),
-            class: "btn btn-info mb-4",
-            "aria-label": "Back to listing" do %>
-      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-    <% end %>
 </div>

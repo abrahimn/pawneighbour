@@ -22,25 +22,23 @@ module ApplicationHelper
     end
   end
 
-  def pet_photo_url(pet, size: 600)
-    return cl_image_path(pet.avatar.key, width: size, height: size, crop: :fill, gravity: :auto) if pet.avatar.attached?
-
-    pet.profile_pic.presence || "https://placehold.co/#{size}x#{size}?text=#{CGI.escape(pet.name)}"
+  def pet_photo_url(pet, size: 600, height: size)
+    if pet.avatar.attached?
+      cl_image_path(pet.avatar.key, width: size, height: height, crop: :fill, gravity: :auto)
+    else
+      pet.profile_pic.presence ||
+        "https://placehold.co/#{size}x#{height}?text=#{CGI.escape(pet.name)}"
+    end
   end
 
-  def trust_signal(viewer, other) # rubocop:disable Metrics/MethodLength
+  def trust_signal(viewer, other)
     return nil if viewer.nil? || other.nil? || viewer == other
+    return { key: "connected", label: "You're connected" } if viewer.connected_with?(other)
 
-    if viewer.connected_with?(other)
-      { key: "connected", label: "You're connected" }
-    else
-      mutuals = viewer.mutual_connections_with(other)
-      if mutuals.positive?
-        { key: "mutual", label: pluralize(mutuals, "mutual connection") }
-      else
-        { key: "new", label: "New neighbour" }
-      end
-    end
+    ids = viewer.mutual_neighbour_ids_with(other)
+    return { key: "new", label: "New neighbour" } if ids.empty?
+
+    { key: "mutual", label: mutual_sentence(ids) }
   end
 
   def pet_focal_position(pet)
@@ -52,6 +50,27 @@ module ApplicationHelper
     when "accepted" then ["Matched",      "matched"]
     when "rejected" then ["Not selected", "past"]
     else                 ["Pending",      "pending"]
+    end
+  end
+
+  def distance_away(from, to)
+    return nil unless from&.latitude && to&.latitude
+
+    km = Geocoder::Calculations.distance_between(
+      [from.latitude, from.longitude], [to.latitude, to.longitude], units: :km
+    )
+    km < 1 ? "#{(km * 1000).round(-1)}m away" : "#{km.round(1)}km away"
+  end
+
+  private
+
+  def mutual_sentence(ids)
+    if ids.size <= 3
+      names = User.where(id: ids).order(:name).pluck(:name)
+      "You both know #{names.to_sentence}"
+    else
+      names = User.where(id: ids).order(:name).limit(2).pluck(:name)
+      "You both know #{names.to_sentence} and #{pluralize(ids.size - 2, 'other')}"
     end
   end
 end

@@ -21,7 +21,7 @@ class Listing < ApplicationRecord
   validates :end_date, presence: true
   validates :end_date, comparison: { greater_than_or_equal_to: :start_date }
 
-  scope :active, -> { where("start_date >= ?", Time.zone.today).order(:start_date, :id) }
+  scope :active, -> { where("end_date >= ?", Time.zone.today).order(:start_date, :id) }
   scope :available, -> { active.where.not(id: Offer.accepted.select(:listing_id)) }
 
   private

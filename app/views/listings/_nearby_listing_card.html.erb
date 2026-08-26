@@ -2,45 +2,53 @@
 <% owner = listing.owner %>
 
 <div class="col">
-  <article class="card bg-white h-100 shadow-sm rounded-4 overflow-hidden">
+  <article class="listing-card card h-100">
 
-    <%= render "listings/pet_media", pets: listing.pets %>
+    <div class="position-relative">
+      <%= render "listings/pet_media", pets: pets %>
+
+      <span class="badge rounded-pill text-bg-info listing-card__type">
+        <%= listing.listing_type %>
+      </span>
+
+      <span class="listing-card__owner">
+        <%= avatar_for(owner, size: 44) %>
+      </span>
+    </div>
 
     <div class="card-body d-flex flex-column">
-      <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-        <h3 class="h5 mb-0"><%= pets.map(&:name).to_sentence %></h3>
-        <span class="badge rounded-pill text-bg-info flex-shrink-0">
-          <%= listing.listing_type %>
-        </span>
-      </div>
 
-      <p class="text-body-secondary small mb-3">
-        <%= listing.start_date.strftime("%-d %b") %> –
-        <%= listing.end_date.strftime("%-d %b") %>
-      </p>
-
-      <p class="card-text small mb-3">
-        <%= truncate(listing.listing_note.presence || "No additional information provided.",
-                   length: 90) %>
-      </p>
-
-      <div class="d-flex align-items-center gap-2 mb-3">
-        <%= avatar_for(owner, size: 28) %>
-        <div class="small lh-sm">
-          <div><%= owner.name %></div>
-          <div class="text-body-secondary">
-            <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i><%= owner.location %>
+      <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+        <div>
+          <h3 class="h5 mb-1"><%= pets.map(&:name).to_sentence %></h3>
+          <div class="listing-card__place">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <%= owner.location %>
           </div>
+          <p class="listing-card__dates mb-2">
+            <%= listing.start_date.strftime("%-d %b") %> –
+            <%= listing.end_date.strftime("%-d %b") %>
+          </p>
+        </div>
+
+        <div class="listing-card__owner-meta text-end">
+          <div class="listing-card__owner-name"><%= owner.name %></div>
+          <% if (trust = trust_signal(current_user, owner)) %>
+            <div class="trust trust--<%= trust[:key] %>"><%= trust[:label] %></div>
+          <% end %>
         </div>
       </div>
 
-      <% if (trust = trust_signal(current_user, owner)) %>
-        <p class="trust trust--<%= trust[:key] %> small mb-3"><%= trust[:label] %></p>
-      <% end %>
 
-      <div class="mt-auto">
-        <%= link_to "View & offer", listing_path(listing),
-                    class: "btn btn-primary rounded-pill w-100" %>
+
+      <div class="d-flex justify-content-between align-items-center gap-3 mt-auto">
+        <p class="listing-card__note mb-0">
+          <%= truncate(listing.listing_note.presence || "No additional information provided.",
+                       length: 90) %>
+        </p>
+
+        <%= link_to "View", listing_path(listing),
+                    class: "btn btn-primary rounded-pill flex-shrink-0" %>
       </div>
     </div>
   </article>
