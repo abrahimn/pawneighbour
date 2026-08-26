@@ -5,10 +5,10 @@
   <article class="card bg-white h-100 shadow-sm overflow-hidden">
     <% if pet.avatar.attached? %>
       <%= cl_image_tag pet.avatar.key,
-                       width: 500,
-                       height: 300,
-                       crop: :fill,
-                       class: "card-img-top object-fit-cover",
+                       width: 1000,
+                       crop: :scale,
+                       class: "card-img-top listing-card__image",
+                       style: "object-position: #{pet_focal_position(pet)}",
                        alt: pet.name %>
     <% else %>
       <div class="listing-card__image-placeholder">
