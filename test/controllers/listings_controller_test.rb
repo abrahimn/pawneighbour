@@ -21,6 +21,24 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "details.dashboard-disclosure", count: 0
   end
 
+  test "new presents the accessible listing form" do
+    get new_listing_url
+
+    assert_response :success
+    assert_select "main.listing-form-page"
+    assert_select "section.paw-form[aria-labelledby='new-listing-title']"
+    assert_select "h1#new-listing-title", "Pawst a job"
+    assert_select "form.paw-form__fields[action='#{listings_path}']"
+    assert_select "input.pet-picker__input[name='listing[pet_ids][]']"
+    assert_select "select#listing_listing_type[required]"
+    assert_select "input#listing_start_date[type='date'][required]"
+    assert_select "input#listing_end_date[type='date'][required]"
+    assert_select "label[for='listing_start_date']", text: /From/
+    assert_select "label[for='listing_end_date']", text: /To/
+    assert_select "textarea#listing_listing_note[rows='5']"
+    assert_select "button.paw-form__submit", text: /Paw-lease help!/
+  end
+
   test "index excludes listings the current user has already offered on" do
     Offer.create!(listing: @nearby_listing, user: @owner, status: "offered")
 
@@ -42,18 +60,23 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "summary", text: /My listings/
     assert_select "summary", text: /My offers/
     assert_select "details[open]", text: /Needs your attention/
+    assert_select "button.site-navbar__account[aria-label*='attention needed']"
+    assert_select "span.site-navbar__attention", text: "1"
     assert_select "body", text: /Milo/
     assert_select "body", text: /Luna/
   end
 
   test "shows listing details" do
+    @listing.pets << create_pet(@owner, "Otis")
+
     get listing_url(@listing)
 
     assert_response :success
-    assert_select "h1", "Milo"
+    assert_select "h1", "Milo and Otis"
     assert_select "body", text: /Sitting/
     assert_select "body", text: /Please stay overnight/
     assert_select "body", text: /Follow the owner's instructions/
+    assert_select "body", text: /Otis/
     assert_select "body", text: /Alex/
   end
 
@@ -83,7 +106,8 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
 
   def create_listing(owner, pet_name, listing_type, note)
     Listing.create!(
-      pet: create_pet(owner, pet_name),
+      owner: owner,
+      pets: [create_pet(owner, pet_name)],
       listing_type: listing_type,
       start_date: Date.current + 1,
       end_date: Date.current + 3,

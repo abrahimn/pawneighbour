@@ -1,46 +1,65 @@
-<div class="container py-4">
-  <div class="row">
-    <div class="col-12 col-md-8 col-lg-6 mx-auto">
-      <div class="paw-form">
+<% content_for :title, "Pawst a job | Pawneighbour" %>
 
-        <h2 class="mb-1">Pawst a job</h2>
-        <p class="text-body-secondary mb-4">Ask your paw-neighbour for help.</p>
+<main class="listing-form-page">
+  <div class="container listing-form-page__container">
+    <section class="paw-form" aria-labelledby="new-listing-title">
+      <header class="paw-form__header">
+        <span class="paw-form__icon" aria-hidden="true">
+          <i class="fa-solid fa-paw"></i>
+        </span>
+        <h1 id="new-listing-title">Pawst a job</h1>
+        <p>Ask a trusted paw-neighbour for help with your pets.</p>
+      </header>
 
-        <%= simple_form_for @listing do |f| %>
-          <%= f.error_notification %>
-
-          <%= render "listings/pet_picker", form: f, pets: @pets %>
-
-          <%= f.input :listing_type,
-                      label: "What kind of help?",
-                      collection: Listing::TYPES,
-                      include_blank: "Choose the help you need" %>
-
-          <div class="row g-3">
-            <div class="col-6">
-              <%= f.input :start_date,
-                          as: :string,
-                          label: "From",
-                          input_html: { type: "date", min: Date.current } %>
-            </div>
-            <div class="col-6">
-              <%= f.input :end_date,
-                          as: :string,
-                          label: "To",
-                          input_html: { type: "date", min: Date.current } %>
-            </div>
+      <% if @listing.errors.any? %>
+        <div class="paw-form__error-summary" role="alert" aria-live="polite">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <div>
+            <p class="paw-form__error-title">We couldn't pawst your job yet.</p>
+            <p>Please check the highlighted fields below.</p>
           </div>
+        </div>
+      <% end %>
 
-          <%= f.input :listing_note,
-                      label: "Listing details",
-                      placeholder: "What help your pet needs...",
-                      input_html: { rows: 4 } %>
+      <p class="paw-form__required-note">
+        <span aria-hidden="true">*</span> Required fields
+      </p>
 
-          <%= f.button :submit, "Paw-lease help!",
-                      class: "btn btn-primary rounded-pill w-100 mt-3" %>
+      <%= simple_form_for @listing, html: { class: "paw-form__fields" } do |f| %>
+        <%= render "listings/pet_picker", form: f, pets: @pets %>
+
+        <%= f.input :listing_type,
+                    label: "What kind of help?",
+                    collection: Listing::TYPES,
+                    include_blank: "Choose the help you need",
+                    required: true %>
+
+        <div class="paw-form__date-grid">
+          <%= f.input :start_date,
+                      as: :string,
+                      label: "From",
+                      required: true,
+                      input_html: { type: "date", min: Date.current } %>
+
+          <%= f.input :end_date,
+                      as: :string,
+                      label: "To",
+                      required: true,
+                      input_html: { type: "date", min: Date.current } %>
+        </div>
+
+        <%= f.input :listing_note,
+                    as: :text,
+                    label: "Listing details",
+                    placeholder: "What help your pets need...",
+                    hint: "Optional — share routines, timing or anything your neighbour should know.",
+                    input_html: { rows: 5 } %>
+
+        <%= button_tag type: "submit", class: "paw-form__submit" do %>
+          <i class="fa-solid fa-paw" aria-hidden="true"></i>
+          <span>Paw-lease help!</span>
         <% end %>
-
-      </div>
-    </div>
+      <% end %>
+    </section>
   </div>
-</div>
+</main>

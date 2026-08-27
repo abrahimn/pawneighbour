@@ -1,4 +1,4 @@
-<div class="card bg-white shadow-sm mb-2">
+<article class="offer-card">
   <div class="card-body">
 
     <%# ---------- who ---------- %>
@@ -24,7 +24,7 @@
       <% end %>
 
       <% if offer.status == "offered" %>
-        <%= button_to "Accept", accept_offer_path(offer),
+        <%= button_to "Accept offer", accept_offer_path(offer),
                       method: :patch,
                       class: "btn btn-primary rounded-pill px-4 flex-shrink-0 ms-auto" %>
       <% else %>
@@ -34,4 +34,4 @@
     </div>
 
   </div>
-</div>
+</article>

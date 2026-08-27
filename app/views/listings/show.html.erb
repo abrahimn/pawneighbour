@@ -115,6 +115,18 @@
         </p>
       </div>
 
+      <section class="mb-4" aria-labelledby="care-instructions-title">
+        <h2 id="care-instructions-title" class="h5 mb-3">Care instructions</h2>
+        <% pets.each do |pet| %>
+          <div class="mb-3">
+            <h3 class="h6 mb-1"><%= pet.name %></h3>
+            <p class="mb-0 text-body-secondary">
+              <%= pet.care_instructions.presence || "No care instructions provided." %>
+            </p>
+          </div>
+        <% end %>
+      </section>
+
       <%# ---------- matched: contact + care notes ---------- %>
       <% if @matched_user.present? %>
         <div class="care-notes shadow-sm p-4">
@@ -160,17 +172,6 @@
               </div>
             <% end %>
           </div>
-
-          <h2 class="h5 mb-3">Care instructions</h2>
-
-          <% pets.each do |pet| %>
-            <div class="mb-3">
-              <h3 class="h6 mb-1"><%= pet.name %></h3>
-              <p class="mb-0 text-body-secondary">
-                <%= pet.care_instructions.presence || "No care instructions provided." %>
-              </p>
-            </div>
-          <% end %>
 
         </div>
 
