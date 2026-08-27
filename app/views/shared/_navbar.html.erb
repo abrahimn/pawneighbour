@@ -11,7 +11,7 @@
         <div class="site-navbar__signed-in">
           <%= link_to "Help board", listings_path, class: "site-navbar__text-link d-none d-sm-inline-flex" %>
           <%= link_to new_listing_path, class: "site-navbar__post d-none d-sm-inline-flex" do %>
-            Post a request <span aria-hidden="true">↗</span>
+            Pin a request <span aria-hidden="true">↗</span>
           <% end %>
           <div class="dropdown">
           <button class="site-navbar__account" type="button"
@@ -42,7 +42,7 @@
                 <% end %>
               <% end %>
             </li>
-            <li><%= link_to "Help nearby", listings_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Help board", listings_path, class: "dropdown-item" %></li>
             <li><%= link_to "New listing", new_listing_path, class: "dropdown-item" %></li>
             <li><hr class="dropdown-divider"></li>
             <li><%= link_to "Log out", destroy_user_session_path,
@@ -51,8 +51,16 @@
           </div>
         </div>
       <% else %>
-        <%= link_to "Log in", new_user_session_path,
-                    class: "site-navbar__login" %>
+        <div class="site-navbar__public">
+          <%= link_to "How it works", root_path(anchor: "how-it-works"),
+                      class: "site-navbar__text-link site-navbar__public-link d-none d-md-inline-flex" %>
+          <%= link_to "Log in", new_user_session_path,
+                      class: "site-navbar__login" %>
+          <%= link_to new_user_registration_path,
+                      class: "site-navbar__post site-navbar__join" do %>
+            Join the pack <span aria-hidden="true">↗</span>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>

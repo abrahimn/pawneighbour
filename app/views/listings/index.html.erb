@@ -1,4 +1,4 @@
-<% content_for :title, "Help nearby | PawNeighbour" %>
+<% content_for :title, "Help board | PawNeighbour" %>
 
 <main class="page-shell marketplace-page">
   <header class="neighbourhood-hero mb-5" aria-labelledby="nearby-hero-title">
@@ -60,9 +60,16 @@
           </span>
         </div>
 
-        <p class="nearby-summary__count" aria-label="Nearby request summary">
-          <strong><%= pluralize(@nearby_listings.size, "available request") %></strong>
-          within your selected search range
+        <p class="nearby-summary__count" aria-label="Nearby listing summary">
+          <strong>
+            <% if @nearby_listings.empty? %>
+              No listings nearby
+            <% elsif @nearby_listings.one? %>
+              One listing nearby
+            <% else %>
+              <%= @nearby_listings.size %> listings nearby
+            <% end %>
+          </strong>
         </p>
       </div>
     </div>

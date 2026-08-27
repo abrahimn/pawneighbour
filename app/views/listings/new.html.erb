@@ -28,24 +28,143 @@
       <%= simple_form_for @listing, html: { class: "paw-form__fields" } do |f| %>
         <%= render "listings/pet_picker", form: f, pets: @pets %>
 
-        <%= f.input :listing_type,
-                    label: "What kind of help?",
-                    collection: Listing::TYPES,
-                    include_blank: "Choose the help you need",
-                    required: true %>
+        <div class="mb-3">
+          <label class="form-label" for="listing_listing_type">
+            What kind of help? <abbr title="required">*</abbr>
+          </label>
+          <div class="field-guide-select" data-controller="custom-select">
+            <i class="fa-solid fa-hand-holding-heart field-guide-select__icon" aria-hidden="true"></i>
+            <%= f.input_field :listing_type,
+                              collection: Listing::TYPES,
+                              include_blank: "Choose the help you need",
+                              required: true,
+                              aria: { label: "What kind of help?" },
+                              data: { custom_select_target: "select" },
+                              class: "form-select field-guide-select__input" %>
+            <button type="button"
+                    class="field-guide-select__input custom-select__trigger"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                    data-custom-select-target="trigger"
+                    data-action="custom-select#toggle keydown->custom-select#handleTriggerKeydown"
+                    hidden>
+              <span data-custom-select-target="value"></span>
+            </button>
+            <i class="fa-solid fa-chevron-down field-guide-select__chevron" aria-hidden="true"></i>
+            <div class="custom-select__popover"
+                 role="listbox"
+                 data-custom-select-target="menu"
+                 data-action="keydown->custom-select#handleMenuKeydown"
+                 hidden></div>
+            <div class="invalid-feedback <%= "d-block" if @listing.errors[:listing_type].any? %>"
+                 data-custom-select-target="error">
+              <%= @listing.errors[:listing_type].to_sentence %>
+            </div>
+          </div>
+        </div>
 
-        <div class="paw-form__date-grid">
-          <%= f.input :start_date,
-                      as: :string,
-                      label: "From",
-                      required: true,
-                      input_html: { type: "date", min: Date.current } %>
+        <div class="date-range"
+             data-controller="date-range"
+             data-date-range-min-value="<%= Date.current.iso8601 %>">
+          <span class="form-label" id="listing-date-range-label">
+            When do you need help? <abbr title="required">*</abbr>
+          </span>
 
-          <%= f.input :end_date,
-                      as: :string,
-                      label: "To",
-                      required: true,
-                      input_html: { type: "date", min: Date.current } %>
+          <button type="button"
+                  class="date-range__trigger"
+                  aria-labelledby="listing-date-range-label listing-date-range-summary"
+                  aria-haspopup="dialog"
+                  aria-controls="listing-date-range-calendar"
+                  aria-expanded="false"
+                  data-date-range-target="trigger"
+                  data-action="date-range#toggle"
+                  hidden>
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            <span id="listing-date-range-summary" data-date-range-target="summary">
+              Choose a date range
+            </span>
+            <i class="fa-solid fa-chevron-down date-range__chevron" aria-hidden="true"></i>
+          </button>
+
+          <div class="date-range__fallback">
+            <%= f.input :start_date,
+                        as: :string,
+                        label: "Start date",
+                        required: true,
+                        input_html: {
+                          type: "date",
+                          min: Date.current,
+                          data: { date_range_target: "start" }
+                        } %>
+
+            <%= f.input :end_date,
+                        as: :string,
+                        label: "End date",
+                        required: true,
+                        input_html: {
+                          type: "date",
+                          min: Date.current,
+                          data: { date_range_target: "end" }
+                        } %>
+          </div>
+
+          <div class="date-range__popover"
+               id="listing-date-range-calendar"
+               role="dialog"
+               aria-modal="false"
+               aria-labelledby="date-range-month"
+               data-date-range-target="popover"
+               hidden>
+            <div class="date-range__toolbar">
+              <button type="button"
+                      class="date-range__month-button"
+                      aria-label="Previous month"
+                      data-action="date-range#previousMonth">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+              </button>
+              <h2 id="date-range-month" data-date-range-target="monthLabel"></h2>
+              <button type="button"
+                      class="date-range__month-button"
+                      aria-label="Next month"
+                      data-action="date-range#nextMonth">
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div class="date-range__weekdays" aria-hidden="true">
+              <% %w[Mon Tue Wed Thu Fri Sat Sun].each do |day| %>
+                <span><%= day %></span>
+              <% end %>
+            </div>
+
+            <div class="date-range__grid"
+                 role="grid"
+                 aria-labelledby="date-range-month"
+                 data-date-range-target="grid"
+                 data-action="keydown->date-range#navigateCalendar"></div>
+
+            <div class="date-range__selection" aria-live="polite">
+              <div>
+                <span>Selected</span>
+                <strong data-date-range-target="selection">Choose your first day</strong>
+              </div>
+              <div class="date-range__actions">
+                <button type="button" class="date-range__clear" data-action="date-range#clear">
+                  Clear
+                </button>
+                <button type="button" class="date-range__done" data-action="date-range#close">
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p class="date-range__hint">Choose the first and last day you need a neighbour.</p>
+          <p class="date-range__error <%= "is-visible" if @listing.errors[:start_date].any? || @listing.errors[:end_date].any? %>"
+             role="alert"
+             data-date-range-target="error">
+            <%= (@listing.errors[:start_date] + @listing.errors[:end_date]).to_sentence %>
+          </p>
         </div>
 
         <%= f.input :listing_note,

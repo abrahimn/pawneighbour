@@ -19,7 +19,7 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".section-heading--nearby .section-heading__title-row" do
       assert_select ".location-chip", text: @owner.location
     end
-    assert_select ".nearby-summary__count", text: /available request.*within your selected search range/
+    assert_select ".nearby-summary__count", text: "One listing nearby"
     assert_select "h3", "Luna"
     assert_select "h3", text: "Milo", count: 0
     assert_select "details.dashboard-disclosure", count: 0
@@ -35,10 +35,14 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "form.paw-form__fields[action='#{listings_path}']"
     assert_select "input.pet-picker__input[name='listing[pet_ids][]']"
     assert_select "select#listing_listing_type[required]"
+    assert_select ".date-range[data-controller='date-range']"
+    assert_select "button.date-range__trigger", text: /Choose a date range/
+    assert_select ".date-range__popover[role='dialog']"
+    assert_select ".date-range__grid[role='grid']"
     assert_select "input#listing_start_date[type='date'][required]"
     assert_select "input#listing_end_date[type='date'][required]"
-    assert_select "label[for='listing_start_date']", text: /From/
-    assert_select "label[for='listing_end_date']", text: /To/
+    assert_select "label[for='listing_start_date']", text: /Start date/
+    assert_select "label[for='listing_end_date']", text: /End date/
     assert_select "textarea#listing_listing_note[rows='5']"
     assert_select "button.paw-form__submit", text: /Paw-lease help!/
   end
