@@ -41,6 +41,8 @@ module ApplicationHelper
         { key: "new", label: "New neighbour" }
       end
     end
+  end
+
   def pet_focal_position(pet)
     PET_FOCAL_POSITIONS.fetch(pet.name, "50% 35%")
   end
