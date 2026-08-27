@@ -1,14 +1,24 @@
 <% content_for :title, "My activity | PawNeighbour" %>
 
-<main class="container py-4">
-  <header class="neighbourhood-hero mb-5">
-    <%= image_tag "pug-transparent.png",
-                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--pug",
-                  alt: "", aria: { hidden: true } %>
+<main class="page-shell marketplace-page">
+  <header class="neighbourhood-hero mb-5" aria-labelledby="activity-title">
+    <span class="neighbourhood-hero__pet neighbourhood-hero__pet--pug" aria-hidden="true">
+      <%= image_tag "pug-transparent.png",
+                    class: "neighbourhood-hero__pug-layer neighbourhood-hero__pug-body",
+                    alt: "" %>
+      <%= image_tag "pug-transparent.png",
+                    class: "neighbourhood-hero__pug-layer neighbourhood-hero__pug-tongue",
+                    alt: "" %>
+    </span>
 
-    <%= image_tag "playful-cat-transparent.png",
-                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--cat",
-                  alt: "", aria: { hidden: true } %>
+    <span class="neighbourhood-hero__cat" aria-hidden="true">
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "neighbourhood-hero__cat-layer neighbourhood-hero__cat-body",
+                    alt: "" %>
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "neighbourhood-hero__cat-layer neighbourhood-hero__cat-tail",
+                    alt: "" %>
+    </span>
 
     <div class="neighbourhood-hero__content">
       <span class="neighbourhood-hero__eyebrow">

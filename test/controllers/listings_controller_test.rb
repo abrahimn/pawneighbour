@@ -55,6 +55,10 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     get mine_listings_url
 
     assert_response :success
+    assert_select "main.page-shell.marketplace-page"
+    assert_select "header.neighbourhood-hero[aria-labelledby='activity-title']"
+    assert_select ".neighbourhood-hero__pug-tongue", count: 1
+    assert_select ".neighbourhood-hero__cat-tail", count: 1
     assert_select "h1", "My activity"
     assert_select "summary", text: /Needs your attention/
     assert_select "summary", text: /My listings/
