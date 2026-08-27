@@ -35,18 +35,17 @@ module ApplicationHelper
   def trust_signal(viewer, other)
     return nil if viewer.nil? || other.nil? || viewer == other
     return { key: "connected", label: "You're connected" } if viewer.connected_with?(other)
-<<<<<<< HEAD
 
     ids = viewer.mutual_neighbour_ids_with(other)
     return { key: "new", label: "New neighbour" } if ids.empty?
 
     { key: "mutual", label: mutual_sentence(ids) }
-  end
+    if viewer.connected_with?(other)
+      { key: "connected", label: "You're connected" } # rubocop:disable Lint/Void
+    else
+      mutuals = viewer.mutual_connections_with(other)
+    end
 
-  if viewer.connected_with?(other)
-    { key: "connected", label: "You're connected" } # rubocop:disable Lint/Void
-  else
-    mutuals = viewer.mutual_connections_with(other)
     if mutuals.positive?
       { key: "mutual", label: pluralize(mutuals, "mutual connection") }
     else
@@ -54,15 +53,6 @@ module ApplicationHelper
     end
   end
 
-=======
-
-    ids = viewer.mutual_neighbour_ids_with(other)
-    return { key: "new", label: "New neighbour" } if ids.empty?
-
-    { key: "mutual", label: mutual_sentence(ids) }
-  end
-
->>>>>>> c432bc84a55c4e7b22409f172fc85036f98c5b2e
   def pet_focal_position(pet)
     PET_FOCAL_POSITIONS.fetch(pet.name, "50% 35%")
   end

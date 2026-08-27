@@ -1,7 +1,22 @@
 // Define variables for your color scheme
 
 // For example:
+$red: #FD1015;
+$blue: #0D6EFD;
+$yellow: #FFC65A;
+$orange: #E67E22;
+$green:#7CB342;
+$gray: #0E0000;
+$light-gray: #F4F4F4;
 
+// Brand color:
+$coral: #FF6B35;
+$cream: #FFF6E6;
+$choco: #9A5B2E;
+$coral-dark: #D9531E;
+$green-dark:  #3E7C2C;
+$sage: #3f7462;
+$espresso: #2c211c;
 // Runtime design tokens keep the palette consistent in plain CSS as well as SCSS.
 // Component-specific variables should alias these instead of repeating hex values.
 :root {
@@ -19,22 +34,3 @@
   --pn-shadow-md: 0 14px 38px rgba(67, 43, 30, 0.12);
   --pn-radius: 1.35rem;
 }
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green:#7CB342;
-$gray: #0E0000;
-$light-gray: #F4F4F4;
-
-// Brand color:
-$coral: #FF6B35;
-$cream: #FFF6E6;
-$choco: #9A5B2E;
-$coral-dark: #D9531E;
-$green-dark:  #3E7C2C;
-<<<<<<< HEAD
-=======
-$sage: #3f7462;
-$espresso: #2c211c;
->>>>>>> c432bc84a55c4e7b22409f172fc85036f98c5b2e
