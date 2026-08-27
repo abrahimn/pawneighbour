@@ -1,2 +1,320 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<% content_for :title, "Pawneighbour — Pet care, right around the corner" %>
+
+<% content_for :head do %>
+  <meta name="description" content="Find trusted neighbours for walks, drop-ins and pet sitting in your local area—or lend a paw when someone nearby needs help.">
+  <meta property="og:title" content="Pawneighbour — Your pet's village lives nearby">
+  <meta property="og:description" content="A local noticeboard for pet care, made for neighbours—not agencies.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= root_url %>">
+  <meta property="og:image" content="<%= asset_url('/og.png') %>">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A cheerful illustrated pug and cat beside the words: Your pet's village lives around the corner.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pawneighbour — Your pet's village lives nearby">
+  <meta name="twitter:description" content="A local noticeboard for pet care, made for neighbours—not agencies.">
+  <meta name="twitter:image" content="<%= asset_url('/og.png') %>">
+  <%= tag.link rel: "preload", as: "image", type: "image/webp", href: asset_path("pug-landing.webp") %>
+  <%= tag.link rel: "preload", as: "image", type: "image/webp", href: asset_path("cat-landing.webp") %>
+  <script type="application/ld+json">
+    <%= raw({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Pawneighbour",
+      url: root_url,
+      description: "A local noticeboard that helps neighbours arrange pet sitting, walks and drop-ins."
+    }.to_json) %>
+  </script>
+<% end %>
+
+<main class="landing">
+  <section class="landing-hero" aria-labelledby="landing-title">
+    <div class="landing-shell landing-hero__grid">
+      <div class="landing-hero__copy">
+        <p class="landing-kicker landing-hero__kicker">Newtown's pet-care noticeboard <span>Issue 01</span></p>
+        <h1 id="landing-title"><span class="landing-hero__title-line">Your pet’s village lives</span><em>around the corner.</em></h1>
+        <p class="landing-hero__lede">
+          Find a trusted neighbour for walks, drop-ins and sleepovers—or lend a paw when someone nearby needs help.
+        </p>
+        <div class="landing-actions" aria-label="Get started with Pawneighbour">
+          <%= link_to new_user_registration_path, id: "hero-join-cta", class: "landing-button landing-button--primary" do %>
+            Join the neighbourhood <span aria-hidden="true">↗</span>
+          <% end %>
+          <%= link_to "See how it works ↓", root_path(anchor: "how-it-works"),
+                      id: "hero-how-cta", class: "landing-button landing-button--quiet" %>
+        </div>
+        <p class="landing-hero__microproof">
+          <span aria-hidden="true">●</span> Local by design &nbsp;·&nbsp; No agencies &nbsp;·&nbsp; Free to join
+        </p>
+      </div>
+
+      <figure class="landing-board" aria-label="An example pet-sitting request on the Pawneighbour board">
+        <div class="landing-board__pin" aria-hidden="true"></div>
+        <div class="landing-board__header">
+          <span>3 km from you</span>
+          <span>Open request</span>
+        </div>
+        <div class="landing-board__ticket">
+          <span class="landing-board__type">Drop-in</span>
+          <p class="landing-board__date">Sat 29 Aug <span>·</span> 6–7 pm</p>
+          <h2>Neo needs dinner company.</h2>
+          <p>Top up his bowl, refresh his water and stay for a little chin-scratch diplomacy.</p>
+          <div class="landing-board__footer">
+            <span>Newtown, NSW</span>
+            <span>1 friendly cat</span>
+          </div>
+        </div>
+        <%= image_tag "pug-landing.webp", alt: "", class: "landing-board__pug", fetchpriority: "high" %>
+        <%= image_tag "cat-landing.webp", alt: "", class: "landing-board__cat", fetchpriority: "high" %>
+        <figcaption>Real requests. Real neighbours. Happier pets.</figcaption>
+      </figure>
+    </div>
+    <a class="landing-hero__scroll" href="#neighbourly-proof" aria-label="Continue to learn about Pawneighbour">Scroll to sniff around <span aria-hidden="true">↓</span></a>
+  </section>
+
+  <section class="landing-proof" id="neighbourly-proof" aria-label="What makes Pawneighbour different">
+    <div class="landing-proof__track">
+      <span>Neighbour-powered</span><i aria-hidden="true">✦</i>
+      <span>Made for local favours</span><i aria-hidden="true">✦</i>
+      <span>Pets come first</span><i aria-hidden="true">✦</i>
+      <span>Human help, close to home</span><i aria-hidden="true">✦</i>
+    </div>
+  </section>
+
+  <section class="landing-section landing-problem" aria-labelledby="problem-title">
+    <div class="landing-shell landing-problem__grid">
+      <div class="landing-section__heading landing-reveal">
+        <p class="landing-section__number">01 / The familiar scramble</p>
+        <h2 id="problem-title">Pet care shouldn’t start with a group-chat panic.</h2>
+      </div>
+      <div class="landing-problem__copy landing-reveal">
+        <p class="landing-problem__lead">Plans change. Shifts run late. Your dog still needs a walk and your cat remains gloriously indifferent to your calendar.</p>
+        <p>Instead of messaging everyone you know—or handing care to a faceless agency—put one clear request in front of pet people who already live nearby.</p>
+        <aside class="landing-scribble" aria-label="A common pet-care dilemma">
+          <span>The usual plan</span>
+          <s>Send nine awkward texts</s>
+          <strong>Pin one local request.</strong>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-solution" aria-labelledby="solution-title">
+    <div class="landing-shell">
+      <div class="landing-section__heading landing-section__heading--row landing-reveal">
+        <div>
+          <p class="landing-section__number">02 / A better way</p>
+          <h2 id="solution-title">A noticeboard built around the pet.</h2>
+        </div>
+        <p>Small, practical tools for arranging the kind of favour neighbours have always done for one another.</p>
+      </div>
+
+      <div class="landing-bento">
+        <article class="landing-feature landing-feature--lead landing-reveal">
+          <span class="landing-feature__mark" aria-hidden="true">01</span>
+          <div>
+            <p class="landing-feature__eyebrow">Pin the particulars</p>
+            <h3>Make the request unmistakably clear.</h3>
+            <p>Choose the pets, kind of help and date range. Add the little details that turn “Can anyone help?” into an easy yes.</p>
+          </div>
+          <div class="landing-mini-form" aria-hidden="true">
+            <span><i>Who?</i> Dumpling + Neo</span>
+            <span><i>What?</i> A friendly drop-in</span>
+            <span><i>When?</i> 29–31 August</span>
+            <b>Ready to pin ↗</b>
+          </div>
+        </article>
+
+        <article class="landing-feature landing-feature--blue landing-reveal">
+          <span class="landing-feature__glyph" aria-hidden="true">⌖</span>
+          <p class="landing-feature__eyebrow">Properly local</p>
+          <h3>Set the distance that feels nearby.</h3>
+          <p>Browse requests around your neighbourhood, from a close three-kilometre circle outward.</p>
+        </article>
+
+        <article class="landing-feature landing-feature--red landing-reveal">
+          <span class="landing-feature__glyph" aria-hidden="true">☝</span>
+          <p class="landing-feature__eyebrow">You choose</p>
+          <h3>A raised paw is an offer, not an obligation.</h3>
+          <p>Read each note and decide who feels right before making a connection.</p>
+        </article>
+
+        <article class="landing-feature landing-feature--dark landing-reveal">
+          <span class="landing-feature__mark" aria-hidden="true">04</span>
+          <p class="landing-feature__eyebrow">One calm place</p>
+          <h3>Keep requests and offers together.</h3>
+          <p>See what needs attention, what’s been accepted and what’s already sorted without digging through old messages.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-steps" id="how-it-works" aria-labelledby="steps-title">
+    <div class="landing-shell">
+      <div class="landing-section__heading landing-section__heading--centred landing-reveal">
+        <p class="landing-section__number">03 / How it works</p>
+        <h2 id="steps-title">From “oh no” to all sorted.</h2>
+        <p>Three small steps. No agency maze.</p>
+      </div>
+
+      <ol class="landing-steps__list">
+        <li class="landing-step landing-reveal">
+          <span class="landing-step__number">1</span>
+          <div class="landing-step__art" aria-hidden="true"><i></i><i></i><i></i></div>
+          <h3>Pin a request</h3>
+          <p>Tell nearby neighbours which pet needs what, and when.</p>
+        </li>
+        <li class="landing-step landing-reveal">
+          <span class="landing-step__number">2</span>
+          <div class="landing-step__art landing-step__art--paw" aria-hidden="true">♟</div>
+          <h3>Neighbours raise a paw</h3>
+          <p>Local pet people offer to help with a note you can review.</p>
+        </li>
+        <li class="landing-step landing-reveal">
+          <span class="landing-step__number">3</span>
+          <div class="landing-step__art landing-step__art--tick" aria-hidden="true">✓</div>
+          <h3>Choose and connect</h3>
+          <p>Accept the right offer, make a plan and put the kettle on.</p>
+        </li>
+      </ol>
+      <div class="landing-steps__action landing-reveal">
+        <%= link_to new_user_registration_path, id: "steps-join-cta", class: "landing-button landing-button--ink" do %>
+          Make your neighbour profile <span aria-hidden="true">↗</span>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-moments" aria-labelledby="moments-title">
+    <div class="landing-shell">
+      <div class="landing-section__heading landing-section__heading--row landing-reveal">
+        <div>
+          <p class="landing-section__number">04 / Made for real life</p>
+          <h2 id="moments-title">The small favours that save the day.</h2>
+        </div>
+        <p>No inflated promises. Just ordinary pet-care moments made easier by someone close enough to help.</p>
+      </div>
+
+      <div class="landing-moments__grid">
+        <article class="landing-moment landing-reveal">
+          <span class="landing-moment__time">06:40 PM</span>
+          <h3>The train is delayed.</h3>
+          <p>A neighbour drops in to serve dinner and receive the customary cold shoulder from your cat.</p>
+          <span class="landing-moment__tag">Drop-in · tonight</span>
+        </article>
+        <article class="landing-moment landing-moment--lime landing-reveal">
+          <span class="landing-moment__time">08:15 AM</span>
+          <h3>A slower kind of stroll.</h3>
+          <p>Your senior dog gets an unhurried lap of the park with someone happy to stop at every interesting smell.</p>
+          <span class="landing-moment__tag">Walking · weekday</span>
+        </article>
+        <article class="landing-moment landing-moment--blue landing-reveal">
+          <span class="landing-moment__time">SAT + SUN</span>
+          <h3>The weekend away.</h3>
+          <p>A familiar local face keeps the bowls full, the routine steady and the sofa appropriately occupied.</p>
+          <span class="landing-moment__tag">Sitting · weekend</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-promise" aria-labelledby="promise-title">
+    <div class="landing-shell landing-promise__grid">
+      <div class="landing-promise__seal landing-reveal" aria-hidden="true">
+        <span>Pawneighbour</span>
+        <strong>Good people<br>happy paws</strong>
+        <i>Since around the corner</i>
+      </div>
+      <div class="landing-section__heading landing-reveal">
+        <p class="landing-section__number">05 / The neighbourly promise</p>
+        <h2 id="promise-title">Care stays human.</h2>
+        <p class="landing-promise__lead">Pawneighbour helps you find and organise local help. The important part—talking, meeting and deciding who you trust—stays with you.</p>
+        <ul class="landing-promise__list">
+          <li><span>01</span> Clear requests before anyone commits</li>
+          <li><span>02</span> A real choice about who helps</li>
+          <li><span>03</span> Room for the routines only your pet understands</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-section landing-faq" id="faq" aria-labelledby="faq-title">
+    <div class="landing-shell landing-faq__grid">
+      <div class="landing-section__heading landing-reveal">
+        <p class="landing-section__number">06 / Ask away</p>
+        <h2 id="faq-title">Before you join the pack.</h2>
+        <p>Useful answers, minus the fine-print fog.</p>
+      </div>
+      <div class="landing-faq__items">
+        <details class="landing-faq__item landing-reveal">
+          <summary>What kind of pet care can I ask for?<span aria-hidden="true">+</span></summary>
+          <p>You can pin requests for pet sitting, drop-ins and walks. Include dates, pets and care notes so neighbours can offer with confidence.</p>
+        </details>
+        <details class="landing-faq__item landing-reveal">
+          <summary>How local is “nearby”?<span aria-hidden="true">+</span></summary>
+          <p>You control the search distance from the help board. Start close to home and widen the range when you need more options.</p>
+        </details>
+        <details class="landing-faq__item landing-reveal">
+          <summary>Does Pawneighbour choose someone for me?<span aria-hidden="true">+</span></summary>
+          <p>No. Neighbours offer to help, and the person who posted the request decides which offer to accept.</p>
+        </details>
+        <details class="landing-faq__item landing-reveal">
+          <summary>Are neighbours background checked?<span aria-hidden="true">+</span></summary>
+          <p>Pawneighbour is a community noticeboard, not a vetting service. Chat first, meet in a public place and make the same careful checks you would with any new pet carer.</p>
+        </details>
+        <details class="landing-faq__item landing-reveal">
+          <summary>Is it free to join?<span aria-hidden="true">+</span></summary>
+          <p>Yes. You can create a profile, add your pets, browse the board and pin requests without a subscription.</p>
+        </details>
+        <details class="landing-faq__item landing-reveal">
+          <summary>What if my pet has a very particular routine?<span aria-hidden="true">+</span></summary>
+          <p>That is exactly what the care notes are for. Share feeding, walking and personality details before accepting an offer, then confirm everything together.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-final" aria-labelledby="final-title">
+    <div class="landing-shell landing-final__inner landing-reveal">
+      <p class="landing-kicker">Your corner is waiting</p>
+      <h2 id="final-title">A little help.<br><em>A lot more neighbourly.</em></h2>
+      <p>Create your profile, introduce your pets and see who’s lending a paw nearby.</p>
+      <div class="landing-actions landing-final__actions">
+        <%= link_to new_user_registration_path, id: "final-join-cta", class: "landing-button landing-button--primary" do %>
+          Join Pawneighbour free <span aria-hidden="true">↗</span>
+        <% end %>
+        <%= link_to "I already have an account", new_user_session_path,
+                    id: "final-login-cta", class: "landing-button landing-button--quiet" %>
+      </div>
+      <span class="landing-final__pet landing-final__pet--pug" aria-hidden="true">
+        <%= image_tag "pug-landing.webp",
+                      alt: "",
+                      loading: "lazy",
+                      class: "landing-final__pug-layer landing-final__pug-body" %>
+        <%= image_tag "pug-landing.webp",
+                      alt: "",
+                      loading: "lazy",
+                      class: "landing-final__pug-layer landing-final__pug-tongue" %>
+      </span>
+      <span class="landing-final__cat" aria-hidden="true">
+        <%= image_tag "cat-landing.webp",
+                      alt: "",
+                      loading: "lazy",
+                      class: "landing-final__cat-layer landing-final__cat-body" %>
+        <%= image_tag "cat-landing.webp",
+                      alt: "",
+                      loading: "lazy",
+                      class: "landing-final__cat-layer landing-final__cat-tail" %>
+      </span>
+    </div>
+  </section>
+</main>
+
+<% content_for :footer_links do %>
+  <nav class="site-footer__links" aria-label="Footer navigation">
+    <%= link_to "How it works", root_path(anchor: "how-it-works") %>
+    <%= link_to "Questions", root_path(anchor: "faq") %>
+    <%= link_to "Log in", new_user_session_path %>
+    <%= link_to "Join", new_user_registration_path %>
+  </nav>
+<% end %>

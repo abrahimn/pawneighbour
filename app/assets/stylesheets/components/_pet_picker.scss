@@ -27,8 +27,9 @@
     object-fit: cover;
     border: 3px solid transparent;
     box-shadow: 0 0 0 1px rgba($choco, .25);
-    opacity: .65 grayscale(.4);
-    transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
+    opacity: .72;
+    filter: grayscale(.25);
+    transition: opacity .15s ease, filter .15s ease, border-color .15s ease, transform .15s ease;
   }
 
   &__name {
@@ -43,6 +44,7 @@
   &__input:checked + &__label {
     .pet-picker__photo {
       opacity: 1;
+      filter: none;
       border-color: $yellow;
       box-shadow: none;
       transform: scale(1.05);

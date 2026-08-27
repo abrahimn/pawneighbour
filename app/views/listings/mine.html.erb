@@ -21,6 +21,7 @@
     </span>
 
     <div class="neighbourhood-hero__content">
+      <span class="neighbourhood-hero__issue" aria-hidden="true">YOUR PATCH / LIVE</span>
       <span class="neighbourhood-hero__eyebrow">
         🐾 <%= current_user.name %> · at a glance
       </span>
@@ -33,9 +34,13 @@
 
       <%= link_to new_listing_path,
                   class: "btn neighbourhood-hero__button rounded-pill" do %>
-        Ask a fur-riend
-        <i class="fa-solid fa-paw ms-2" aria-hidden="true"></i>
+        Pin a request <span aria-hidden="true">↗</span>
       <% end %>
+    </div>
+    <div class="neighbourhood-hero__stamp" aria-hidden="true">
+      <span>KEEPING TABS</span>
+      <strong>ALL PAWS</strong>
+      <span>ONE PLACE</span>
     </div>
   </header>
 

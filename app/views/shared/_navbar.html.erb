@@ -2,12 +2,18 @@
   <div class="container-fluid site-navbar__inner">
     <%= link_to :root, class: "site-navbar__brand", aria: { label: "Pawneighbour home" } do %>
       <%= image_tag "icons/android-icon-192x192.png", alt: "", class: "site-navbar__logo" %>
-      <span>Pawneighbour</span>
+      <span class="site-navbar__wordmark">Pawneighbour</span>
+      <span class="site-navbar__edition" aria-hidden="true">SYD · 2026</span>
     <% end %>
 
     <div class="ms-auto">
       <% if user_signed_in? %>
-        <div class="dropdown">
+        <div class="site-navbar__signed-in">
+          <%= link_to "Help board", listings_path, class: "site-navbar__text-link d-none d-sm-inline-flex" %>
+          <%= link_to new_listing_path, class: "site-navbar__post d-none d-sm-inline-flex" do %>
+            Pin a request <span aria-hidden="true">↗</span>
+          <% end %>
+          <div class="dropdown">
           <button class="site-navbar__account" type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -36,16 +42,25 @@
                 <% end %>
               <% end %>
             </li>
-            <li><%= link_to "Help nearby", listings_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Help board", listings_path, class: "dropdown-item" %></li>
             <li><%= link_to "New listing", new_listing_path, class: "dropdown-item" %></li>
             <li><hr class="dropdown-divider"></li>
             <li><%= link_to "Log out", destroy_user_session_path,
                             data: { turbo_method: :delete }, class: "dropdown-item" %></li>
           </ul>
+          </div>
         </div>
       <% else %>
-        <%= link_to "Log in", new_user_session_path,
-                    class: "site-navbar__login" %>
+        <div class="site-navbar__public">
+          <%= link_to "How it works", root_path(anchor: "how-it-works"),
+                      class: "site-navbar__text-link site-navbar__public-link d-none d-md-inline-flex" %>
+          <%= link_to "Log in", new_user_session_path,
+                      class: "site-navbar__login" %>
+          <%= link_to new_user_registration_path,
+                      class: "site-navbar__post site-navbar__join" do %>
+            Join the pack <span aria-hidden="true">↗</span>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
