@@ -7,15 +7,32 @@
   border-radius: var(--pn-radius);
   box-shadow: var(--pn-shadow-sm);
   overflow: hidden;
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 
   h3 {
     margin: 0;
     font-size: 1.65rem;
     font-weight: 700;
     letter-spacing: -0.025em;
+  }
+    
+  .card-body { padding: 1rem; }
+
+  &__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  &__image-placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: rgba($yellow, .2);
+    color: $choco;
+    font-size: 3rem;
   }
 }
 
@@ -180,6 +197,7 @@
 @media (prefers-reduced-motion: reduce) {
   .listing-card {
     transition: none;
+    &:hover { transform: none; }
   }
 
   .listing-card__image,
@@ -235,8 +253,11 @@
   &__summary:hover &__toggle {
     background-color: darken($choco, 6%);
   }
+}
 
-  &[open] &__toggle {
-    transform: rotate(180deg);
-  }
+.listing-photo__caption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 2;
 }

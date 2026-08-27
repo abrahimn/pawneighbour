@@ -53,6 +53,9 @@
         <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
         <%= current_user.location %>
       </span>
+      <p class="text-body-secondary mb-0">
+        <%= @nearby_listings.size %> Available requests near <%= current_user.location %>
+      </p>
     </div>
 
     <%= render "radius_filter" %>

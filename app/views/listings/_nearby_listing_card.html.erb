@@ -1,53 +1,51 @@
-<% pet = listing.pet %>
+<% pets  = listing.pets %>
 <% owner = listing.owner %>
 
 <div class="col">
-  <article class="listing-card h-100">
-    <div class="listing-card__media">
-      <% if pet.avatar.attached? %>
-        <%= cl_image_tag pet.avatar.key,
-                         width: 1000,
-                         crop: :scale,
-                         class: "listing-card__image",
-                         style: "object-position: #{pet_focal_position(pet)}",
-                         alt: pet.name %>
-      <% else %>
-        <div class="listing-card__image-placeholder">
-          <i class="fa-solid fa-paw"></i>
-        </div>
-      <% end %>
+  <article class="listing-card card h-100">
 
-      <span class="listing-card__type"><%= listing.listing_type %></span>
+    <div class="position-relative">
+      <%= render "listings/pet_media", pets: pets %>
+
+      <span class="badge rounded-pill text-bg-info listing-card__type">
+        <%= listing.listing_type %>
+      </span>
+
+      <span class="listing-card__owner">
+        <%= avatar_for(owner, size: 44) %>
+      </span>
     </div>
 
-    <div class="listing-card__body">
-      <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-        <h3>
-          <%= pet.name %>
-        </h3>
+    <div class="card-body d-flex flex-column">
+
+      <div class="d-flex justify-content-between align-items-start gap-2 mb-3">
+        <div>
+          <h3 class="h5 mb-1"><%= pets.map(&:name).to_sentence %></h3>
+          <div class="listing-card__place">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <%= owner.location %>
+          </div>
+          <p class="listing-card__dates mt-2">
+            <%= listing.start_date.strftime("%-d %b") %> –
+            <%= listing.end_date.strftime("%-d %b") %>
+          </p>
+        </div>
+
+        <div class="listing-card__owner-meta text-end mx-2">
+          <div class="listing-card__owner-name"><%= owner.name %></div>
+        </div>
       </div>
 
-      <p class="listing-card__date">
-        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
-        <time datetime="<%= listing.start_date.iso8601 %>"><%= listing.start_date.strftime("%-d %b") %></time>
-        <span aria-hidden="true">→</span>
-        <time datetime="<%= listing.end_date.iso8601 %>"><%= listing.end_date.strftime("%-d %b") %></time>
-      </p>
 
-      <p class="listing-card__note">
-        <%= listing.listing_note.presence ||
-            "No additional information provided." %>
-      </p>
 
-      <p class="listing-card__location">
-        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-        <%= owner.location %>
-      </p>
+      <div class="d-flex justify-content-between align-items-center gap-1 mt-auto">
+        <p class="listing-card__note mb-0">
+          <%= truncate(listing.listing_note.presence || "No additional information provided.",
+                       length:100) %>
+        </p>
 
-      <div class="listing-card__action">
-        <%= link_to "View & offer",
-                    listing_path(listing),
-                    class: "listing-card__link" %>
+        <%= link_to "View", listing_path(listing),
+                    class: "btn btn-primary rounded-pill flex-shrink-0" %>
       </div>
     </div>
   </article>

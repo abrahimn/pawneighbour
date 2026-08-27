@@ -24,7 +24,6 @@
           <ul class="dropdown-menu dropdown-menu-end">
             <li class="dropdown-header"><%= current_user.name %></li>
             <li><hr class="dropdown-divider"></li>
-            <li><%= link_to "Help nearby", listings_path, class: "dropdown-item" %></li>
             <li>
               <%= link_to mine_listings_path,
                           class: "dropdown-item d-flex justify-content-between align-items-center gap-3" do %>
@@ -37,6 +36,7 @@
                 <% end %>
               <% end %>
             </li>
+            <li><%= link_to "Help nearby", listings_path, class: "dropdown-item" %></li>
             <li><%= link_to "New listing", new_listing_path, class: "dropdown-item" %></li>
             <li><hr class="dropdown-divider"></li>
             <li><%= link_to "Log out", destroy_user_session_path,

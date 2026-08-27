@@ -11,10 +11,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_activity_attention_count
-    @activity_attention_count = Offer
-                                .pending
-                                .joins(listing: :pet)
-                                .where(pets: { user_id: current_user.id })
-                                .count
+    @activity_attention_count = Offer.pending.where(listing: current_user.listings).count
   end
 end
