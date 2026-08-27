@@ -12,13 +12,10 @@
 
     <div class="neighbourhood-hero__content">
       <span class="neighbourhood-hero__eyebrow">
-        🐾 Hi <%= current_user.name %>
+        🐾 <%= current_user.name %> · at a glance
       </span>
 
-      <h1 class="neighbourhood-hero__title">
-        My activity
-        <span>at a glance!</span>
-      </h1>
+      <h1 class="neighbourhood-hero__title" id="activity-title">My activity</h1>
 
       <p class="neighbourhood-hero__description">
         Keep track of your pet-care requests, offers and matches.

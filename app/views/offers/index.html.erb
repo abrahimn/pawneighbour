@@ -1,10 +1,29 @@
-<div class="container py-4">
-    <% if @offers.any? %>
-      <% @offers.each do |offer| %>
-      <%= render "offer", offer: offer %>
-      <% end %>
-    <% else %>
-      No offers for <%= @listing.pets.map(&:name).to_sentence %> yet — a neighbour will turn up 🐾
-    <% end %>
+<% content_for :title, "Offers for #{@listing.pet.name} | Pawneighbour" %>
 
-</div>
+<main class="page-shell offers-page">
+  <header class="offers-header">
+    <span class="offers-header__eyebrow">Paw-proposals</span>
+    <h1>Help for <%= @listing.pet.name %></h1>
+    <p class="mb-0">
+      <%= pluralize(@offers.size, "neighbour") %> ready to lend a paw.
+    </p>
+  </header>
+
+  <% if @offers.any? %>
+    <div class="d-grid gap-3 mb-4">
+      <%= render partial: "offer", collection: @offers, as: :offer %>
+    </div>
+  <% else %>
+    <div class="empty-state mb-4">
+      <span class="empty-state__mark" aria-hidden="true"><i class="fa-solid fa-dog"></i></span>
+      <h2 class="h4">Waiting can be ruff</h2>
+      <p class="text-body-secondary mb-0">
+        No offers for <%= @listing.pet.name %> yet. We’ll keep our ears up.
+      </p>
+    </div>
+  <% end %>
+
+  <%= link_to listing_path(@listing), class: "btn btn-outline-primary rounded-pill" do %>
+    <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i> Back to listing
+  <% end %>
+</main>

@@ -1,15 +1,24 @@
-<nav class="navbar navbar-expand-xs navbar-light navbar-brand">
-  <div class="container-fluid">
-    <%= link_to :root, class: "navbar-logo" do %>
-      <%= image_tag "icons/android-icon-192x192.png", alt: "PawNeighbour", class:"navbar-logo" %>
+<nav class="navbar navbar-light site-navbar" aria-label="Primary navigation">
+  <div class="container-fluid site-navbar__inner">
+    <%= link_to :root, class: "site-navbar__brand", aria: { label: "Pawneighbour home" } do %>
+      <%= image_tag "icons/android-icon-192x192.png", alt: "", class: "site-navbar__logo" %>
+      <span>Pawneighbour</span>
     <% end %>
 
     <div class="ms-auto">
       <% if user_signed_in? %>
         <div class="dropdown">
-          <button class="btn p-0 border-0 bg-transparent" type="button"
-                  data-bs-toggle="dropdown" aria-expanded="false" aria-label="Account menu">
+          <button class="site-navbar__account" type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  aria-label="<%= @activity_attention_count.to_i.positive? ? "Account menu, attention needed for #{pluralize(@activity_attention_count, 'activity item')}" : "Account menu" %>">
             <%= avatar_for(current_user) %>
+
+            <% if @activity_attention_count.to_i.positive? %>
+              <span class="site-navbar__attention" aria-hidden="true">
+                <%= @activity_attention_count %>
+              </span>
+            <% end %>
           </button>
 
           <ul class="dropdown-menu dropdown-menu-end">
@@ -35,8 +44,8 @@
           </ul>
         </div>
       <% else %>
-        <%= link_to "Login", new_user_session_path,
-                    class: "btn btn-sm btn-primary rounded-pill px-3" %>
+        <%= link_to "Log in", new_user_session_path,
+                    class: "site-navbar__login" %>
       <% end %>
     </div>
   </div>
