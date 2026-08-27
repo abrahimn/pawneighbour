@@ -16,10 +16,10 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h2", "Help nearby"
-    assert_select ".section-heading--nearby .nearby-summary" do
+    assert_select ".section-heading--nearby .section-heading__title-row" do
       assert_select ".location-chip", text: @owner.location
-      assert_select ".nearby-summary__count", text: /available request/
     end
+    assert_select ".nearby-summary__count", text: /available request.*within your selected search range/
     assert_select "h3", "Luna"
     assert_select "h3", text: "Milo", count: 0
     assert_select "details.dashboard-disclosure", count: 0

@@ -45,19 +45,17 @@
   <section aria-labelledby="nearby-listings-title">
     <div class="section-heading section-heading--nearby">
       <div class="section-heading__intro">
-        <h2 id="nearby-listings-title">Help nearby</h2>
-        <p>Real requests from neighbours around you.</p>
-      </div>
+        <div class="section-heading__title-row">
+          <h2 id="nearby-listings-title">Help nearby</h2>
+          <span class="location-chip">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <%= current_user.location %>
+          </span>
+        </div>
 
-      <div class="nearby-summary" aria-label="Nearby request summary">
-        <span class="location-chip">
-          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-          <%= current_user.location %>
-        </span>
-
-        <p class="nearby-summary__count">
+        <p class="nearby-summary__count" aria-label="Nearby request summary">
           <strong><%= pluralize(@nearby_listings.size, "available request") %></strong>
-          <span>within your selected search range</span>
+          within your selected search range
         </p>
       </div>
     </div>
