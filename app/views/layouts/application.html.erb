@@ -26,9 +26,15 @@
 
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body>
+    <%= render "shared/navbar" %>
+    <%= render "shared/flashes" %>
 
     <%= yield %>
+    <footer class="site-footer">
+      <span>Pawneighbour</span>
+      <span class="site-footer__rule" aria-hidden="true"></span>
+      <span>Good people. Happy paws. Right around the corner.</span>
+    </footer>
   </body>
 </html>

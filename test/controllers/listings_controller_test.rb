@@ -15,7 +15,7 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     get listings_url
 
     assert_response :success
-    assert_select "h2", "Help nearby"
+    assert_select "h2", "On the board"
     assert_select ".section-heading--nearby .section-heading__title-row" do
       assert_select ".location-chip", text: @owner.location
     end

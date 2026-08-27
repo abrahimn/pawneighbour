@@ -21,8 +21,9 @@
     </span>
 
     <div class="neighbourhood-hero__content">
+      <span class="neighbourhood-hero__issue" aria-hidden="true">COMMUNITY BOARD / 01</span>
       <span class="neighbourhood-hero__eyebrow">
-        🐾 Hi <%= current_user.name %>!
+        Live from <%= current_user.location.to_s.split(",").first %>
       </span>
 
       <h1 class="neighbourhood-hero__title" id="nearby-hero-title">
@@ -31,14 +32,20 @@
       </h1>
 
       <p class="neighbourhood-hero__description">
-        Ask for pet help or lend a paw to a PawNeighbour nearby.
+        The local noticeboard for walks, drop-ins and last-minute favours.
+        No agencies. Just neighbours.
       </p>
 
       <%= link_to new_listing_path,
                   class: "btn neighbourhood-hero__button rounded-pill" do %>
-        Ask a fur-riend
-        <i class="fa-solid fa-paw ms-2"></i>
+        Pin a request
+        <span aria-hidden="true">↗</span>
       <% end %>
+    </div>
+    <div class="neighbourhood-hero__stamp" aria-hidden="true">
+      <span>NEIGHBOUR</span>
+      <strong>TO NEIGHBOUR</strong>
+      <span>SINCE 2026</span>
     </div>
   </header>
 
@@ -46,7 +53,7 @@
     <div class="section-heading section-heading--nearby">
       <div class="section-heading__intro">
         <div class="section-heading__title-row">
-          <h2 id="nearby-listings-title">Help nearby</h2>
+          <h2 id="nearby-listings-title">On the board</h2>
           <span class="location-chip">
             <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
             <%= current_user.location %>
