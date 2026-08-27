@@ -1,0 +1,54 @@
+<% content_for :title, "Lost pets nearby | PawNeighbour" %>
+
+<main class="page-shell alerts-page">
+
+  <header class="alerts-hero mb-4">
+    <div class="alerts-hero__content">
+      <p class="alerts-hero__eyebrow">Community alerts</p>
+
+      <h1 class="alerts-hero__title">Lost pets nearby</h1>
+
+      <p class="alerts-hero__description">
+        If you've seen one of these pets, even briefly, say so. A single sighting narrows the search enormously.
+      </p>
+
+      <%= link_to new_amber_alert_path, class: "btn btn-danger rounded-pill" do %>
+        <i class="fa-solid fa-triangle-exclamation me-2" aria-hidden="true"></i>
+        Report a missing pet
+      <% end %>
+    </div>
+  </header>
+
+  <section aria-labelledby="alerts-title">
+    <div class="section-heading">
+      <div class="section-heading__intro">
+        <div class="section-heading__title-row">
+          <h2 id="alerts-title">Reported missing</h2>
+          <span class="location-chip">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <%= current_user.location %>
+          </span>
+        </div>
+
+        <p class="nearby-summary__count">
+          <strong><%= pluralize(@alerts.size, "pet") %></strong>
+          reported missing within your search range
+        </p>
+      </div>
+    </div>
+
+    <% if @alerts.any? %>
+      <div class="d-grid gap-3">
+        <%= render partial: "amber_alerts/alert_card", collection: @alerts, as: :alert %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="empty-state__mark" aria-hidden="true"><i class="fa-solid fa-paw"></i></span>
+        <h3 class="h4">No pets reported missing</h3>
+        <p class="text-body-secondary mb-0">
+          That's good news. Alerts from your neighbourhood will appear here.
+        </p>
+      </div>
+    <% end %>
+  </section>
+</main>

@@ -1,0 +1,58 @@
+// components/_alert_card.scss
+.alert-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 8px rgba($gray, .08);
+
+  @media (max-width: 400px) {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  &__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: .75rem;
+  }
+
+  &__flag {
+    margin: 0;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: $coral-dark;
+  }
+
+  &__raised {
+    font-size: .7rem;
+    color: rgba($gray, .45);
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 .25rem;
+  }
+
+  &__meta {
+    font-size: .82rem;
+    color: rgba($gray, .6);
+  }
+
+  &__sightings {
+    font-size: .78rem;
+    color: rgba($gray, .45);
+
+    &--some {
+      color: $green-dark;
+      font-weight: 600;
+    }
+  }
+}

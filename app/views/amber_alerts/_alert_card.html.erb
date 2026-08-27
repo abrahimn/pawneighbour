@@ -1,0 +1,50 @@
+<%# app/views/amber_alerts/_alert_card.html.erb %>
+<% pet       = alert.pet %>
+<% sightings = alert.alert_responses.size %>
+
+<article class="alert-card">
+
+  <div class="alert-card__media">
+    <img src="<%= pet_photo_url(pet, size: 240) %>" alt="<%= pet.name %>">
+  </div>
+
+  <div class="alert-card__body">
+
+    <div class="d-flex justify-content-between align-items-start gap-2">
+      <p class="alert-card__flag">Missing</p>
+      <span class="alert-card__raised">
+        reported <%= time_ago_in_words(alert.created_at) %> ago
+      </span>
+    </div>
+
+    <h2 class="alert-card__name"><%= pet.name %></h2>
+
+    <p class="alert-card__meta mb-1">
+      <%= pet.species %> · <%= pluralize(pet.age, "year") %> old ·
+      last seen <%=  %>
+    </p>
+
+    <p class="alert-card__meta mb-3">
+      <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i><%= alert.location %>
+      <% if (away = distance_away(current_user, alert.creator)) %>
+        · <%= away %>
+      <% end %>
+    </p>
+
+    <div class="d-flex justify-content-between align-items-center gap-2">
+      <span class="alert-card__sightings <%= "alert-card__sightings--some" if sightings.positive? %>">
+        <% if sightings.zero? %>
+          No sightings yet
+        <% else %>
+          <i class="fa-solid fa-eye me-1" aria-hidden="true"></i>
+          <%= pluralize(sightings, "sighting") %>
+        <% end %>
+      </span>
+
+      <%= link_to amber_alert_path(alert),
+                  class: "btn btn-sm btn-danger rounded-pill px-3 flex-shrink-0" do %>
+        Found <%= pet.name %>
+      <% end %>
+    </div>
+  </div>
+</article>

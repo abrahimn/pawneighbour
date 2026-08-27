@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get "amber_alerts/index"
+  get "amber_alerts/new"
+  get "amber_alerts/create"
+  get "amber_alerts/show"
   devise_for :users
   root to: "listings#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -11,6 +15,10 @@ Rails.application.routes.draw do
     end
   end
   resources :connections, only: [:index, :show, :create]
+
+  resources :amber_alerts, only: [:index, :new, :create, :show] do
+    resources :alert_responses, only: [:create]
+  end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
