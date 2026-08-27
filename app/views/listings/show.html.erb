@@ -1,159 +1,218 @@
-<% content_for :title, "#{@listing.pet.name} | Pawneighbour" %>
+<% pets = @listing.pets %>
+<% hero = pets.first %>
+<% owner = @listing.owner %>
+
+<% content_for :title, "#{pets.map(&:name).to_sentence} | PawNeighbour" %>
 
 <div class="container py-4">
   <div class="card bg-white shadow-sm overflow-hidden">
-    <div class="row g-0">
-      <%# pet photo %>
-      <% if @listing.pet.avatar.attached? %>
-        <div class="ratio ratio-4x3">
-          <%= cl_image_tag @listing.pet.avatar.key,
-                           width: 1600,
-                           crop: :scale,
-                           class: "listing-detail__image",
-                           style: "object-position: #{pet_focal_position(@listing.pet)}",
-                           alt: @listing.pet.name %>
-        </div>
-      <% end %>
-      <%# main body %>
-      <div class="col-12">
-        <div class="card-body p-4">
-          <%# pet info %>
-          <div class="card-primary d-flex flex-column justify-content-between">
-            <div class="d-flex justify-content-between mb-2">
-              <h1 class="card-title"><%= @listing.pet.name %></h1>
-              <p class="text-muted mb-4">
-                <%= @listing.pet.species %> ·
-                <%= pluralize(@listing.pet.age, "year") %> old
-              </p>
-            </div>
-            <div class="d-flex justify-content-between mb-2">
-              <h5 class="text-info">
-                <%= l(@listing.start_date, format: :short) %> –
-                <%= l(@listing.end_date, format: :short) %>
-              </h5>
-              <div class="btn btn-sm rounded-pill text-bg-info mb-2">
-                <%= @listing.listing_type %>
-              </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="mb-2 d-flex justify-content-start ">
-                <div class="avatar">
-                  <%= avatar_for(@listing.owner) %>
-                </div>
-                  <div class="d-flex flex-column p-2">
-                    <div class="mx-2"><%= @listing.owner.name %></div>
-                    <div class="text-muted mx-2">
-                      <% if (trust = trust_signal(current_user, @listing.owner)) %>
-                        <p class="trust trust--<%= trust[:key] %> mb-0"><%= trust[:label] %></p>
-                      <% end %>
-                    </div>
-                  </div>
-              </div>
-              <% if @listing.owner.location.present? %>
-                <div>
-                  <i class="fa-solid fa-map-pin"></i>
-                  <%= @listing.owner.location %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div class="card-secondary mb-4">
-            <%# <h2 class="h5">What I need</h2> %>
-            <p class="mb-0 text-muted">
-              <%= @listing.listing_note.presence || "No additional notes provided." %>
-            </p>
-          </div>
-          <%# display when matched %>
-          <% if @matched_user.present? %>
-            <div class="care-notes shadow-sm">
-              <%# matched contact info %>
-              <div class="card-body mb-3 p-2">
-                <div class="d-flex align-items-center gap-3">
-                  <%= avatar_for(@matched_user) %>
-                  <div><% my_offer = @listing.offers.find_by(user: current_user) %>
-                    <span class="badge rounded-pill text-bg-success mb-2">
-                      It’s a match!
-                    </span>
-
-                    <h2 class="h4 mb-1">
-                      <% if @listing.owner == current_user %>
-                        You accepted <%= @matched_user.name %>’s offer
-                      <% else %>
-                        <%= @matched_user.name %> accepted your offer
-                      <% end %>
-                    </h2>
-
-                    <% if @matched_user.location.present? %>
-                      <p class="text-muted mb-0">
-                        <i class="fa-solid fa-map-pin"></i>
-                        <%= @matched_user.location%>
-                      </p>
-                    <% end %>
-                  </div>
-                </div>
-                <div class="row g-2 mt-3">
-                  <div class="col-12 col-sm-6">
-                    <%= mail_to @matched_user.email,
-                                class: "btn btn-primary w-100" do%>
-                                <i class="fa-regular fa-envelope"></i>
-                                Email <%= @matched_user.name %>
-                                <% end %>
-                  </div>
-                  <% if @matched_user.mobile.present? %>
-                    <div class="col-12 col-sm-6">
-                      <%= sms_to @matched_user.mobile,
-                                   class: "btn btn-primary w-100" do%>
-                                   <i class="fa-regular fa-message"></i>
-                                   Message <%= @matched_user.name%>
-                                   <% end %>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-              <%# care instruction %>
-              <div class="mb-3 p-2">
-                <h2 class="h5">Care instructions</h2>
-                <p class="mb-0 text-muted">
-                  <%= @listing.pet.care_instructions.presence || "No care instructions provided." %>
-                </p>
-              </div>
-            </div>
-          <%# display to owner default %>
-          <% else %>
-            <% if @listing.owner == current_user %>
-              <% count = @listing.offers.count %>
-              <% text = count.zero? ? "No paw-proposals yet 🐾"
-                        : "You have #{pluralize(count, 'paw-proposal')} 🐾" %>
-              <% display = count.zero? ? "disabled" : "" %>
-              <%= link_to "#{text}",
-                listing_offers_path(@listing),
-                class: "btn btn-outline-info w-100 mt-4 px-3 #{display}" %>
-            <%# display to others default %>
-            <% else %>
-              <% my_offer = @listing.offers.find_by(user: current_user) %>
-              <% if @accepted_offer.present? %>
-                <% if my_offer.present? %>
-                  <span class="btn btn-secondary my-4 w-100">
-                    Not selected this time
-                  </span>
-                <% else %>
-                  <span class="btn btn-primary my-4 w-100">
-                    <%= @listing.owner.name %> has found a sitter
-                  </span>
-                <% end %>
-              <% elsif my_offer.present? %>
-                <span class="btn btn-info my-4 w-100 disabled">
-                  Owner is reviewing your offer
-                </span>
-
-              <% else %>
-                <%= button_to "Make an offer", listing_offers_path(@listing),
-                              class: "btn btn-primary my-4 w-100" %>
-              <% end %>
-            <% end %>
+    <%# ---------- hero photo ---------- %>
+    <% carousel_id = "listing-#{@listing.id}-photos" %>
+    <% if pets.size > 1 %>
+      <div id="<%= carousel_id %>" class="carousel slide listing-carousel">
+        <div class="carousel-indicators">
+          <% pets.each_with_index do |pet, i| %>
+            <button type="button"
+                    data-bs-target="#<%= carousel_id %>"
+                    data-bs-slide-to="<%= i %>"
+                    class="<%= "active" if i.zero? %>"
+                    aria-current="<%= i.zero? %>"
+                    aria-label="Photo of <%= pet.name %>"></button>
           <% end %>
         </div>
+
+        <div class="carousel-inner">
+          <% pets.each_with_index do |pet, i| %>
+            <div class="carousel-item <%= "active" if i.zero? %>">
+              <div class="ratio ratio-4x3">
+                <img src="<%= pet_photo_url(pet, size: 1200, height: 900) %>"
+                    class="listing-detail__image" alt="<%= pet.name %>">
+              </div>
+
+              <div class="listing-photo__caption">
+                <span class="badge rounded-pill text-bg-light">
+                  <%= pet.name %> · <%= pluralize(pet.age, "year") %> old
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#<%= carousel_id %>" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous pet</span>
+        </button>
+
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#<%= carousel_id %>" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next pet</span>
+        </button>
       </div>
+
+    <% else %>
+      <div class="position-relative">
+        <div class="ratio ratio-4x3">
+          <img src="<%= pet_photo_url(hero, size: 800, height: 600) %>"
+              class="listing-detail__image"
+              alt="<%= hero&.name %>">
+        </div>
+
+        <div class="listing-photo__caption">
+          <span class="badge rounded-pill text-bg-light">
+            <%= hero.name %> · <%= pluralize(hero.age, "year") %> old
+          </span>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="card-body p-4">
+      <%# ---------- pets ---------- %>
+      <div class="d-flex justify-content-between align-items-start gap-3 mb-0">
+        <div>
+          <h1 class="h3 mb-1"><%= pets.map(&:name).to_sentence %></h1>
+        </div>
+
+        <span class="badge rounded-pill text-bg-info flex-shrink-0">
+          <%= @listing.listing_type %>
+        </span>
+
+      </div>
+
+      <div class="listing-card__dates mb-3">
+        <%= l(@listing.start_date, format: :short) %> –
+        <%= l(@listing.end_date, format: :short) %>
+      </div>
+
+      <%# ---------- owner ---------- %>
+      <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <%= avatar_for(owner) %>
+          <div class="lh-sm">
+            <div><%= owner.name %></div>
+            <% if owner.location.present? %>
+              <div class="text-body-secondary small flex-shrink-0 my-1 lh-sm">
+                <div>
+                  <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i>
+                  <%= owner.location %>
+                </div>
+              </div>
+            <% end %>
+            <% if (trust = trust_signal(current_user, owner)) %>
+              <span class="trust trust--<%= trust[:key] %> small"><%= trust[:label] %></span>
+            <% end %>
+          </div>
+        </div>
+
+
+      </div>
+
+      <%# ---------- what I need ---------- %>
+      <div class="mb-4">
+        <p class="text-muted mb-0">
+          <%= @listing.listing_note.presence || "No additional notes provided." %>
+        </p>
+      </div>
+
+      <%# ---------- matched: contact + care notes ---------- %>
+      <% if @matched_user.present? %>
+        <div class="care-notes shadow-sm p-4">
+
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <%= avatar_for(@matched_user, size: 56) %>
+
+            <div class="lh-sm">
+
+              <h2 class="h5 mb-1">
+                <% if owner == current_user %>
+                  You accepted <%= @matched_user.name %>'s offer
+                <% else %>
+                  <%= @matched_user.name %> accepted your offer
+                <% end %>
+              </h2>
+
+              <% if @matched_user.location.present? %>
+                <p class="text-body-secondary small mb-0">
+                  <i class="fa-solid fa-map-pin me-1" aria-hidden="true"></i>
+                  <%= @matched_user.location %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-4">
+            <div class="col-12 col-sm-6">
+              <%= mail_to @matched_user.email,
+                          class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                <span>Email <%= @matched_user.name %></span>
+              <% end %>
+            </div>
+
+            <% if @matched_user.mobile.present? %>
+              <div class="col-12 col-sm-6">
+                <%= sms_to @matched_user.mobile,
+                          class: "btn btn-success w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                  <i class="fa-regular fa-message" aria-hidden="true"></i>
+                  <span>Message <%= @matched_user.name %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <h2 class="h5 mb-3">Care instructions</h2>
+
+          <% pets.each do |pet| %>
+            <div class="mb-3">
+              <h3 class="h6 mb-1"><%= pet.name %></h3>
+              <p class="mb-0 text-body-secondary">
+                <%= pet.care_instructions.presence || "No care instructions provided." %>
+              </p>
+            </div>
+          <% end %>
+
+        </div>
+
+      <%# ---------- owner, no match yet ---------- %>
+      <% elsif owner == current_user %>
+        <% count = @listing.offers.count %>
+        <% if count.zero? %>
+          <span class="btn btn-outline-secondary w-100 mt-4 disabled">
+            No paw-proposals yet 🐾
+          </span>
+        <% else %>
+          <%= link_to "You have #{pluralize(count, 'paw-proposal')} 🐾",
+                      listing_offers_path(@listing),
+                      class: "btn btn-outline-info w-100 mt-4" %>
+        <% end %>
+
+      <%# ---------- sitter view ---------- %>
+      <% else %>
+        <% my_offer = @listing.offers.find_by(user: current_user) %>
+
+        <% if @accepted_offer.present? %>
+          <% if my_offer.present? %>
+            <span class="btn btn-secondary w-100 my-4 disabled">
+              Not selected this time 🐾
+            </span>
+          <% else %>
+            <span class="btn btn-secondary w-100 my-4 disabled">
+              <%= owner.name %> has found a sitter
+            </span>
+          <% end %>
+
+        <% elsif my_offer.present? %>
+          <span class="btn btn-info w-100 my-4 disabled">
+            Owner is reviewing your offer
+          </span>
+
+        <% else %>
+          <%= button_to "Make an offer", listing_offers_path(@listing),
+                        class: "btn btn-primary w-100 my-4" %>
+        <% end %>
+      <% end %>
+
     </div>
   </div>
 </div>
