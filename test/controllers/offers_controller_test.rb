@@ -41,6 +41,10 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     assert_select "main.offers-page"
     assert_select "h1", "Help for Milo and Otis"
     assert_select "article.offer-card", count: 1
+    assert_select ".offer-card__content", count: 1
+    assert_select ".offer-card__person h2", "Sam"
+    assert_select ".offer-card__meta", text: /Sydney, NSW/
+    assert_select ".offer-card__action", count: 1
     assert_select "button", text: /Accept offer/
   end
 

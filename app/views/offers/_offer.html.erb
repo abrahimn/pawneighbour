@@ -1,37 +1,33 @@
 <article class="offer-card">
-  <div class="card-body">
-
-    <%# ---------- who ---------- %>
-    <div class="d-flex align-items-center gap-3 mb-3">
+  <div class="offer-card__content">
+    <div class="offer-card__person">
       <%= avatar_for(offer.user, size: 48) %>
 
-      <div class="lh-sm">
-        <h3 class="h6 mb-1"><%= offer.user.name %></h3>
-        <p class="text-body-secondary small mb-0">
+      <div class="offer-card__details">
+        <h2><%= offer.user.name %></h2>
+        <p class="offer-card__meta">
           <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i>
           <%= offer.user.location %>
           <% if (away = distance_away(current_user, offer.user)) %>
             · <%= away %>
           <% end %>
         </p>
+
+        <% if (trust = trust_signal(current_user, offer.user)) %>
+          <p class="trust trust--<%= trust[:key] %> offer-card__trust"><%= trust[:label] %></p>
+        <% end %>
       </div>
     </div>
 
-    <%# ---------- trust + action ---------- %>
-    <div class="d-flex justify-content-between align-items-center gap-3">
-      <% if (trust = trust_signal(current_user, offer.user)) %>
-        <p class="trust trust--<%= trust[:key] %> small mb-0"><%= trust[:label] %></p>
-      <% end %>
-
+    <div class="offer-card__action">
       <% if offer.status == "offered" %>
         <%= button_to "Accept offer", accept_offer_path(offer),
                       method: :patch,
-                      class: "btn btn-primary rounded-pill px-4 flex-shrink-0 ms-auto" %>
+                      class: "btn btn-primary rounded-pill" %>
       <% else %>
         <% label, tone = offer_status_badge(offer.status) %>
-        <span class="status-badge status-badge--<%= tone %> ms-auto"><%= label %></span>
+        <span class="status-badge status-badge--<%= tone %>"><%= label %></span>
       <% end %>
     </div>
-
   </div>
 </article>

@@ -332,17 +332,29 @@ a:focus-visible {
   border: 1px solid var(--pn-line);
   border-radius: 1.1rem;
   box-shadow: var(--pn-shadow-sm);
+  overflow: hidden;
+}
+
+.offer-card__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  min-height: 6.5rem;
+  padding: 1.1rem 1.25rem;
 }
 
 .offer-card__person {
   display: flex;
   align-items: center;
   gap: 0.9rem;
+  min-width: 0;
 }
 
 .offer-card .avatar {
   width: 3.5rem;
   height: 3.5rem;
+  flex: 0 0 auto;
 }
 
 .offer-card h2 {
@@ -350,6 +362,34 @@ a:focus-visible {
   font-family: $body-font;
   font-size: 1.05rem;
   font-weight: 800;
+}
+
+.offer-card__details {
+  min-width: 0;
+}
+
+.offer-card__meta {
+  margin: 0.25rem 0 0;
+  color: var(--pn-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.offer-card__trust {
+  margin: 0.55rem 0 0;
+  font-size: 0.78rem;
+}
+
+.offer-card__action {
+  flex: 0 0 auto;
+}
+
+.offer-card__action form {
+  margin: 0;
+}
+
+.offer-card__action .btn {
+  white-space: nowrap;
 }
 
 @media (min-width: 800px) {
@@ -377,6 +417,27 @@ a:focus-visible {
     min-height: 2.5rem;
     padding-inline: 0.85rem;
     font-size: 0.85rem;
+  }
+
+  .offer-card__content {
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .offer-card__person {
+    align-items: flex-start;
+  }
+
+  .offer-card .avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .offer-card__action .btn {
+    min-height: 2.5rem;
+    padding-inline: 0.9rem;
+    font-size: 0.82rem;
   }
 
   .listing-detail-page {
