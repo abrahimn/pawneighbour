@@ -102,6 +102,34 @@ a:focus-visible {
   color: var(--pn-muted);
 }
 
+.section-heading--nearby {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.nearby-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.nearby-summary__count {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0 !important;
+  line-height: 1.3;
+}
+
+.nearby-summary__count strong {
+  color: var(--pn-espresso);
+  font-size: 0.92rem;
+}
+
+.nearby-summary__count span {
+  font-size: 0.82rem;
+}
+
 .location-chip {
   display: inline-flex;
   align-items: center;
@@ -420,6 +448,12 @@ a:focus-visible {
   .section-heading {
     align-items: start;
     flex-direction: column;
+  }
+
+  .nearby-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
   }
 
   .activity-card .card-body {
