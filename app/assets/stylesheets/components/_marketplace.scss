@@ -177,6 +177,19 @@ a:focus-visible {
   box-shadow: var(--pn-shadow-md);
 }
 
+// Keep the multi-pet show page at the compact proportions used by the
+// original design instead of allowing its hero image to span the viewport.
+.listing-show-page {
+  max-width: 800px;
+  padding-inline: clamp(1.25rem, 4vw, 2rem);
+}
+
+.listing-show-page > .card {
+  border: 1px solid var(--pn-line);
+  border-radius: 1.25rem;
+  box-shadow: var(--pn-shadow-md) !important;
+}
+
 .listing-detail__media {
   position: relative;
   min-height: 19rem;

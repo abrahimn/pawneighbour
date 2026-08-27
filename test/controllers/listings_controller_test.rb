@@ -76,6 +76,7 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
     get listing_url(@listing)
 
     assert_response :success
+    assert_select "main.listing-show-page"
     assert_select "h1", "Milo and Otis"
     assert_select "body", text: /Sitting/
     assert_select "body", text: /Please stay overnight/
