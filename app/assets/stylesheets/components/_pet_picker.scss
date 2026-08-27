@@ -1,0 +1,58 @@
+.pet-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+
+  // Kept in the DOM and focusable, just invisible.
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .45rem;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  &__photo {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid transparent;
+    box-shadow: 0 0 0 1px rgba($choco, .25);
+    opacity: .65 grayscale(.4);
+    transition: opacity .15s ease, border-color .15s ease, transform .15s ease;
+  }
+
+  &__name {
+    font-size: .85rem;
+    font-weight: 600;
+    color: rgba($gray, .5);
+    transition: color .15s ease;
+  }
+
+  &__label:hover &__photo { opacity: .8; }
+
+  &__input:checked + &__label {
+    .pet-picker__photo {
+      opacity: 1;
+      border-color: $yellow;
+      box-shadow: none;
+      transform: scale(1.05);
+    }
+
+    .pet-picker__name { color: $gray; }
+  }
+
+  &__input:focus-visible + &__label .pet-picker__photo {
+    outline: 3px solid rgba($coral-dark, .45);
+    outline-offset: 3px;
+  }
+}

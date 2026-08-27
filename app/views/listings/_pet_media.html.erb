@@ -1,0 +1,14 @@
+<% hero = pets.first %>
+<div class="position-relative">
+  <% if hero&.avatar&.attached? %>
+    <img src="<%= pet_photo_url(hero, size: 800, height: 600) %>"
+     class="card-img-top listing-card__image" alt="<%= hero.name %>">
+  <% else %>
+    <div class="listing-card__image-placeholder"><i class="fa-solid fa-paw"></i></div>
+  <% end %>
+  <% if pets.size > 1 %>
+    <span class="badge rounded-pill text-bg-dark position-absolute top-0 end-0 m-2">
+      <%= pets.size %> pets
+    </span>
+  <% end %>
+</div>

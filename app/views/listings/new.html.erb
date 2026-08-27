@@ -1,35 +1,46 @@
-<div class="container">
+<div class="container py-4">
   <div class="row">
-    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-    <div class="paw-form">
-    <h2>Pawst a job</h2>
-    <p>Ask your paw-neighbour for help.</p>
-      <%= simple_form_for @listing do |f| %>
-        <%= f.association :pet,
-              collection: @pets,
-              label_method: :name,
-              value_method: :id,
-              include_blank: "Choose your pet" %>
+    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+      <div class="paw-form">
 
-        <%= f.input :listing_type,
-              collection: Listing::TYPES,
-              include_blank: "Choose the help you need" %>
+        <h2 class="mb-1">Pawst a job</h2>
+        <p class="text-body-secondary mb-4">Ask your paw-neighbour for help.</p>
 
-        <%= f.input :start_date,
-              as: :string,
-              input_html: { type: "date" } %>
+        <%= simple_form_for @listing do |f| %>
+          <%= f.error_notification %>
 
-        <%= f.input :end_date,
-              as: :string,
-              input_html: { type: "date" } %>
+          <%= render "listings/pet_picker", form: f, pets: @pets %>
 
-        <%= f.input :listing_note,
-              label: "Listing details",
-              placeholder: "What help your pet needs..." %>
+          <%= f.input :listing_type,
+                      label: "What kind of help?",
+                      collection: Listing::TYPES,
+                      include_blank: "Choose the help you need" %>
 
-        <%= f.button :submit, "Paw-lease help!", class: "btn btn-info" %>
-      <% end %>
-    </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <%= f.input :start_date,
+                          as: :string,
+                          label: "From",
+                          input_html: { type: "date", min: Date.current } %>
+            </div>
+            <div class="col-6">
+              <%= f.input :end_date,
+                          as: :string,
+                          label: "To",
+                          input_html: { type: "date", min: Date.current } %>
+            </div>
+          </div>
+
+          <%= f.input :listing_note,
+                      label: "Listing details",
+                      placeholder: "What help your pet needs...",
+                      input_html: { rows: 4 } %>
+
+          <%= f.button :submit, "Paw-lease help!",
+                      class: "btn btn-primary rounded-pill w-100 mt-3" %>
+        <% end %>
+
+      </div>
     </div>
   </div>
 </div>

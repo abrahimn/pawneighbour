@@ -2,7 +2,7 @@ class OffersController < ApplicationController
   def index
     @listing = Listing.find(params[:listing_id])
 
-    if @listing.pet.user != current_user
+    if @listing.owner != current_user
       redirect_to listing_path(@listing), alert: "You are not authorized to view these offers."
       return
     end
@@ -24,7 +24,7 @@ class OffersController < ApplicationController
     end
   end
 
-  def accept
+  def accept # rubocop:disable Metrics/MethodLength
     @offer = Offer.find(params[:id])
     @listing = @offer.listing
 

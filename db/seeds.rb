@@ -10,6 +10,7 @@ AmberAlert.destroy_all
 Rsvp.destroy_all
 Event.destroy_all
 Offer.destroy_all
+ListingPet.destroy_all
 Listing.destroy_all
 Connection.destroy_all
 Pet.destroy_all
@@ -17,310 +18,341 @@ User.destroy_all
 
 puts "Database cleaned."
 
-password = "password"
+PASSWORD = "password"
 
 people = [
-  ["Tom", "Sydney CBD", -33.8688, 151.2093],
-  ["Sam", "Newtown", -33.8978, 151.1797],
-  ["Priya", "Surry Hills", -33.8848, 151.2131],
-  ["Jerry", "Alexandria", -33.9092, 151.1941],
-  ["Emma", "Coogee", -33.9205, 151.2552],
-  ["Ziggy", "Bondi Beach", -33.8908, 151.2743],
-  ["Nina", "Manly", -33.7969, 151.2840],
-  ["Baz", "Sydney CBD", -33.8701, 151.2075],
-  ["Mei", "Chatswood", -33.7969, 151.1833],
-  ["Hugo", "Marrickville", -33.9106, 151.1550],
-  ["Aisha", "Lakemba", -33.9190, 151.0759],
-  ["Finn", "Balmain", -33.8570, 151.1810],
-  ["Val", "Cronulla", -34.0551, 151.1517],
-  ["Nico", "Leichhardt", -33.8835, 151.1574],
-  ["Ruby", "Mosman", -33.8290, 151.2441],
-  ["Dev", "Strathfield", -33.8732, 151.0931],
-  ["Tahlia", "Blacktown", -33.7688, 150.9063],
-  ["Ollie", "Penrith", -33.7511, 150.6942],
-  ["Grace", "Ryde", -33.8151, 151.1018],
-  ["Macca", "Redfern", -33.8932, 151.2047],
-  ["Sofia", "Paddington", -33.8846, 151.2262],
-  ["Noah", "Lane Cove", -33.8153, 151.1668],
-  ["Imani", "Burwood", -33.8774, 151.1035],
-  ["Theo", "Bankstown", -33.9173, 151.0349],
-  ["Lulu", "Dee Why", -33.7511, 151.2881],
-  ["Ravi", "Liverpool", -33.9209, 150.9239],
-  ["Josie", "Kogarah", -33.9667, 151.1333],
-  ["Kenji", "Epping", -33.7724, 151.0824],
-  ["Billie", "Glebe", -33.8800, 151.1870],
-  ["Mo", "Castle Hill", -33.7315, 151.0064],
-  ["Ana", "Neutral Bay", -33.8310, 151.2190],
-  ["Wes", "Botany", -33.9450, 151.1960]
+  ["Tom",    "Newtown",      -33.8978, 151.1797],
+  ["Sam",    "Newtown",      -33.8955, 151.1830],
+  ["Priya",  "Camperdown",   -33.8891, 151.1770],
+  ["Jerry",  "Surry Hills",  -33.8848, 151.2131],
+  ["Emma",   "Coogee",       -33.9205, 151.2552],
+  ["Ziggy",  "Bondi Beach",  -33.8908, 151.2743],
+  ["Nina",   "Manly",        -33.7969, 151.2840],
+  ["Baz",    "Sydney CBD",   -33.8701, 151.2075],
+  ["Mei",    "Glebe",        -33.8796, 151.1874],
+  ["Hugo",   "Marrickville", -33.9106, 151.1550],
+  ["Aisha",  "Lakemba",      -33.9190, 151.0759],
+  ["Finn",   "Balmain",      -33.8570, 151.1810],
+  ["Val",    "Cronulla",     -34.0551, 151.1517],
+  ["Nico",   "Leichhardt",   -33.8835, 151.1574],
+  ["Ruby",   "Mosman",       -33.8290, 151.2441],
+  ["Dev",    "Strathfield",  -33.8732, 151.0931],
+  ["Tahlia", "Blacktown",    -33.7688, 150.9063],
+  ["Ollie",  "Penrith",      -33.7511, 150.6942],
+  ["Grace",  "Ryde",         -33.8151, 151.1018],
+  ["Macca",  "Redfern",      -33.8932, 151.2047],
+  ["Sofia",  "Paddington",   -33.8846, 151.2262],
+  ["Noah",   "Lane Cove",    -33.8153, 151.1668],
+  ["Imani",  "Burwood",      -33.8774, 151.1035],
+  ["Theo",   "Bankstown",    -33.9173, 151.0349],
+  ["Lulu",   "Dee Why",      -33.7511, 151.2881],
+  ["Ravi",   "Liverpool",    -33.9209, 150.9239],
+  ["Josie",  "Kogarah",      -33.9667, 151.1333],
+  ["Kenji",  "Epping",       -33.7724, 151.0824],
+  ["Billie", "Glebe",        -33.8800, 151.1870],
+  ["Mo",     "Castle Hill",  -33.7315, 151.0064],
+  ["Ana",    "Neutral Bay",  -33.8310, 151.2190],
+  ["Wes",    "Botany",       -33.9450, 151.1960]
 ]
 
 puts "Creating #{people.length} neighbours across Sydney..."
 
 users = people.each_with_index.map do |(name, suburb, latitude, longitude), index|
-  User.create!(
+  user = User.create!(
     name: name,
     email: "#{name.downcase}@example.com",
-    password: password,
+    password: PASSWORD,
     mobile: format("04%08d", 12_340_000 + index),
     location: "#{suburb}, NSW",
     latitude: latitude,
     longitude: longitude,
     profile_pic: "https://placehold.co/400x400?text=#{name}"
   )
-end
-
-users.each do |user|
-  filename = "#{user.name.parameterize}.jpg"
+  filename = "#{name.parameterize}.jpg"
   user.avatar.attach(
     io: File.open(Rails.root.join("db/seeds/images/unsplash/users", filename)),
     filename: filename,
     content_type: "image/jpeg"
   )
-end
+  user
+end.index_by(&:name)
 
+tom   = users.fetch("Tom")
+sam   = users.fetch("Sam")
+priya = users.fetch("Priya")
+
+puts "#{User.count} users created.\n\n"
+
+# ---------------------------------------------------------------------------
+# PETS
+# ---------------------------------------------------------------------------
 pet_data = [
-  ["Neo", "Cat", 4, "Approach slowly. Accepts tuna as both snack and formal apology."],
-  ["Biscuit", "Dog", 7, "Short walks only. Will sit down if the route does not include a cafe."],
-  ["Kiwi", "Bird", 1, "Cover the cage at 8pm. Knows three words; two are mildly embarrassing."],
-  ["Dumpling", "Cat", 2, "Allergic to chicken. Believes every cardboard box is sovereign territory."],
-  ["Kevin Bacon", "Guinea Pig", 3, "One capsicum slice at lunch. Wheeks like a tiny car alarm."],
-  ["Schnitzel", "Dachshund", 5, "No stairs, no puddles, no criticism of his very long torso."],
-  ["Chairman Meow", "Cat", 8, "Requires the sunny cushion and acknowledgement of his authority."],
-  ["Barry Hoppins", "Rabbit", 2, "Parsley after breakfast. Cables must be hidden from his legal team."],
-  ["Toast", "Dog", 4, "Loves people, buses and dramatically failing to catch tennis balls."],
-  ["Miso", "Cat", 6, "Indoor cat. Opens cupboards and denies everything."],
-  ["Disco", "Cockatiel", 9, "Whistles the Bunnings jingle whenever someone enters the room."],
-  ["Noodle", "Greyhound", 5, "Two zoomies, then approximately twenty-two hours of sofa."],
-  ["Prawn", "Dog", 3, "Rinse sandy paws after the beach. Terrified of decorative flamingos."],
-  ["Crouton", "Cat", 1, "Do not leave bread unattended. Yes, the name is relevant."],
-  ["Margaret Scratcher", "Cat", 11, "Senior stateswoman. Medication in pâté, never in jelly."],
-  ["Bindi", "Blue-tongue Lizard", 6, "Salad at noon. Sun lamp on, opinions respected."],
-  ["Sir Barksalot", "Dog", 2, "In training. Announces couriers, leaves and suspicious wheelie bins."],
-  ["Lamington", "Rabbit", 4, "Free-roams the laundry. Will trade affection for coriander."],
-  ["Pickles", "Dog", 9, "Gentle old soul. Carries one sock on every walk for confidence."],
-  ["Bin Chicken", "Rescue Ibis", 2, "Recovering wing. Absolutely no takeaway containers, despite lobbying."],
-  ["Wombat", "Cat", 5, "Not a wombat. Refuses to discuss how the misunderstanding began."],
-  ["Tippy", "Dog", 6, "Needs her raincoat below 18°C, according to her."],
-  ["Professor Fluff", "Rabbit", 3, "Quiet office companion currently researching banana distribution."],
-  ["Chook Norris", "Chicken", 4, "Backyard boss. Bedtime at sunset; spinach tribute at dawn."],
-  ["Pesto", "Dog", 1, "Puppy. Shoes go up high unless you want them taste-tested."],
-  ["Gandalf", "Cat", 12, "You shall not pass the hallway without administering chin scratches."],
-  ["Mochi", "Shiba Inu", 3, "Escape artist. Harness clip must click twice before the door opens."],
-  ["Pixel", "Budgie", 2, "Likes jazz, dislikes vacuum cleaners and has strong screen-time opinions."],
-  ["Meatball", "Dog", 8, "Slow walker, fast eater, world-class napper."],
-  ["Lord Featherington", "Chicken", 2, "Very fancy, very punctual, deeply suspicious of garden gnomes."],
-  ["Clover", "Rabbit", 5, "Hay always available. Stamps once for snacks, twice for management."],
-  ["Bruce", "Dog", 4, "Big softie. Crosses the road to avoid tiny white dogs."]
+  ["Tom", "Neo", "Cat", 4, "neo.jpg",
+  "Ginger tabby, very shy. Hides under the bed for the first hour - do not chase him, " \
+  "he comes out for tuna. Two meals a day, 7am and 6pm. Wet food in the blue bowl only."],
+  ["Tom", "Dumpling", "Cat", 2, "dumpling.jpg",
+  "Neo's sister and his opposite. Will demand attention immediately. " \
+  "Allergic to chicken - please check the label."],
+  ["Sam", "Biscuit", "Dog", 7, "biscuit.jpg",
+  "Golden retriever, older girl with a sore hip. Short walks only, 20 minutes max. " \
+  "Half a tablet with breakfast, medication in the fridge door."],
+  ["Priya", "Kiwi", "Bird", 1, "kiwi.jpg",
+  "Budgie. Cover the cage at 8pm or he will not shut up. Knows three words; " \
+  "two are mildly embarrassing."],
+  ["Mei", "Mochi", "Dog", 3, "mochi.jpg",
+  "Shiba Inu and a committed escape artist. The harness must click twice before " \
+  "the front door opens."],
+  ["Jerry", "Gnocchi", "Dog", 7, "gnocchi.jpg",
+  "Pug. Breathes like a small tractor. Short walks, and never in the midday heat."],
+  ["Noah", "Schnitzel", "Dog", 5, "schnitzel.jpg",
+  "Dachshund. No stairs, no puddles, and no criticism of his very long torso."],
+  ["Kenji", "Waffles", "Dog", 4, "waffles.jpg",
+  "Corgi, built low to the ground for aerodynamic snack retrieval. One sensible walk, then sofa."],
+  ["Lulu", "Pickles", "Dog", 9, "pickles.jpg",
+  "Gentle old soul. Carries one sock on every walk, for confidence."],
+  ["Theo", "Gandalf", "Cat", 12, "gandalf.jpg",
+  "You shall not pass the hallway without administering chin scratches."],
+  ["Billie", "Kevin Bacon", "Guinea Pig", 3, "kevin-bacon.jpg",
+  "One capsicum slice at lunch. Wheeks like a tiny car alarm when the fridge opens."],
+  ["Ravi", "Toast", "Dog", 4, "toast.jpg",
+  "Loves people, buses, and dramatically failing to catch tennis balls."]
 ]
 
-puts "Creating a deeply unserious collection of pets..."
-
-pets = pet_data.each_with_index.map do |(name, species, age, instructions), index|
-  Pet.create!(
-    user: users[index],
+pets = pet_data.map do |owner_name, name, species, age, image, instructions|
+  pet = Pet.create!(
+    user: users.fetch(owner_name),
     name: name,
     species: species,
     age: age,
-    care_instructions: instructions,
-    profile_pic: "https://placehold.co/600x600?text=#{ERB::Util.url_encode(name)}"
+    care_instructions: instructions
   )
-end
-
-little_mike = Pet.create!(
-  user: users.find { |user| user.name == "Baz" },
-  name: "Little Mike",
-  species: "Tiger",
-  age: 3,
-  care_instructions: "Named after Mike Tyson. Has never eaten anyone's children, " \
-                     "but the legal team strongly recommends not testing that claim. " \
-                     "Licensed wildlife carers only; admire from outside the habitat.",
-  profile_pic: "https://placehold.co/600x600?text=Little+Mike"
-)
-pets << little_mike
-
-extra_pet_data = [
-  ["Tom", "Tax Evasion", "Ferret", 2,
-   "Sleeps eighteen hours a day and spends the other six investigating unsecured handbags."],
-  ["Sam", "Waffles", "Corgi", 4,
-   "Built low to the ground for aerodynamic snack retrieval. One sensible walk, then sofa."],
-  ["Priya", "Bluetooth", "Parrot", 6,
-   "Connects automatically to every conversation and repeats the least convenient sentence."],
-  ["Jerry", "Socks", "Cat", 5, "White paws, zero remorse. Check the laundry basket before starting a wash."],
-  ["Emma", "Gnocchi", "Pug", 7, "Breathes like a tiny tractor. Keep walks short and avoid the midday heat."],
-  ["Ziggy", "Tuna Turner", "Cat", 3,
-   "Simply the best at opening cupboard doors. Dinner includes a short standing ovation."],
-  ["Nina", "Gary", "Turtle", 14, "Fast by turtle standards. Slow by every other standard. Lettuce at noon."],
-  ["Mei", "Boba", "Rabbit", 2, "Will reorganise the rug overnight. Unlimited hay and strictly supervised cables."],
-  ["Hugo", "Frankie", "Dog", 5, "Scruffy optimist. Brings every visitor one leaf from his private collection."],
-  ["Aisha", "Mabel", "Cat", 8, "Requests breakfast at 5:03am and files an appeal at 5:04am."],
-  ["Finn", "Seagull Steve", "Rescue Seagull", 3,
-   "Recovering wing. Guard your chips; rehabilitation has not changed his values."],
-  ["Val", "Rocket", "Australian Kelpie", 4,
-   "Needs a proper run and a job. Sorting socks counts as a job if supervised."],
-  ["Nico", "Cannoli", "Cat", 4, "Sweet filling, crunchy exterior. Accepts pats until an undisclosed limit is reached."],
-  ["Ruby", "Rupert", "Cocker Spaniel", 9,
-   "Ears must be kept out of the water bowl. He will not assist with this process."],
-  ["Dev", "Samosa", "Hamster", 1, "Nocturnal architect. Wheel squeaks at 2am because inspiration keeps unusual hours."]
-]
-
-extra_pet_data.each do |owner_name, name, species, age, instructions|
-  pets << Pet.create!(
-    user: users.find { |user| user.name == owner_name },
-    name: name,
-    species: species,
-    age: age,
-    care_instructions: instructions,
-    profile_pic: "https://placehold.co/600x600?text=#{ERB::Util.url_encode(name)}"
-  )
-end
-
-pets.each do |pet|
-  filename = "#{pet.name.parameterize}.jpg"
   pet.avatar.attach(
-    io: File.open(Rails.root.join("db/seeds/images/unsplash", filename)),
-    filename: filename,
+    io: File.open(Rails.root.join("db/seeds/images/unsplash", image)),
+    filename: image,
     content_type: "image/jpeg"
   )
-end
+  pet
+end.index_by(&:name)
 
-listing_notes = [
-  "Human required while I attend a wedding. Payment includes gratitude and excellent pet gossip.",
-  "A quick lunchtime visit would prevent a strongly worded complaint from the resident.",
-  "Looking for a calm walker who understands that sniffing one pole for six minutes is enrichment.",
-  "Weekend away. Please provide dinner, company and one complimentary review of their outfit.",
-  "I have an early shift and need backup from a neighbour with treats and good vibes.",
-  "Two visits a day, plus watering the herb named after them. The herb is less demanding.",
-  "Regular walk wanted. Route negotiable; stopping at every interesting smell is not.",
-  "House-sit and enjoy the Wi-Fi. Pet may attempt to join video calls as regional manager."
+neo      = pets.fetch("Neo")
+dumpling = pets.fetch("Dumpling")
+biscuit  = pets.fetch("Biscuit")
+kiwi     = pets.fetch("Kiwi")
+
+puts "#{Pet.count} pets created.\n\n"
+
+# ---------------------------------------------------------------------------
+# CONNECTIONS - built BEFORE the offers so the trust bands are already true
+# ---------------------------------------------------------------------------
+# Tom and Priya do NOT know each other. Sam and Jerry know them both.
+puts "Creating connections..."
+[
+  %w[Tom   Sam],     # Sam sat for Neo three weeks ago
+  %w[Tom   Jerry],
+  %w[Priya Sam],
+  %w[Priya Jerry],
+  %w[Sam   Jerry],   # they helped each other
+  %w[Mei   Sam],     # gives Mei exactly one mutual with Tom
+  %w[Mei   Noah],
+  %w[Sam   Billie],
+  %w[Imani Kenji],
+  %w[Grace Lulu],
+  %w[Theo  Ravi],
+  %w[Lulu  Emma]
+].each do |a, b|
+  Connection.create!(sender: users.fetch(a), receiver: users.fetch(b))
+  puts "  #{a} <-> #{b}"
+end
+puts "#{Connection.count} connections.\n\n"
+
+# ---------------------------------------------------------------------------
+# JOURNEY A - completed three weeks ago (history)
+# ---------------------------------------------------------------------------
+past_dropin = Listing.create!(
+  owner: tom,
+  pets: [dumpling],
+  listing_type: "Drop-in",
+  start_date: Date.current - 21,
+  end_date: Date.current - 20,
+  listing_note: "Overnight trip - just needed food and water checked."
+)
+Offer.create!(listing: past_dropin, user: sam, status: "accepted")
+puts "Journey A: Tom posted 3 weeks ago, Sam was accepted.\n\n"
+
+# ---------------------------------------------------------------------------
+# JOURNEY B - LIVE. Do NOT accept anything here: this is the demo click.
+# ---------------------------------------------------------------------------
+both_cats = Listing.create!(
+  owner: tom,
+  pets: [neo, dumpling],
+  listing_type: "Sitting",
+  start_date: Date.current + 5,
+  end_date: Date.current + 8,
+  listing_note: "Away for a long weekend. Neo and Dumpling both need feeding twice a day. " \
+                "Neo is shy but easy once he trusts you."
+)
+puts "Journey B (LIVE): Sitting for Neo and Dumpling, #{both_cats.start_date} to #{both_cats.end_date}"
+
+{
+  priya               => "2 mutual connections (Sam, Jerry)  <- ACCEPT THIS ONE",
+  users.fetch("Mei")  => "1 mutual connection (Sam)",
+  users.fetch("Ravi") => "no path to Tom -> New neighbour"
+}.each do |sitter, why|
+  Offer.create!(listing: both_cats, user: sitter, status: "offered")
+  puts "  #{sitter.name} offered  [#{why}]"
+end
+puts "  !! No accepted offer here on purpose.\n\n"
+
+# ---------------------------------------------------------------------------
+# THE BOARD
+# ---------------------------------------------------------------------------
+board = [
+  ["Sam",    ["Biscuit"],     "Walking", 1, 14,
+  "Weekday morning walks, 20 minutes, gentle pace. Ongoing if it works out."],
+  ["Mei",    ["Mochi"],       "Walking", 3, 6,
+  "A calm walker who understands that sniffing one pole for six minutes is enrichment."],
+  ["Jerry",  ["Gnocchi"],     "Sitting", 2, 9,
+  "Staying over would be ideal. He hates being alone overnight."],
+  ["Noah",   ["Schnitzel"],   "Walking", 6, 10,
+  "Short flat route please. He will attempt stairs out of pride; do not let him."],
+  ["Kenji",  ["Waffles"],     "Walking", 2, 5,
+  "A proper walk, then he'll sleep for nine hours. Treats in the tin by the door."],
+  ["Lulu",   ["Pickles"],     "Sitting", 8, 11,
+  "House-sit and enjoy the wifi. He may join your video calls as regional manager."],
+  ["Theo",   ["Gandalf"],     "Drop-in", 3, 5,
+  "Feed him and then sit down. That's the whole job. He'll take it from there."],
+  ["Ravi",   ["Toast"],       "Walking", 7, 12,
+  "Any route with a bus stop on it. He likes to supervise the timetable."],
+  ["Billie", ["Kevin Bacon"], "Drop-in", 9, 12,
+  "Capsicum at lunch, hay topped up, and one round of applause for the wheeking."]
 ]
 
-puts "Creating listings in every corner of the map..."
-
-listings = pets.each_with_index.map do |pet, index|
-  start_offset = 1 + (index % 17)
-  duration = 1 + (index % 4)
-  listing_type = pet == little_mike ? "Sitting" : Listing::TYPES[index % Listing::TYPES.length]
-  listing_note = if pet == little_mike
-                   "Baz is away. Licensed tiger carers only—supervise enrichment from outside the habitat."
-                 else
-                   "#{listing_notes[index % listing_notes.length]} Please ask for #{pet.name} when you arrive."
-                 end
-
+board.each do |owner_name, pet_names, type, from, to, note|
+  owner = users.fetch(owner_name)
   Listing.create!(
-    pet: pet,
-    listing_type: listing_type,
-    start_date: Date.current + start_offset,
-    end_date: Date.current + start_offset + duration,
-    listing_note: listing_note
+    owner: owner,
+    pets: pet_names.map { |n| pets.fetch(n) },
+    listing_type: type,
+    start_date: Date.current + from,
+    end_date: Date.current + to,
+    listing_note: note
   )
+  puts "  #{owner_name} (#{owner.location.split(',').first}): #{type} for #{pet_names.to_sentence}"
 end
+puts
 
-# Extra posts make busy suburbs feel busy and exercise multi-listing owner screens.
-pets.first(16).each_with_index do |pet, index|
-  start_offset = 20 + (index % 10)
-  listings << Listing.create!(
-    pet: pet,
-    listing_type: Listing::TYPES[(index + 1) % Listing::TYPES.length],
-    start_date: Date.current + start_offset,
-    end_date: Date.current + start_offset + 2,
-    listing_note: "#{pet.name}'s encore booking: #{listing_notes[(index + 3) % listing_notes.length]}"
-  )
-end
+# ---------------------------------------------------------------------------
+# EDGE CASES
+# ---------------------------------------------------------------------------
+Listing.create!(
+  owner: priya,
+  pets: [kiwi],
+  listing_type: "Drop-in",
+  start_date: Date.current + 12,
+  end_date: Date.current + 13,
+  listing_note: "Seed and water top-up once a day."
+)
+puts "Kiwi's Drop-in - ZERO offers (empty state)"
 
-# A few historical records keep the activity dashboard from looking freshly unwrapped.
-pets.first(6).each_with_index do |pet, index|
-  Listing.create!(
-    pet: pet,
-    listing_type: Listing::TYPES[index % 3],
-    start_date: Date.current - 14 + index,
-    end_date: Date.current - 12 + index,
-    listing_note: "#{pet.name}'s previous booking was completed successfully. Nobody ate the couch (confirmed)."
-  )
-end
+Listing.create!(
+  owner: sam,
+  pets: [biscuit],
+  listing_type: "Walking",
+  start_date: Date.current - 10,
+  end_date: Date.current - 9,
+  listing_note: "Needed a hand while I was at a conference."
+)
+puts "Biscuit's Walking - dates PASSED (should not appear on the board)"
 
-puts "Creating a mixture of pending, accepted and rejected offers..."
+sams_walk = Listing.find_by(user_id: sam.id, start_date: Date.current + 1)
+Offer.create!(listing: sams_walk, user: priya, status: "offered")
+puts "Priya offered on Biscuit's walk (so Sam has something to review too)\n\n"
 
-listings.each_with_index do |listing, index|
-  candidates = users.reject { |user| user == listing.owner }
-  primary = candidates[(index * 3) % candidates.length]
-  status = (index % 7).zero? ? "accepted" : "offered"
-  Offer.create!(listing: listing, user: primary, status: status)
-
-  next unless (index % 3).zero?
-
-  secondary = candidates[((index * 3) + 5) % candidates.length]
-  Offer.create!(listing: listing, user: secondary, status: status == "accepted" ? "rejected" : "offered")
-end
-
-# Connections zig-zag across the city instead of forming one suspiciously tidy clique.
-users.each_with_index do |user, index|
-  Connection.create!(sender: user, receiver: users[(index + 1) % users.length])
-  Connection.create!(sender: user, receiver: users[(index + 7) % users.length]) if index.even?
-end
+puts "Creating community events..."
 
 event_data = [
-  ["Greyhound Speed-Dating (For Friendship)", "Centennial Park", 4, 10, 0],
-  ["Dogs Who Think They Are Lap Dogs Picnic", "Bicentennial Park", 7, 11, 30],
-  ["Inner West Bark & Bake", "Camperdown Memorial Rest Park", 10, 9, 30],
-  ["Tiny Pet, Huge Personality Meetup", "Sydney Park", 13, 14, 0],
-  ["Northern Beaches Sandy Snoots", "Manly Lagoon", 17, 8, 0],
-  ["Parramatta Paws & Pour-Overs", "Parramatta Park", 21, 10, 30],
-  ["Senior Pets Slow Stroll", "Glebe Foreshore", 25, 16, 0],
-  ["Questionable Pet Tricks Showcase", "Prince Alfred Park", 29, 15, 0]
+  ["Inner West Bark & Bake", "Camperdown Memorial Rest Park", "Sam",
+   6, "09:30", "Coffee, dogs, and one questionable slice each. Bring water and a lead."],
+  ["Tiny Pet, Huge Personality Meetup", "Sydney Park", "Priya",
+   11, "14:00", "Guinea pigs, budgies, rabbits and anyone under 5kg with strong opinions."],
+  ["Senior Pets Slow Stroll", "Glebe Foreshore", "Mei",
+   18, "16:00", "A gentle loop at the pace of the slowest attendee. Benches every 200m."],
+  ["Questionable Pet Tricks Showcase", "Prince Alfred Park", "Jerry",
+   25, "15:00", "Bring your pet's most needlessly dramatic party trick. No judging, some laughing."]
 ]
 
-puts "Creating community events and RSVPs..."
+rsvp_lists = [
+  %w[Tom Priya Mei Billie],
+  %w[Tom Sam Ravi],
+  %w[Sam Jerry Billie Noah],
+  %w[Tom Priya Mei Kenji Ravi]
+]
 
-event_data.each_with_index do |(name, location, days, hour, minute), index|
+event_data.each_with_index do |(name, location, organiser_name, days, time, details), index|
   event = Event.create!(
-    organiser: users[index * 3],
+    organiser: users.fetch(organiser_name),
     name: name,
     location: "#{location}, NSW",
     date: Date.current + days,
-    time: Time.zone.local(Date.current.year, Date.current.month, Date.current.day, hour, minute),
-    details: "Bring water, treats and your pet's most needlessly dramatic story.",
+    time: time,
+    details: details,
     photo_url: "https://placehold.co/1200x630?text=#{ERB::Util.url_encode(name)}"
   )
+  puts "  #{name} - #{organiser_name}, #{event.date}"
 
-  users.rotate(index * 4).first(6).each_with_index do |responder, response_index|
-    next if responder == event.organiser
+  rsvp_lists[index].each_with_index do |responder_name, i|
+    next if responder_name == organiser_name
 
-    Rsvp.create!(event: event, responder: responder, response: response_index == 5 ? "maybe" : "going")
+    Rsvp.create!(
+      event: event,
+      responder: users.fetch(responder_name),
+      response: i.zero? ? "maybe" : "going"
+    )
   end
 end
 
-puts "Creating a couple of hopeful lost-pet alerts..."
+puts "#{Event.count} events, #{Rsvp.count} RSVPs.\n\n"
 
-alert_specs = [
-  [pets[8], "Enmore Park, NSW", 0, 17, 40],
-  [pets[21], "Lane Cove Plaza, NSW", 1, 8, 15],
-  [pets[27], "Epping Station, NSW", 2, 18, 5]
+# ---------------------------------------------------------------------------
+# AMBER ALERTS + SIGHTINGS
+# ---------------------------------------------------------------------------
+puts "Creating lost-pet alerts..."
+
+alert_data = [
+  ["Mochi", "Enmore Park, NSW", 0, "17:40",
+   [["Billie", "Enmore Road near the pub", "Ran past heading east, wouldn't stop.", "18:05"],
+    ["Sam",    "Simmons Street",           "Pretty sure it was her — responded to a snack packet.", "18:40"]]],
+
+  ["Gandalf", "Bankstown Library, NSW", 1, "08:15",
+   [["Ravi", "Beside the carpark hedge", "Grey cat, very unbothered. Sitting in the sun.", "09:20"]]]
 ]
 
-alert_specs.each_with_index do |(pet, location, days_ago, hour, minute), index|
+alert_data.each do |pet_name, location, days_ago, time, sightings|
+  pet = pets.fetch(pet_name)
+
   alert = AmberAlert.create!(
     creator: pet.user,
     pet: pet,
     location: location,
     date: Date.current - days_ago,
-    time: Time.zone.local(Date.current.year, Date.current.month, Date.current.day, hour, minute)
+    time: time
   )
+  puts "  #{pet.name} missing from #{location} (#{pet.user.name})"
 
-  2.times do |response_index|
-    spotter = users[((index * 8) + response_index + 4) % users.length]
+  sightings.each do |spotter_name, spot_location, notes, spot_time|
     AlertResponse.create!(
       amber_alert: alert,
-      spotter: spotter,
-      location: ["near the oval", "beside a suspiciously interesting hedge"][response_index],
+      spotter: users.fetch(spotter_name),
+      location: spot_location,
       date: Date.current,
-      time: Time.zone.now - (response_index + 1).hours,
-      notes: [
-        "Spotted briefly; heading east with purpose.",
-        "Looked similar and responded to a snack packet."
-      ][response_index]
+      time: spot_time,
+      notes: notes
     )
+    puts "    sighting by #{spotter_name}: #{spot_location}"
   end
 end
+
+puts "#{AmberAlert.count} alerts, #{AlertResponse.count} sightings.\n\n"
 
 puts <<~SUMMARY
 
@@ -335,6 +367,6 @@ puts <<~SUMMARY
     Amber alerts:    #{AmberAlert.count}
     Alert responses: #{AlertResponse.count}
 
-  Log in with any seeded email and: #{password}
+  Log in with any seeded email and: #{PASSWORD}
   Try tom@example.com, sam@example.com, nina@example.com or baz@example.com.
 SUMMARY
