@@ -1,23 +1,31 @@
 <% content_for :title, "Help nearby | PawNeighbour" %>
 
-<main class="container py-4">
-  <header class="neighbourhood-hero mb-5">
-    <%= image_tag "pug-transparent.png",
-                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--pug",
-                  alt: "",
-                  aria: { hidden: true } %>
+<main class="page-shell marketplace-page">
+  <header class="neighbourhood-hero mb-5" aria-labelledby="nearby-hero-title">
+    <span class="neighbourhood-hero__pet neighbourhood-hero__pet--pug" aria-hidden="true">
+      <%= image_tag "pug-transparent.png",
+                    class: "neighbourhood-hero__pug-layer neighbourhood-hero__pug-body",
+                    alt: "" %>
+      <%= image_tag "pug-transparent.png",
+                    class: "neighbourhood-hero__pug-layer neighbourhood-hero__pug-tongue",
+                    alt: "" %>
+    </span>
 
-    <%= image_tag "playful-cat-transparent.png",
-                  class: "neighbourhood-hero__pet neighbourhood-hero__pet--cat",
-                  alt: "",
-                  aria: { hidden: true } %>
+    <span class="neighbourhood-hero__cat" aria-hidden="true">
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "neighbourhood-hero__cat-layer neighbourhood-hero__cat-body",
+                    alt: "" %>
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "neighbourhood-hero__cat-layer neighbourhood-hero__cat-tail",
+                    alt: "" %>
+    </span>
 
     <div class="neighbourhood-hero__content">
       <span class="neighbourhood-hero__eyebrow">
         🐾 Hi <%= current_user.name %>!
       </span>
 
-      <h1 class="neighbourhood-hero__title">
+      <h1 class="neighbourhood-hero__title" id="nearby-hero-title">
         Need a hand?
         <span>Find a paw!</span>
       </h1>
@@ -34,10 +42,17 @@
     </div>
   </header>
 
-  <section>
-    <div class="mb-3">
-      <h2 class="h4 mb-1">Help nearby</h2>
+  <section aria-labelledby="nearby-listings-title">
+    <div class="section-heading">
+      <div>
+        <h2 id="nearby-listings-title">Help nearby</h2>
+        <p>Real requests from neighbours around you.</p>
+      </div>
 
+      <span class="location-chip">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <%= current_user.location %>
+      </span>
       <p class="text-body-secondary mb-0">
         <%= @nearby_listings.size %> Available requests near <%= current_user.location %>
       </p>
@@ -46,22 +61,18 @@
     <%= render "radius_filter" %>
 
     <% if @nearby_listings.any? %>
-      <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
         <%= render partial: "nearby_listing_card",
                    collection: @nearby_listings,
                    as: :listing %>
       </div>
     <% else %>
-      <div class="card border-0 bg-light">
-        <div class="card-body text-center py-5">
-          <div class="fs-1 mb-3">🐾</div>
-
-          <h3 class="h5">No open requests nearby</h3>
-
-          <p class="text-body-secondary mb-0">
-            Try increasing your search radius or check back later.
-          </p>
-        </div>
+      <div class="empty-state">
+        <span class="empty-state__mark" aria-hidden="true"><i class="fa-solid fa-paw"></i></span>
+        <h3 class="h4">No open requests nearby</h3>
+        <p class="text-body-secondary mb-0">
+          Try increasing your search radius or check back later.
+        </p>
       </div>
     <% end %>
   </section>

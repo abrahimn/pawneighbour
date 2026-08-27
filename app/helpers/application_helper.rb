@@ -7,7 +7,8 @@ module ApplicationHelper
     "Disco" => "50% 42%",
     "Prawn" => "50% 35%",
     "Professor Fluff" => "50% 42%",
-    "Schnitzel" => "50% 45%"
+    "Schnitzel" => "50% 45%",
+    "Waffles" => "50% 72%"
   }.freeze
 
   def avatar_for(user, size: 36)
@@ -34,6 +35,7 @@ module ApplicationHelper
   def trust_signal(viewer, other)
     return nil if viewer.nil? || other.nil? || viewer == other
     return { key: "connected", label: "You're connected" } if viewer.connected_with?(other)
+<<<<<<< HEAD
 
     ids = viewer.mutual_neighbour_ids_with(other)
     return { key: "new", label: "New neighbour" } if ids.empty?
@@ -52,6 +54,15 @@ module ApplicationHelper
     end
   end
 
+=======
+
+    ids = viewer.mutual_neighbour_ids_with(other)
+    return { key: "new", label: "New neighbour" } if ids.empty?
+
+    { key: "mutual", label: mutual_sentence(ids) }
+  end
+
+>>>>>>> c432bc84a55c4e7b22409f172fc85036f98c5b2e
   def pet_focal_position(pet)
     PET_FOCAL_POSITIONS.fetch(pet.name, "50% 35%")
   end

@@ -1,8 +1,29 @@
+<<<<<<< HEAD
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-8 col-lg-6 mx-auto">
       <div class="form-login">
       <h2>Log in</h2>
+=======
+<main class="auth-page">
+  <aside class="auth-story" aria-hidden="true">
+    <span class="auth-story__eyebrow">Neighbourhood care</span>
+    <p>Good people.<br>Happy paws.</p>
+    <span class="auth-story__cat auth-story__cat--solo">
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "auth-story__cat-layer auth-story__cat-body",
+                    alt: "" %>
+      <%= image_tag "playful-cat-transparent.png",
+                    class: "auth-story__cat-layer auth-story__cat-tail",
+                    alt: "" %>
+    </span>
+  </aside>
+
+  <section class="form-login" aria-labelledby="login-title">
+      <span class="form-login__eyebrow">Welcome back</span>
+      <h1 id="login-title">Log in</h1>
+      <p class="form-login__intro">Your neighbourhood pet-care circle is waiting.</p>
+>>>>>>> c432bc84a55c4e7b22409f172fc85036f98c5b2e
 
       <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <div class="form-inputs">
@@ -17,14 +38,11 @@
         </div>
 
         <div class="form-actions">
-          <%= f.button :submit, "Log in", class:"btn btn-primary" %>
+          <%= f.button :submit, "Log in", class: "btn btn-primary" %>
         </div>
       <% end %>
 
       <%= render "devise/shared/links" %>
 
-      </div>
-
-    </div>
-  </div>
-</div>
+  </section>
+</main>
