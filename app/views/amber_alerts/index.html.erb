@@ -6,7 +6,7 @@
     <div class="alerts-hero__content">
       <p class="alerts-hero__eyebrow">Community alerts</p>
 
-      <h1 class="alerts-hero__title">Lost pets nearby</h1>
+      <h1 class="alerts-hero__title">Lost & Found</h1>
 
       <p class="alerts-hero__description">
         If you've seen one of these pets, even briefly, say so. A single sighting narrows the search enormously.
@@ -23,7 +23,7 @@
     <div class="section-heading">
       <div class="section-heading__intro">
         <div class="section-heading__title-row">
-          <h2 id="alerts-title">Reported missing</h2>
+          <h2 id="alerts-title">MISSING!</h2>
           <span class="location-chip">
             <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
             <%= current_user.location %>
@@ -32,7 +32,7 @@
 
         <p class="nearby-summary__count">
           <strong><%= pluralize(@alerts.size, "pet") %></strong>
-          reported missing within your search range
+          reported missing around your neighbourhood
         </p>
       </div>
     </div>

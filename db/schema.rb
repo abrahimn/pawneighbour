@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_124940) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_071936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,6 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_124940) do
     t.string "location"
     t.float "longitude"
     t.bigint "pet_id", null: false
+    t.datetime "resolved_at"
     t.time "time"
     t.datetime "updated_at", null: false
     t.index ["creator_id"], name: "index_amber_alerts_on_creator_id"
