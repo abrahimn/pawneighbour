@@ -56,6 +56,10 @@
             <%= f.input :time, as: :string, label: "Time",
                         input_html: { type: "time", value: Time.current.strftime("%H:%M") } %>
           </div>
+        <%= f.input :details,
+            label: "Important Info",
+            placeholder: "What were they wearing? Are they microchipped? How can neighbours help?",
+            input_html: { rows: 5 } %>
         </div>
 
         <%= f.button :submit, "Post alert", class: "btn btn-danger w-100 mt-3" %>

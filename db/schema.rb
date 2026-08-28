@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_071936) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_090035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,6 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_071936) do
     t.datetime "created_at", null: false
     t.bigint "creator_id", null: false
     t.date "date"
+    t.text "details"
     t.float "latitude"
     t.string "location"
     t.float "longitude"

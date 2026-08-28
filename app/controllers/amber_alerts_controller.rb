@@ -2,7 +2,7 @@ class AmberAlertsController < ApplicationController
   def index
     @lat = current_user.latitude || -33.8688
     @lng = current_user.longitude || 151.2093
-    @radius = 3.to_f
+    @radius = 10.to_f
 
     @alerts = AmberAlert.open
                         .near([@lat, @lng], @radius, units: :km)
@@ -42,6 +42,6 @@ class AmberAlertsController < ApplicationController
   private
 
   def alert_params
-    params.require(:amber_alert).permit(:pet_id, :location, :date, :time)
+    params.require(:amber_alert).permit(:pet_id, :location, :date, :time, :details)
   end
 end

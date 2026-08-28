@@ -32,6 +32,12 @@
         <p class="alert-detail__meta mb-0">
           reported <%= time_ago_in_words(@alert.created_at) %> ago by <%= owner.name %>
         </p>
+        <% if @alert.details.present? %>
+          <section class="alert-detail__block">
+            <h2 class="alert-detail__label">Details</h2>
+            <div class="alert-detail__details"><%= simple_format(@alert.details) %></div>
+          </section>
+        <% end %>
       </div>
     </div>
 
@@ -65,7 +71,7 @@
             <%= sms_to owner.email,
                         class: "btn btn-danger w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
               <i class="fa-regular fa-message" aria-hidden="true"></i>
-              <span>Email</span>
+              <span>Email <%= owner.name %></span>
             <% end %>
           </div>
         </div>

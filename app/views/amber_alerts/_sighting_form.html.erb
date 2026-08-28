@@ -28,7 +28,7 @@
               data: {
                 controller: "address-autocomplete",
                 address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"],
-                address_autocomplete_types_value: "poi,address,neighborhood,locality",
+                address_autocomplete_types_value: "poi,address,locality",
                 address_autocomplete_proximity_value:
                   ([current_user.longitude, current_user.latitude].compact.presence || []).to_json
               }

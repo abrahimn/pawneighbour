@@ -43,11 +43,11 @@
       </span>
 
       <% if alert.creator == current_user %>
-        <%= link_to "Mark as found", amber_alert_path(alert),
+        <%= link_to "Found", amber_alert_path(alert),
                     class: "btn btn-sm btn-outline-secondary rounded-pill px-3" %>
       <% else %>
-        <%= link_to "I've seen #{pet.name}", amber_alert_path(alert),
-                    class: "btn btn-sm btn-danger rounded-pill px-3" %>
+        <%= link_to "Detail", amber_alert_path(alert),
+                    class: "btn btn-sm btn-danger rounded-pill" %>
       <% end %>
     </div>
   </div>
