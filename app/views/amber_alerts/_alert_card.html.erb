@@ -43,8 +43,8 @@
       </span>
 
       <% if alert.creator == current_user %>
-        <%= link_to "Found", amber_alert_path(alert),
-                    class: "btn btn-sm btn-outline-secondary px-3" %>
+        <%= link_to "Manage", amber_alert_path(alert),
+                    class: "btn btn-sm btn-outline-secondary" %>
       <% else %>
         <%= link_to "Detail", amber_alert_path(alert),
                     class: "btn btn-sm btn-danger" %>
