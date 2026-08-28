@@ -44,10 +44,10 @@
 
       <% if alert.creator == current_user %>
         <%= link_to "Found", amber_alert_path(alert),
-                    class: "btn btn-sm btn-outline-secondary rounded-pill px-3" %>
+                    class: "btn btn-sm btn-outline-secondary px-3" %>
       <% else %>
         <%= link_to "Detail", amber_alert_path(alert),
-                    class: "btn btn-sm btn-danger rounded-pill" %>
+                    class: "btn btn-sm btn-danger" %>
       <% end %>
     </div>
   </div>

@@ -1,5 +1,5 @@
-<% pet   = @alert.pet %>
-<% owner = @alert.creator %>
+<% pet      = @alert.pet %>
+<% owner    = @alert.creator %>
 <% is_owner = owner == current_user %>
 
 <% content_for :title, "#{pet.name} is missing | PawNeighbour" %>
@@ -19,25 +19,23 @@
 
       <div>
         <% if @alert.resolved? %>
-          <p class="alert-detail__flag alert-detail__flag--found">Found</p>
+          <span class="status-badge status-badge--positive">Found</span>
         <% else %>
-          <p class="alert-detail__flag">Missing</p>
+          <span class="status-badge status-badge--urgent">Missing</span>
         <% end %>
 
         <h1 class="alert-detail__name"><%= pet.name %></h1>
 
-        <p class="alert-detail__meta mb-1">
+        <p class="alert-detail__meta mb-2">
           <%= pet.species %> · <%= pluralize(pet.age, "year") %> old
         </p>
-        <p class="alert-detail__meta mb-0">
-          reported <%= time_ago_in_words(@alert.created_at) %> ago by <%= owner.name %>
-        </p>
-        <% if @alert.details.present? %>
-          <section class="alert-detail__block">
-            <h2 class="alert-detail__label">Details</h2>
-            <div class="alert-detail__details"><%= simple_format(@alert.details) %></div>
-          </section>
-        <% end %>
+
+        <div class="d-flex align-items-center gap-2">
+          <%= avatar_for(owner, size: 32) %>
+          <span class="alert-detail__meta">
+            reported by <%= owner.name %>, <%= time_ago_in_words(@alert.created_at) %> ago
+          </span>
+        </div>
       </div>
     </div>
 
@@ -53,7 +51,17 @@
       </p>
     </section>
 
-    <%# ---------- how to reach the owner ---------- %>
+    <%# ---------- important info ---------- %>
+    <% if @alert.details.present? %>
+      <section class="alert-detail__block">
+        <h2 class="alert-detail__label">Important info</h2>
+        <div class="alert-detail__details">
+          <%= simple_format(@alert.details) %>
+        </div>
+      </section>
+    <% end %>
+
+    <%# ---------- contact ---------- %>
     <% unless is_owner %>
       <section class="alert-detail__block">
         <h2 class="alert-detail__label">Contact <%= owner.name %></h2>
@@ -67,10 +75,11 @@
               <% end %>
             </div>
           <% end %>
+
           <div class="col-12 col-sm-6">
-            <%= sms_to owner.email,
-                        class: "btn btn-danger w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
-              <i class="fa-regular fa-message" aria-hidden="true"></i>
+            <%= mail_to owner.email,
+                        class: "btn btn-outline-secondary w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+              <i class="fa-regular fa-envelope" aria-hidden="true"></i>
               <span>Email <%= owner.name %></span>
             <% end %>
           </div>
@@ -89,11 +98,21 @@
       </section>
     <% end %>
 
+    <%# ---------- report a sighting ---------- %>
+    <% if !is_owner && !@alert.resolved? %>
+      <section class="alert-detail__block">
+        <h2 class="alert-detail__label">I've seen <%= pet.name %></h2>
+        <%= render "amber_alerts/sighting_form", alert: @alert, response: @response, pet: pet %>
+      </section>
+    <% end %>
+
     <%# ---------- sightings ---------- %>
     <section class="alert-detail__block">
       <h2 class="alert-detail__label">
         Sightings
-        <span class="alert-detail__count"><%= @sightings.size %></span>
+        <span class="alert-detail__count <%= "alert-detail__count--zero" if @sightings.size.zero? %>">
+          <%= @sightings.size %>
+        </span>
       </h2>
 
       <% if @sightings.any? %>
@@ -104,38 +123,39 @@
                 <%= sighting.date.strftime("%-d %b") %><br>
                 <span><%= sighting.time&.strftime("%-l:%M%P") %></span>
               </div>
+
               <div class="sighting__body">
                 <p class="sighting__where mb-1"><%= sighting.location %></p>
+
                 <% if sighting.notes.present? %>
                   <p class="sighting__notes mb-1"><%= sighting.notes %></p>
                 <% end %>
-                <p class="sighting__who mb-0">reported by <%= sighting.spotter.name %></p>
+
                 <% if sighting.photos.attached? %>
                   <div class="sighting__photos">
                     <% sighting.photos.each do |photo| %>
                       <%= cl_image_tag photo.key, width: 320, height: 320, crop: :fill,
-                                      class: "sighting__photo", alt: "Sighting photo" %>
+                                       class: "sighting__photo", alt: "Sighting photo" %>
                     <% end %>
                   </div>
                 <% end %>
+
+                <div class="d-flex align-items-center gap-2 mt-1">
+                  <%= avatar_for(sighting.spotter, size: 24) %>
+                  <span class="sighting__who">reported by <%= sighting.spotter.name %></span>
+                </div>
               </div>
             </li>
           <% end %>
         </ol>
       <% else %>
-        <p class="text-body-secondary mb-0">
+        <p class="alert-detail__meta mb-0">
           No sightings yet. If you've seen <%= pet.name %>, even briefly, it helps.
         </p>
       <% end %>
     </section>
 
-    <%# ---------- report a sighting ---------- %>
-    <% if !is_owner && !@alert.resolved? %>
-      <section class="alert-detail__block alert-detail__block--form">
-        <h2 class="alert-detail__label">I've seen <%= pet.name %></h2>
-        <%= render "amber_alerts/sighting_form", alert: @alert, response: @response, pet: pet %>
-      </section>
-    <% end %>
+
 
   </article>
 </main>

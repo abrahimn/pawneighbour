@@ -31,6 +31,16 @@
   border-radius: var(--pn-radius);
   box-shadow: var(--pn-shadow-md);
 
+  &__details p {
+    margin-bottom: .5rem;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  &__count--zero {
+    color: var(--pn-muted);
+    background: rgba(16, 45, 39, .08);
+  }
+
   &__head {
     display: grid;
     grid-template-columns: 132px minmax(0, 1fr);
