@@ -26,9 +26,16 @@
 
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body data-controller="motion">
+    <%= render "shared/navbar" %>
+    <%= render "shared/flashes" %>
 
     <%= yield %>
+    <footer class="site-footer">
+      <span>Pawneighbour</span>
+      <span class="site-footer__rule" aria-hidden="true"></span>
+      <span>Good people. Happy paws. Right around the corner.</span>
+      <%= yield :footer_links if content_for?(:footer_links) %>
+    </footer>
   </body>
 </html>

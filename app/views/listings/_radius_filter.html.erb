@@ -4,7 +4,9 @@
     Search range
   </label>
 
-  <div class="listing-filter__controls">
+  <div class="listing-filter__controls field-guide-select field-guide-select--compact"
+       data-controller="custom-select">
+    <i class="fa-solid fa-location-crosshairs field-guide-select__icon" aria-hidden="true"></i>
 
     <%= f.select :radius,
                 options_for_select([
@@ -14,9 +16,26 @@
                   ["Fur-ther afield · 25 km", 25]],
                   @radius.to_i),
                 {},
-                class: "form-select listing-filter__select",
+                class: "form-select listing-filter__select field-guide-select__input",
                 "aria-label": "Search radius",
+                data: { custom_select_target: "select" },
                 onchange: "this.form.requestSubmit()" %>
+
+    <button type="button"
+            class="field-guide-select__input custom-select__trigger"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            data-custom-select-target="trigger"
+            data-action="custom-select#toggle keydown->custom-select#handleTriggerKeydown"
+            hidden>
+      <span data-custom-select-target="value"></span>
+    </button>
+    <i class="fa-solid fa-chevron-down field-guide-select__chevron" aria-hidden="true"></i>
+    <div class="custom-select__popover"
+         role="listbox"
+         data-custom-select-target="menu"
+         data-action="keydown->custom-select#handleMenuKeydown"
+         hidden></div>
 
   </div>
 
