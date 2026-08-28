@@ -319,8 +319,8 @@ puts "#{Event.count} events, #{Rsvp.count} RSVPs.\n\n"
 puts "Creating lost-pet alerts..."
 
 alert_data = [
-  ["Mochi", "Enmore Park, NSW", 0, "17:40",
-   [["Billie", "Enmore Road near the pub", "Ran past heading east, wouldn't stop.", "18:05"],
+  ["Mochi", "Glebe, NSW", 0, "17:40",
+   [["Tom", "Enmore Road near the pub", "Ran past heading east, wouldn't stop.", "18:05"],
     ["Sam",    "Simmons Street",           "Pretty sure it was her — responded to a snack packet.", "18:40"]]],
 
   ["Gandalf", "Bankstown Library, NSW", 1, "08:15",

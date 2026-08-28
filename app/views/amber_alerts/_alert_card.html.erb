@@ -11,22 +11,23 @@
   <div class="alert-card__body">
 
     <div class="d-flex justify-content-between align-items-start gap-2">
-      <p class="alert-card__flag">Missing</p>
+      <h2 class="alert-card__name"><%= pet.name %></h2>
       <span class="alert-card__raised">
         reported <%= time_ago_in_words(alert.created_at) %> ago
       </span>
     </div>
 
-    <h2 class="alert-card__name"><%= pet.name %></h2>
 
     <p class="alert-card__meta mb-1">
-      <%= pet.species %> · <%= pluralize(pet.age, "year") %> old ·
-      last seen <%=  %>
+      <%= pet.species %> · <%= pluralize(pet.age, "year") %> old
+    </p>
+    <p class="alert-card__meta mb-1">
+      last seen <%= alert.last_seen_at %>
     </p>
 
     <p class="alert-card__meta mb-3">
       <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i><%= alert.location %>
-      <% if (away = distance_away(current_user, alert.creator)) %>
+      <% if (away = distance_away(current_user, alert))%>
         · <%= away %>
       <% end %>
     </p>
@@ -41,9 +42,12 @@
         <% end %>
       </span>
 
-      <%= link_to amber_alert_path(alert),
-                  class: "btn btn-sm btn-danger rounded-pill px-3 flex-shrink-0" do %>
-        Found <%= pet.name %>
+      <% if alert.creator == current_user %>
+        <%= link_to "Mark as found", amber_alert_path(alert),
+                    class: "btn btn-sm btn-outline-secondary rounded-pill px-3" %>
+      <% else %>
+        <%= link_to "I've seen #{pet.name}", amber_alert_path(alert),
+                    class: "btn btn-sm btn-danger rounded-pill px-3" %>
       <% end %>
     </div>
   </div>

@@ -1,2 +1,135 @@
-<h1>AmberAlerts#show</h1>
-<p>Find me in app/views/amber_alerts/show.html.erb</p>
+<% pet   = @alert.pet %>
+<% owner = @alert.creator %>
+<% is_owner = owner == current_user %>
+
+<% content_for :title, "#{pet.name} is missing | PawNeighbour" %>
+
+<main class="page-shell alerts-page">
+
+  <%= link_to amber_alerts_path, class: "btn btn-link px-0 mb-3" do %>
+    <i class="fa-solid fa-chevron-left me-1" aria-hidden="true"></i> All alerts
+  <% end %>
+
+  <article class="alert-detail">
+
+    <%# ---------- who is missing ---------- %>
+    <div class="alert-detail__head">
+      <img src="<%= pet_photo_url(pet, size: 320) %>"
+           class="alert-detail__photo" alt="<%= pet.name %>">
+
+      <div>
+        <% if @alert.resolved? %>
+          <p class="alert-detail__flag alert-detail__flag--found">Found</p>
+        <% else %>
+          <p class="alert-detail__flag">Missing</p>
+        <% end %>
+
+        <h1 class="alert-detail__name"><%= pet.name %></h1>
+
+        <p class="alert-detail__meta mb-1">
+          <%= pet.species %> · <%= pluralize(pet.age, "year") %> old
+        </p>
+        <p class="alert-detail__meta mb-0">
+          reported <%= time_ago_in_words(@alert.created_at) %> ago by <%= owner.name %>
+        </p>
+      </div>
+    </div>
+
+    <%# ---------- last seen ---------- %>
+    <section class="alert-detail__block">
+      <h2 class="alert-detail__label">Last seen</h2>
+      <p class="mb-1"><strong><%= @alert.location %></strong></p>
+      <p class="alert-detail__meta mb-0">
+        <%= @alert.last_seen_at %>
+        <% if (away = distance_away(current_user, @alert)) %>
+          · <%= away %>
+        <% end %>
+      </p>
+    </section>
+
+    <%# ---------- how to reach the owner ---------- %>
+    <% unless is_owner %>
+      <section class="alert-detail__block">
+        <h2 class="alert-detail__label">Contact <%= owner.name %></h2>
+        <div class="row g-2">
+          <% if owner.mobile.present? %>
+            <div class="col-12 col-sm-6">
+              <%= link_to "tel:#{owner.mobile.gsub(/\s/, '')}",
+                          class: "btn btn-danger w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                <span>Call <%= owner.name %></span>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="col-12 col-sm-6">
+            <%= sms_to owner.email,
+                        class: "btn btn-danger w-100 d-inline-flex align-items-center justify-content-center gap-2" do %>
+              <i class="fa-regular fa-message" aria-hidden="true"></i>
+              <span>Email</span>
+            <% end %>
+          </div>
+        </div>
+      </section>
+    <% end %>
+
+    <%# ---------- owner: mark as found ---------- %>
+    <% if is_owner && !@alert.resolved? %>
+      <section class="alert-detail__block">
+        <%= button_to "Mark #{pet.name} as found",
+                      resolve_amber_alert_path(@alert),
+                      method: :patch,
+                      class: "btn btn-success w-100",
+                      data: { turbo_confirm: "Close this alert? Neighbours will stop seeing it." } %>
+      </section>
+    <% end %>
+
+    <%# ---------- sightings ---------- %>
+    <section class="alert-detail__block">
+      <h2 class="alert-detail__label">
+        Sightings
+        <span class="alert-detail__count"><%= @sightings.size %></span>
+      </h2>
+
+      <% if @sightings.any? %>
+        <ol class="sighting-list">
+          <% @sightings.each do |sighting| %>
+            <li class="sighting">
+              <div class="sighting__when">
+                <%= sighting.date.strftime("%-d %b") %><br>
+                <span><%= sighting.time&.strftime("%-l:%M%P") %></span>
+              </div>
+              <div class="sighting__body">
+                <p class="sighting__where mb-1"><%= sighting.location %></p>
+                <% if sighting.notes.present? %>
+                  <p class="sighting__notes mb-1"><%= sighting.notes %></p>
+                <% end %>
+                <p class="sighting__who mb-0">reported by <%= sighting.spotter.name %></p>
+                <% if sighting.photos.attached? %>
+                  <div class="sighting__photos">
+                    <% sighting.photos.each do |photo| %>
+                      <%= cl_image_tag photo.key, width: 320, height: 320, crop: :fill,
+                                      class: "sighting__photo", alt: "Sighting photo" %>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ol>
+      <% else %>
+        <p class="text-body-secondary mb-0">
+          No sightings yet. If you've seen <%= pet.name %>, even briefly, it helps.
+        </p>
+      <% end %>
+    </section>
+
+    <%# ---------- report a sighting ---------- %>
+    <% if !is_owner && !@alert.resolved? %>
+      <section class="alert-detail__block alert-detail__block--form">
+        <h2 class="alert-detail__label">I've seen <%= pet.name %></h2>
+        <%= render "amber_alerts/sighting_form", alert: @alert, response: @response, pet: pet %>
+      </section>
+    <% end %>
+
+  </article>
+</main>

@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  get "amber_alerts/index"
-  get "amber_alerts/new"
-  get "amber_alerts/create"
-  get "amber_alerts/show"
   devise_for :users
   root to: "listings#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -17,6 +13,7 @@ Rails.application.routes.draw do
   resources :connections, only: [:index, :show, :create]
 
   resources :amber_alerts, only: [:index, :new, :create, :show] do
+    patch :resolve, on: :member
     resources :alert_responses, only: [:create]
   end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

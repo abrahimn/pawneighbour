@@ -21,3 +21,86 @@
     margin-bottom: 1.25rem;
   }
 }
+
+.alert-detail {
+  background: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 8px rgba($gray, .08);
+  padding: 1.5rem;
+
+  &__head {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+
+  &__flag {
+    margin: 0;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: $coral-dark;
+
+    &--found { color: $green-dark; }
+  }
+
+  &__name  { font-size: 1.8rem; font-weight: 700; margin: 0 0 .25rem; }
+  &__meta  { font-size: .85rem; color: rgba($gray, .6); }
+
+  &__block {
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba($choco, .12);
+    margin-bottom: 1.25rem;
+  }
+
+  &__label {
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: rgba($gray, .55);
+    margin-bottom: .5rem;
+  }
+
+  &__count {
+    display: inline-block;
+    margin-left: .35rem;
+    padding: 0 .45rem;
+    background: rgba($coral, .15);
+    color: $coral-dark;
+    border-radius: 50rem;
+  }
+}
+
+.sighting-list { list-style: none; padding: 0; margin: 0; }
+
+.sighting {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 1rem;
+  padding: .85rem 0;
+  border-bottom: 1px solid rgba($choco, .08);
+
+  &:last-child { border-bottom: 0; }
+
+  &__when {
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.3;
+    span { font-weight: 400; color: rgba($gray, .5); }
+  }
+
+  &__where  { font-weight: 600; }
+  &__notes  { font-size: .88rem; color: rgba($gray, .7); }
+  &__who    { font-size: .75rem; color: rgba($gray, .45); }
+}
