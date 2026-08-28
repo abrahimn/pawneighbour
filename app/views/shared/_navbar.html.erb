@@ -45,8 +45,10 @@
                 <% end %>
               <% end %>
             </li>
-            <li><%= link_to "Help board", listings_path, class: "dropdown-item" %></li>
-            <li><%= link_to "Lost & Found", amber_alerts_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Community Board", listings_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Community Alerts", amber_alerts_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Pin a request", new_listing_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Report missing pet", new_amber_alert_path, class: "dropdown-item" %></li>
             <li><hr class="dropdown-divider"></li>
             <li><%= link_to "Log out", destroy_user_session_path,
                             data: { turbo_method: :delete }, class: "dropdown-item" %></li>
