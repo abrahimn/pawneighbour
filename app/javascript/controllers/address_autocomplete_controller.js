@@ -30,7 +30,15 @@ export default class extends Controller {
   }
 
   #setInputValue(event) {
-    this.addressTarget.value = event.result.text + ", " + (event.result.context?.find(c => c.id.startsWith("locality"))?.text || "")
+    const result = event.result
+    const context = result.context || []
+    const find = (prefix) => context.find((c) => c.id.startsWith(prefix))
+
+    const area =
+      find("locality")?.text ||
+      find("region")?.short_code?.replace(/^\w{2}-/, "")
+
+    this.addressTarget.value = [result.text, area].filter(Boolean).join(", ")
   }
 
   #clearInputValue() {
