@@ -1,70 +1,78 @@
 <% content_for :title, "Report a missing pet | PawNeighbour" %>
 
-<main class="page-shell alerts-page">
-  <div class="row">
-    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+<main class="listing-form-page">
+  <div class="container listing-form-page__container">
 
-      <%= link_to amber_alerts_path, class: "btn btn-link px-0 mb-3" do %>
-        <i class="fa-solid fa-chevron-left me-1" aria-hidden="true"></i> All alerts
+    <%= link_to amber_alerts_path, class: "btn btn-link px-0 mb-3" do %>
+      <i class="fa-solid fa-chevron-left me-1" aria-hidden="true"></i> All alerts
+    <% end %>
+
+    <section class="paw-form" aria-labelledby="new-alert-title">
+      <header class="paw-form__header">
+        <span class="paw-form__icon" aria-hidden="true">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </span>
+        <h1 id="new-alert-title">Report a missing pet</h1>
+        <p>Neighbours nearby will see this straight away. The more precise the location, the more useful it is.</p>
+      </header>
+
+      <% if @alert.errors.any? %>
+        <div class="paw-form__error-summary" role="alert" aria-live="polite">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <div>
+            <p class="paw-form__error-title">We couldn't post your alert yet.</p>
+            <p>Please check the highlighted fields below.</p>
+          </div>
+        </div>
       <% end %>
 
-      <div class="alerts-hero mb-4">
-        <p class="alerts-hero__eyebrow">Community alert</p>
-        <h1 class="alerts-hero__title">Report a missing pet</h1>
-        <p class="alerts-hero__description mb-0">
-          Neighbours nearby will see this straight away. The more precise the
-          location, the more useful it is.
-        </p>
-      </div>
+      <p class="paw-form__required-note">
+        <span aria-hidden="true">*</span> Required fields
+      </p>
 
-      <%= simple_form_for @alert do |f| %>
-        <%= f.error_notification %>
+      <%= simple_form_for @alert, html: { class: "paw-form__fields" } do |f| %>
 
-        <%= f.association :pet,
-                          collection: @pets,
-                          label_method: :name,
-                          value_method: :id,
-                          label: "Which pet is missing?",
-                          include_blank: "Choose a pet",
-                          required: true %>
+        <%= render "amber_alerts/pet_picker", form: f, pets: @pets %>
 
         <%= f.input :location,
-            required: true,
-            label: "Where were they last seen?",
-            input_html: {
-              class: "d-none",
-              data: { address_autocomplete_target: "address" }
-            },
-            wrapper_html: {
-              class: "address-field",
-              data: {
-                controller: "address-autocomplete",
-                address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"],
-                address_autocomplete_types_value: "poi,address,neighborhood,locality",
-                address_autocomplete_proximity_value:
-                  ([current_user.longitude, current_user.latitude].compact.presence || []).to_json
-              }
-            } %>
+                    required: true,
+                    label: "Where were they last seen?",
+                    hint: "Pick the closest park, street or suburb so we show this to the right neighbours.",
+                    input_html: {
+                      class: "d-none",
+                      data: { address_autocomplete_target: "address" }
+                    },
+                    wrapper_html: {
+                      class: "address-field mb-3",
+                      data: {
+                        controller: "address-autocomplete",
+                        address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"],
+                        address_autocomplete_types_value: "poi,address,locality",
+                        address_autocomplete_proximity_value:
+                          ([current_user.longitude, current_user.latitude].compact.presence || []).to_json
+                      }
+                    } %>
 
-        <div class="row g-2">
-          <div class="col-6">
-            <%= f.input :date, as: :string, label: "Date",
-                        input_html: { type: "date", value: Date.current, max: Date.current },
-                        required: true %>
-          </div>
-          <div class="col-6">
-            <%= f.input :time, as: :string, label: "Time",
-                        input_html: { type: "time", value: Time.current.strftime("%H:%M") } %>
-          </div>
-        <%= f.input :details,
-            label: "Important Info",
-            placeholder: "What were they wearing? Are they microchipped? How can neighbours help?",
-            input_html: { rows: 5 } %>
+        <div class="paw-form__date-grid">
+          <%= f.input :date, as: :string, label: "Date last seen", required: true,
+                      input_html: { type: "date", value: Date.current, max: Date.current } %>
+
+          <%= f.input :time, as: :string, label: "Roughly what time?",
+                      input_html: { type: "time", value: Time.current.strftime("%H:%M") } %>
         </div>
 
-        <%= f.button :submit, "Post alert", class: "btn btn-danger w-100 mt-3" %>
-      <% end %>
+        <%= f.input :details,
+                    as: :text,
+                    label: "Important info",
+                    placeholder: "What were they wearing? Are they microchipped? Do they run from strangers?",
+                    hint: "Optional — but the small details are what people recognise.",
+                    input_html: { rows: 5 } %>
 
-    </div>
+        <%= button_tag type: "submit", class: "paw-form__submit" do %>
+          <i class="fa-solid fa-bullhorn" aria-hidden="true"></i>
+          <span>Post alert</span>
+        <% end %>
+      <% end %>
+    </section>
   </div>
 </main>

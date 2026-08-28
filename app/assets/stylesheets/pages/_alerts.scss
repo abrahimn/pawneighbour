@@ -1,84 +1,94 @@
-// pages/_alerts.scss
 .alerts-hero {
-  padding: 1.75rem;
-  background: rgba($coral, .08);
-  border-radius: $border-radius;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--pn-acid);
+  border: 1px solid var(--pn-ink);
+  border-radius: var(--pn-radius);
+  box-shadow: var(--pn-shadow-md);
 
   &__eyebrow {
-    margin: 0 0 .25rem;
-    font-size: .72rem;
+    margin: 0 0 .35rem;
+    font-size: .7rem;
     font-weight: 700;
-    letter-spacing: .08em;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    color: $coral-dark;
+    color: var(--pn-ink);
   }
 
-  &__title { font-size: 1.9rem; font-weight: 700; margin: 0 0 .5rem; }
+  &__title { margin: 0 0 .5rem; font-size: clamp(1.9rem, 4vw, 2.6rem); }
 
   &__description {
     max-width: 46ch;
-    color: rgba($gray, .7);
     margin-bottom: 1.25rem;
+    color: var(--pn-ink);
   }
 }
 
 .alert-detail {
-  background: $white;
-  border-radius: $border-radius;
-  box-shadow: 0 2px 8px rgba($gray, .08);
-  padding: 1.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: var(--pn-paper);
+  border: 1px solid var(--pn-line);
+  border-left: 5px solid var(--pn-vermilion);
+  border-radius: var(--pn-radius);
+  box-shadow: var(--pn-shadow-md);
 
   &__head {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-columns: 132px minmax(0, 1fr);
     gap: 1.25rem;
     align-items: center;
     margin-bottom: 1.5rem;
+
+    @media (max-width: 480px) { grid-template-columns: 1fr; }
   }
 
   &__photo {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
-    border-radius: 1rem;
+    border: 1px solid var(--pn-line);
+    border-radius: var(--pn-radius);
   }
 
   &__flag {
-    margin: 0;
-    font-size: .72rem;
+    display: inline-block;
+    padding: .15rem .5rem;
+    font-size: .7rem;
     font-weight: 700;
-    letter-spacing: .08em;
+    letter-spacing: .12em;
     text-transform: uppercase;
-    color: $coral-dark;
+    color: var(--pn-paper);
+    background: var(--pn-vermilion);
+    border-radius: 2px;
 
-    &--found { color: $green-dark; }
+    &--found { background: var(--pn-sage); }
   }
 
-  &__name  { font-size: 1.8rem; font-weight: 700; margin: 0 0 .25rem; }
-  &__meta  { font-size: .85rem; color: rgba($gray, .6); }
+  &__name  { margin: .4rem 0 .25rem; font-size: 2rem; letter-spacing: -0.025em; }
+  &__meta  { font-size: .86rem; color: var(--pn-muted); }
 
   &__block {
     padding-top: 1.25rem;
-    border-top: 1px solid rgba($choco, .12);
     margin-bottom: 1.25rem;
+    border-top: 1px solid var(--pn-line);
   }
 
   &__label {
-    font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: rgba($gray, .55);
     margin-bottom: .5rem;
+    font-family: $body-font;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pn-muted);
   }
 
   &__count {
     display: inline-block;
     margin-left: .35rem;
-    padding: 0 .45rem;
-    background: rgba($coral, .15);
-    color: $coral-dark;
-    border-radius: 50rem;
+    padding: 0 .4rem;
+    color: var(--pn-paper);
+    background: var(--pn-vermilion);
+    border-radius: 2px;
   }
 }
 
@@ -86,21 +96,42 @@
 
 .sighting {
   display: grid;
-  grid-template-columns: 68px minmax(0, 1fr);
+  grid-template-columns: 74px minmax(0, 1fr);
   gap: 1rem;
-  padding: .85rem 0;
-  border-bottom: 1px solid rgba($choco, .08);
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--pn-line);
 
   &:last-child { border-bottom: 0; }
 
-  &__when {
-    font-size: .78rem;
-    font-weight: 600;
-    line-height: 1.3;
-    span { font-weight: 400; color: rgba($gray, .5); }
-  }
+  &__when  { font-size: .78rem; font-weight: 700; line-height: 1.3;
+             span { font-weight: 400; color: var(--pn-muted); } }
+  &__where { font-weight: 700; }
+  &__notes { font-size: .88rem; color: var(--pn-muted); }
+  &__who   { font-size: .74rem; color: var(--pn-muted); }
+}
 
-  &__where  { font-weight: 600; }
-  &__notes  { font-size: .88rem; color: rgba($gray, .7); }
-  &__who    { font-size: .75rem; color: rgba($gray, .45); }
+.sighting__photo {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border: 1px solid var(--pn-line);
+  border-radius: var(--pn-radius);
+}
+
+.sighting-form__camera-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1.5rem;
+  width: 100%;
+  color: var(--pn-ink);
+  background: rgba(240, 90, 62, .08);
+  border: 2px dashed var(--pn-vermilion);
+  border-radius: var(--pn-radius);
+  cursor: pointer;
+
+  i     { font-size: 1.6rem; color: var(--pn-vermilion); }
+  span  { font-weight: 700; }
+  small { color: var(--pn-muted); font-weight: 400; }
 }

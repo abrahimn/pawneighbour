@@ -32,10 +32,19 @@
         Keep track of your pet-care requests, offers and matches.
       </p>
 
-      <%= link_to new_listing_path,
-                  class: "btn neighbourhood-hero__button rounded-pill" do %>
-        Pin a request <span aria-hidden="true">↗</span>
-      <% end %>
+      <div class="d-flex flex-column align-items-start w-30 mt-3">
+        <%= link_to new_listing_path,
+                    class: "btn neighbourhood-hero__button rounded-pill mb-3" do %>
+          Pin a request
+          <span aria-hidden="true">↗</span>
+        <% end %>
+
+        <%= link_to new_amber_alert_path,
+                    class: "btn neighbourhood-hero__button rounded-pill" do %>
+          Report a missing
+          <span aria-hidden="true">↗</span>
+        <% end %>
+      </div>
     </div>
     <div class="neighbourhood-hero__stamp" aria-hidden="true">
       <span>KEEPING TABS</span>
