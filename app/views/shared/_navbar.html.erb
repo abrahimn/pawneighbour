@@ -9,13 +9,6 @@
     <div class="ms-auto">
       <% if user_signed_in? %>
         <div class="site-navbar__signed-in">
-          <%= link_to "Help board", listings_path, class: "site-navbar__text-link d-none d-sm-inline-flex" %>
-          <%= link_to new_listing_path, class: "site-navbar__post d-none d-sm-inline-flex" do %>
-            Pin a request <span aria-hidden="true">↗</span>
-          <% end %>
-          <%= link_to new_amber_alert_path, class: "site-navbar__post d-none d-sm-inline-flex" do %>
-            Report a missing <span aria-hidden="true">↗</span>
-          <% end %>
           <div class="dropdown">
           <button class="site-navbar__account" type="button"
                   data-bs-toggle="dropdown"
