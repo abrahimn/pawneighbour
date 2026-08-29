@@ -14,7 +14,7 @@ class ListingsController < ApplicationController
   end
 
   def new
-    redirect_to new_pet_path, alert: "Add a pet before posting a job." and return if current_user.pets.none?
+    redirect_to listings_path, alert: "Add a pet before posting a job." and return if current_user.pets.none?
 
     @listing = Listing.new
     @pets = current_user.pets.order(:name)

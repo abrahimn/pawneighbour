@@ -32,3 +32,8 @@
     color: rgba($choco, .7);
   }
 }
+
+.status-badge--urgent {
+  background: var(--pn-vermilion);
+  color: var(--pn-paper);
+}

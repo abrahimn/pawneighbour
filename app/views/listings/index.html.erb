@@ -27,8 +27,8 @@
       </span>
 
       <h1 class="neighbourhood-hero__title" id="nearby-hero-title">
-        Need a hand?
-        <span>Find a paw!</span>
+        <span>Need a hand?</span>
+        Find a paw!
       </h1>
 
       <p class="neighbourhood-hero__description">
@@ -36,11 +36,19 @@
         No agencies. Just neighbours.
       </p>
 
-      <%= link_to new_listing_path,
-                  class: "btn neighbourhood-hero__button rounded-pill" do %>
-        Pin a request
-        <span aria-hidden="true">↗</span>
-      <% end %>
+      <div class="d-flex flex-column align-items-start w-30">
+        <%= link_to new_listing_path,
+                    class: "btn neighbourhood-hero__button rounded-pill mb-3" do %>
+          Pin a request
+          <span aria-hidden="true">↗</span>
+        <% end %>
+
+        <%= link_to new_amber_alert_path,
+                    class: "btn neighbourhood-hero__button rounded-pill" do %>
+          Report a missing
+          <span aria-hidden="true">↗</span>
+        <% end %>
+      </div>
     </div>
     <div class="neighbourhood-hero__stamp" aria-hidden="true">
       <span>NEIGHBOUR</span>

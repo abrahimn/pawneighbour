@@ -38,6 +38,19 @@ a {
   border-color: var(--pn-brown-dark);
 }
 
+// components/_marketplace.scss — beside the .btn-primary rules
+.btn-danger {
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(185, 52, 34, 0.18);
+}
+
+.btn-danger:hover,
+.btn-danger:focus-visible {
+  color: #fff;
+  background: var(--pn-brown-dark);
+  border-color: var(--pn-brown-dark);
+}
+
 .btn:focus-visible,
 .form-control:focus-visible,
 .form-select:focus-visible,

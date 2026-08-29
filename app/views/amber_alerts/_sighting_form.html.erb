@@ -1,0 +1,54 @@
+<%= simple_form_for [@alert, @response] do |f| %>
+  <%= f.error_notification %>
+
+  <div class="sighting-form__camera mb-3">
+    <%= f.label :photos, class: "sighting-form__camera-label" do %>
+      <i class="fa-solid fa-camera" aria-hidden="true"></i>
+      <span>Take a photo of <%= pet.name %></span>
+      <small>Optional, but it helps enormously</small>
+    <% end %>
+
+    <%= f.input_field :photos,
+                      as: :file,
+                      multiple: true,
+                      accept: "image/*",
+                      capture: "environment",
+                      class: "sighting-form__camera-input" %>
+  </div>
+
+  <%= f.input :location,
+            required: true,
+            label: "Where did you see them?",
+            input_html: {
+              class: "d-none",
+              data: { address_autocomplete_target: "address" }
+            },
+            wrapper_html: {
+              class: "address-field",
+              data: {
+                controller: "address-autocomplete",
+                address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"],
+                address_autocomplete_types_value: "poi,address,locality",
+                address_autocomplete_proximity_value:
+                  ([current_user.longitude, current_user.latitude].compact.presence || []).to_json
+              }
+            } %>
+
+  <div class="row g-2">
+    <div class="col-6">
+      <%= f.input :date, as: :string, label: "Date",
+                  input_html: { type: "date", value: Date.current, max: Date.current } %>
+    </div>
+    <div class="col-6">
+      <%= f.input :time, as: :string, label: "Time",
+                  input_html: { type: "time", value: Time.current.strftime("%H:%M") } %>
+    </div>
+  </div>
+
+  <%= f.input :notes,
+              label: "Anything else?",
+              placeholder: "Which direction were they heading? Did they seem hurt?",
+              input_html: { rows: 3 } %>
+
+  <%= f.button :submit, "Report sighting", class: "btn btn-outline-danger w-100 mt-2" %>
+<% end %>

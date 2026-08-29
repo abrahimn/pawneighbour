@@ -1,0 +1,24 @@
+<div class="form-group mb-4">
+  <label class="form-label">
+    Which pet is missing? <abbr title="required">*</abbr>
+  </label>
+
+  <div class="pet-picker">
+    <%= form.collection_radio_buttons :pet_id, pets, :id, :name do |b| %>
+      <div class="pet-picker__item">
+        <%= b.radio_button(class: "pet-picker__input") %>
+        <%= b.label(class: "pet-picker__label") do %>
+          <img src="<%= pet_photo_url(b.object, size: 200) %>"
+               class="pet-picker__photo" alt="">
+          <span class="pet-picker__name"><%= b.object.name %></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if form.object.errors[:pet].any? %>
+    <div class="invalid-feedback d-block">
+      <%= form.object.errors[:pet].to_sentence %>
+    </div>
+  <% end %>
+</div>

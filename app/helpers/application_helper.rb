@@ -54,12 +54,14 @@ module ApplicationHelper
     end
   end
 
-  def distance_away(from, to)
-    return nil unless from&.latitude && to&.latitude
+  def distance_away(from, to) # rubocop:disable Metrics/PerceivedComplexity
+    return nil if from.blank? || to.blank? || from == to
+    return nil unless from.latitude && from.longitude && to.latitude && to.longitude
 
     km = Geocoder::Calculations.distance_between(
       [from.latitude, from.longitude], [to.latitude, to.longitude], units: :km
     )
+
     km < 1 ? "#{(km * 1000).round(-1)}m away" : "#{km.round(1)}km away"
   end
 

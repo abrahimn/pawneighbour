@@ -3,16 +3,26 @@ import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder"
 
 // Connects to data-controller="address-autocomplete"
 export default class extends Controller {
-  static values = { apiKey: String }
+  static values = {
+    apiKey: String,
+    types: { type: String, default: "locality" },
+    proximity: { type: Array, default: [] }
+  }
 
   static targets = ["address"]
 
   connect() {
-    this.geocoder = new MapboxGeocoder({
+    const options = {
       accessToken: this.apiKeyValue,
-      types: "locality",
+      types: this.typesValue,
       countries: "au"
-    })
+    }
+
+    if (this.proximityValue.length === 2) {
+      options.proximity = this.proximityValue
+    }
+
+    this.geocoder = new MapboxGeocoder(options)
 
     this.geocoder.addTo(this.element)
     this.geocoder.on("result", event => this.#setInputValue(event))
@@ -20,7 +30,15 @@ export default class extends Controller {
   }
 
   #setInputValue(event) {
-    this.addressTarget.value = event.result["place_name"]
+    const result = event.result
+    const context = result.context || []
+    const find = (prefix) => context.find((c) => c.id.startsWith(prefix))
+
+    const area =
+      find("locality")?.text ||
+      find("region")?.short_code?.replace(/^\w{2}-/, "")
+
+    this.addressTarget.value = [result.text, area].filter(Boolean).join(", ")
   }
 
   #clearInputValue() {
@@ -28,6 +46,6 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.geocoder.onRemove()
+    this.geocoder?.onRemove()
   }
 }

@@ -1,0 +1,66 @@
+.alert-card {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--pn-paper);
+  border: 1px solid var(--pn-line);
+  border-left: 5px solid var(--pn-vermilion);
+  border-radius: var(--pn-radius);
+  box-shadow: var(--pn-shadow-sm);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+
+  @media (max-width: 420px) { grid-template-columns: 76px minmax(0, 1fr); }
+
+  &__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border: 1px solid var(--pn-line);
+    border-radius: var(--pn-radius);
+    background: #eadbc9;
+  }
+
+  &__flag {
+    display: inline-block;
+    margin: 0 0 .35rem;
+    padding: .1rem .45rem;
+    font-family: $body-font;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pn-paper);
+    background: var(--pn-vermilion);
+    border-radius: 2px;
+  }
+
+  &__name {
+    margin: 0 0 .15rem;
+    font-size: 1.65rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;   // matches .listing-card h3
+  }
+
+  &__raised { font-size: .72rem; color: var(--pn-muted); }
+  &__meta   { font-size: .84rem; color: var(--pn-muted); margin-bottom: .2rem; }
+
+  &__sightings {
+    font-size: .78rem;
+    color: var(--pn-muted);
+
+    &--some { color: var(--pn-sage); font-weight: 700; }
+  }
+}
+
+@media (hover: hover) {
+  .alert-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--pn-shadow-md);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert-card { transition: none; &:hover { transform: none; } }
+}
