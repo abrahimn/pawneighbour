@@ -90,11 +90,58 @@
     <%# ---------- owner: mark as found ---------- %>
     <% if is_owner && !@alert.resolved? %>
       <section class="alert-detail__block">
-        <%= button_to "Mark #{pet.name} as found",
-                      resolve_amber_alert_path(@alert),
+        <% resolve_form_id = dom_id(@alert, :resolve) %>
+
+        <%= form_with url: resolve_amber_alert_path(@alert),
                       method: :patch,
-                      class: "btn btn-success w-100",
-                      data: { turbo_confirm: "Close this alert? Neighbours will stop seeing it." } %>
+                      html: { id: resolve_form_id } do %>
+          <button type="button"
+                  class="btn btn-success w-100"
+                  data-bs-toggle="modal"
+                  data-bs-target="#found-confirmation-modal">
+            Mark <%= pet.name %> as found
+          </button>
+        <% end %>
+
+        <div class="modal fade confirmation-modal"
+             id="found-confirmation-modal"
+             tabindex="-1"
+             aria-labelledby="found-confirmation-title"
+             aria-describedby="found-confirmation-description"
+             aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="confirmation-modal__icon" aria-hidden="true">
+                  <i class="fa-solid fa-paw"></i>
+                </span>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Keep the alert open"></button>
+              </div>
+
+              <div class="modal-body">
+                <p class="confirmation-modal__eyebrow">Good news?</p>
+                <h2 class="confirmation-modal__title" id="found-confirmation-title">
+                  Has <%= pet.name %> come home?
+                </h2>
+                <p class="confirmation-modal__description" id="found-confirmation-description">
+                  This will close the missing pet alert. Neighbours will no longer see it on the alert board.
+                </p>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                  Not yet
+                </button>
+                <button type="submit" class="btn btn-success" form="<%= resolve_form_id %>">
+                  Yes, mark <%= pet.name %> found
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     <% end %>
 

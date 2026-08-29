@@ -52,6 +52,14 @@
 
     &--some { color: var(--pn-sage); font-weight: 700; }
   }
+
+  &__action {
+    display: inline-flex;
+    min-width: 4.75rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 @media (hover: hover) {
