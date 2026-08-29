@@ -16,6 +16,8 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a#final-join-cta[href='#{new_user_registration_path}']"
     assert_select "meta[property='og:image'][content$='/og.png']", count: 1
     assert_select "script[type='application/ld+json']", count: 1
+    assert_select "link[rel='icon'][href*='/assets/icons/favicon-']", minimum: 3
+    assert_select "link[rel='icon'][href='/icon.svg']", count: 0
   end
 
   test "home remains the landing page for signed-in neighbours" do
