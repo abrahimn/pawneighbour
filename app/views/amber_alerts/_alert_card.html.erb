@@ -44,10 +44,10 @@
 
       <% if alert.creator == current_user %>
         <%= link_to "Manage", amber_alert_path(alert),
-                    class: "btn btn-sm btn-outline-secondary" %>
+                    class: "btn btn-sm btn-outline-secondary alert-card__action" %>
       <% else %>
         <%= link_to "Detail", amber_alert_path(alert),
-                    class: "btn btn-sm btn-danger" %>
+                    class: "btn btn-sm btn-danger alert-card__action" %>
       <% end %>
     </div>
   </div>
