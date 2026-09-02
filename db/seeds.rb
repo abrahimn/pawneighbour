@@ -143,15 +143,16 @@ puts "#{Pet.count} pets created.\n\n"
 # ---------------------------------------------------------------------------
 # CONNECTIONS - built BEFORE the offers so the trust bands are already true
 # ---------------------------------------------------------------------------
-# Luna and Priya do NOT know each other. Abe and Jerry know them both.
+# Luna and Abe are not directly connected, but share Jerry and Mei as mutuals.
+# Luna and Priya do NOT know each other. Abe and Jerry know Priya.
 puts "Creating connections..."
 [
-  %w[Luna  Abe],     # Abe sat for Neo three weeks ago
   %w[Luna  Jerry],
+  %w[Luna  Mei],
   %w[Priya Abe],
   %w[Priya Jerry],
   %w[Abe   Jerry],   # they helped each other
-  %w[Mei   Abe],     # gives Mei exactly one mutual with Luna
+  %w[Mei   Abe],
   %w[Mei   Noah],
   %w[Abe   Billie],
   %w[Imani Kenji],
