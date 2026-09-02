@@ -5,7 +5,7 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @owner = create_user("Alex", "alex-offers@example.com")
-    @neighbour = create_user("Sam", "sam-offers@example.com")
+    @neighbour = create_user("Abe", "abe-offers@example.com")
     @pet = Pet.create!(
       user: @owner,
       name: "Milo",
@@ -42,7 +42,7 @@ class OffersControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", "Help for Milo and Otis"
     assert_select "article.offer-card", count: 1
     assert_select ".offer-card__content", count: 1
-    assert_select ".offer-card__person h2", "Sam"
+    assert_select ".offer-card__person h2", "Abe"
     assert_select ".offer-card__meta", text: /Sydney, NSW/
     assert_select ".offer-card__action", count: 1
     assert_select "button", text: /Accept offer/

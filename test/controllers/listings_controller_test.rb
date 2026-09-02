@@ -5,7 +5,7 @@ class ListingsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @owner = create_user("Alex", "alex@example.com", -33.8688, 151.2093)
-    @neighbour = create_user("Sam", "sam@example.com", -33.8690, 151.2095)
+    @neighbour = create_user("Abe", "abe@example.com", -33.8690, 151.2095)
     @listing = create_listing(@owner, "Milo", "Sitting", "Please stay overnight.")
     @nearby_listing = create_listing(@neighbour, "Luna", "Drop-in", "Top up Luna's food and water.")
     sign_in @owner

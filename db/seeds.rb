@@ -21,8 +21,8 @@ puts "Database cleaned."
 PASSWORD = "password"
 
 people = [
-  ["Tom",    "Newtown",      -33.8978, 151.1797],
-  ["Sam",    "Newtown",      -33.8955, 151.1830],
+  ["Luna",   "Newtown",      -33.8978, 151.1797],
+  ["Abe",    "Newtown",      -33.8955, 151.1830],
   ["Priya",  "Camperdown",   -33.8891, 151.1770],
   ["Jerry",  "Surry Hills",  -33.8848, 151.2131],
   ["Emma",   "Coogee",       -33.9205, 151.2552],
@@ -77,8 +77,8 @@ users = people.each_with_index.map do |(name, suburb, latitude, longitude), inde
   user
 end.index_by(&:name)
 
-tom   = users.fetch("Tom")
-sam   = users.fetch("Sam")
+luna  = users.fetch("Luna")
+abe   = users.fetch("Abe")
 priya = users.fetch("Priya")
 
 puts "#{User.count} users created.\n\n"
@@ -87,13 +87,13 @@ puts "#{User.count} users created.\n\n"
 # PETS
 # ---------------------------------------------------------------------------
 pet_data = [
-  ["Tom", "Neo", "Cat", 4, "neo.jpg",
+  ["Luna", "Neo", "Cat", 4, "neo.jpg",
   "Ginger tabby, very shy. Hides under the bed for the first hour - do not chase him, " \
   "he comes out for tuna. Two meals a day, 7am and 6pm. Wet food in the blue bowl only."],
-  ["Tom", "Dumpling", "Cat", 2, "dumpling.jpg",
+  ["Luna", "Dumpling", "Cat", 2, "dumpling.jpg",
   "Neo's sister and his opposite. Will demand attention immediately. " \
   "Allergic to chicken - please check the label."],
-  ["Sam", "Biscuit", "Dog", 7, "biscuit.jpg",
+  ["Abe", "Biscuit", "Dog", 7, "biscuit.jpg",
   "Golden retriever, older girl with a sore hip. Short walks only, 20 minutes max. " \
   "Half a tablet with breakfast, medication in the fridge door."],
   ["Priya", "Kiwi", "Bird", 1, "kiwi.jpg",
@@ -134,7 +134,6 @@ pets = pet_data.map do |owner_name, name, species, age, image, instructions|
   pet
 end.index_by(&:name)
 
-neo      = pets.fetch("Neo")
 dumpling = pets.fetch("Dumpling")
 biscuit  = pets.fetch("Biscuit")
 kiwi     = pets.fetch("Kiwi")
@@ -144,17 +143,17 @@ puts "#{Pet.count} pets created.\n\n"
 # ---------------------------------------------------------------------------
 # CONNECTIONS - built BEFORE the offers so the trust bands are already true
 # ---------------------------------------------------------------------------
-# Tom and Priya do NOT know each other. Sam and Jerry know them both.
+# Luna and Priya do NOT know each other. Abe and Jerry know them both.
 puts "Creating connections..."
 [
-  %w[Tom   Sam],     # Sam sat for Neo three weeks ago
-  %w[Tom   Jerry],
-  %w[Priya Sam],
+  %w[Luna  Abe],     # Abe sat for Neo three weeks ago
+  %w[Luna  Jerry],
+  %w[Priya Abe],
   %w[Priya Jerry],
-  %w[Sam   Jerry],   # they helped each other
-  %w[Mei   Sam],     # gives Mei exactly one mutual with Tom
+  %w[Abe   Jerry],   # they helped each other
+  %w[Mei   Abe],     # gives Mei exactly one mutual with Luna
   %w[Mei   Noah],
-  %w[Sam   Billie],
+  %w[Abe   Billie],
   %w[Imani Kenji],
   %w[Grace Lulu],
   %w[Theo  Ravi],
@@ -169,45 +168,21 @@ puts "#{Connection.count} connections.\n\n"
 # JOURNEY A - completed three weeks ago (history)
 # ---------------------------------------------------------------------------
 past_dropin = Listing.create!(
-  owner: tom,
+  owner: luna,
   pets: [dumpling],
   listing_type: "Drop-in",
   start_date: Date.current - 21,
   end_date: Date.current - 20,
   listing_note: "Overnight trip - just needed food and water checked."
 )
-Offer.create!(listing: past_dropin, user: sam, status: "accepted")
-puts "Journey A: Tom posted 3 weeks ago, Sam was accepted.\n\n"
-
-# ---------------------------------------------------------------------------
-# JOURNEY B - LIVE. Do NOT accept anything here: this is the demo click.
-# ---------------------------------------------------------------------------
-both_cats = Listing.create!(
-  owner: tom,
-  pets: [neo, dumpling],
-  listing_type: "Sitting",
-  start_date: Date.current + 5,
-  end_date: Date.current + 8,
-  listing_note: "Away for a long weekend. Neo and Dumpling both need feeding twice a day. " \
-                "Neo is shy but easy once he trusts you."
-)
-puts "Journey B (LIVE): Sitting for Neo and Dumpling, #{both_cats.start_date} to #{both_cats.end_date}"
-
-{
-  priya               => "2 mutual connections (Sam, Jerry)  <- ACCEPT THIS ONE",
-  users.fetch("Mei")  => "1 mutual connection (Sam)",
-  users.fetch("Ravi") => "no path to Tom -> New neighbour"
-}.each do |sitter, why|
-  Offer.create!(listing: both_cats, user: sitter, status: "offered")
-  puts "  #{sitter.name} offered  [#{why}]"
-end
-puts "  !! No accepted offer here on purpose.\n\n"
+Offer.create!(listing: past_dropin, user: abe, status: "accepted")
+puts "Journey A: Luna posted 3 weeks ago, Abe was accepted.\n\n"
 
 # ---------------------------------------------------------------------------
 # THE BOARD
 # ---------------------------------------------------------------------------
 board = [
-  ["Sam",    ["Biscuit"],     "Walking", 1, 14,
+  ["Abe",    ["Biscuit"],     "Walking", 1, 14,
   "Weekday morning walks, 20 minutes, gentle pace. Ongoing if it works out."],
   ["Mei",    ["Mochi"],       "Walking", 3, 6,
   "A calm walker who understands that sniffing one pole for six minutes is enrichment."],
@@ -255,7 +230,7 @@ Listing.create!(
 puts "Kiwi's Drop-in - ZERO offers (empty state)"
 
 Listing.create!(
-  owner: sam,
+  owner: abe,
   pets: [biscuit],
   listing_type: "Walking",
   start_date: Date.current - 10,
@@ -264,14 +239,14 @@ Listing.create!(
 )
 puts "Biscuit's Walking - dates PASSED (should not appear on the board)"
 
-sams_walk = Listing.find_by(user_id: sam.id, start_date: Date.current + 1)
-Offer.create!(listing: sams_walk, user: priya, status: "offered")
-puts "Priya offered on Biscuit's walk (so Sam has something to review too)\n\n"
+abes_walk = Listing.find_by(user_id: abe.id, start_date: Date.current + 1)
+Offer.create!(listing: abes_walk, user: priya, status: "offered")
+puts "Priya offered on Biscuit's walk (so Abe has something to review too)\n\n"
 
 puts "Creating community events..."
 
 event_data = [
-  ["Inner West Bark & Bake", "Camperdown Memorial Rest Park", "Sam",
+  ["Inner West Bark & Bake", "Camperdown Memorial Rest Park", "Abe",
    6, "09:30", "Coffee, dogs, and one questionable slice each. Bring water and a lead."],
   ["Tiny Pet, Huge Personality Meetup", "Sydney Park", "Priya",
    11, "14:00", "Guinea pigs, budgies, rabbits and anyone under 5kg with strong opinions."],
@@ -282,10 +257,10 @@ event_data = [
 ]
 
 rsvp_lists = [
-  %w[Tom Priya Mei Billie],
-  %w[Tom Sam Ravi],
-  %w[Sam Jerry Billie Noah],
-  %w[Tom Priya Mei Kenji Ravi]
+  %w[Luna Priya Mei Billie],
+  %w[Luna Abe Ravi],
+  %w[Abe Jerry Billie Noah],
+  %w[Luna Priya Mei Kenji Ravi]
 ]
 
 event_data.each_with_index do |(name, location, organiser_name, days, time, details), index|
@@ -320,8 +295,8 @@ puts "Creating lost-pet alerts..."
 
 alert_data = [
   ["Mochi", "Glebe, NSW", 0, "17:40",
-   [["Tom", "Enmore Road near the pub", "Ran past heading east, wouldn't stop.", "18:05"],
-    ["Sam",    "Simmons Street",           "Pretty sure it was her — responded to a snack packet.", "18:40"]]],
+   [["Luna", "Enmore Road near the pub", "Ran past heading east, wouldn't stop.", "18:05"],
+    ["Abe",  "Simmons Street",           "Pretty sure it was her — responded to a snack packet.", "18:40"]]],
 
   ["Gandalf", "Bankstown Library, NSW", 1, "08:15",
    [["Ravi", "Beside the carpark hedge", "Grey cat, very unbothered. Sitting in the sun.", "09:20"]]]
@@ -368,5 +343,5 @@ puts <<~SUMMARY
     Alert responses: #{AlertResponse.count}
 
   Log in with any seeded email and: #{PASSWORD}
-  Try tom@example.com, sam@example.com, nina@example.com or baz@example.com.
+  Try luna@example.com, abe@example.com, nina@example.com or baz@example.com.
 SUMMARY
