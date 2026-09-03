@@ -21,7 +21,7 @@ puts "Database cleaned."
 PASSWORD = "password"
 
 people = [
-  ["Luna",   "Newtown",      -33.8978, 151.1797],
+  ["Luna",   "Glebe",        -33.8796, 151.1874],
   ["Abe",    "Newtown",      -33.8955, 151.1830],
   ["Priya",  "Camperdown",   -33.8891, 151.1770],
   ["Jerry",  "Surry Hills",  -33.8848, 151.2131],
